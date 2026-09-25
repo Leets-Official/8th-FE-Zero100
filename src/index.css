@@ -1,0 +1,23 @@
+:root {
+  --font-family-base: 'Noto Sans KR', sans-serif;
+  --color-primary: #4f46e5;
+  --color-text-primary: #111111;
+  --color-text-secondary: #222222;
+  --color-border: #dddddd;
+  --radius-control: 6px;
+  --checkbox-size: 20px;
+  --checkbox-gap: 10px;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  justify-content: safe center;
+  align-items: safe center;
+  min-height: 100vh;
+}

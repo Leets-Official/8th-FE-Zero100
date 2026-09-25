@@ -1,0 +1,7 @@
+dist
+node_modules
+package-lock.json
+
+# 기존 문서/템플릿은 원본 서식 유지
+README.md
+.github

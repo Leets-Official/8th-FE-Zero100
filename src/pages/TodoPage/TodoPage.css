@@ -1,0 +1,40 @@
+.todo-controls {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 8px;
+}
+
+.todo-form {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: max-content;
+}
+
+.todo-input {
+  box-sizing: border-box;
+  min-width: 440px;
+  height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #cccccc;
+  border-radius: var(--radius-control);
+  background: #ffffff;
+}
+
+.todo-filter {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 520px;
+  height: 44.8px;
+}
+
+.todo-filter-button-selected {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 14.4px;
+  line-height: 21.6px;
+  letter-spacing: 0px;
+  text-align: center;
+}
