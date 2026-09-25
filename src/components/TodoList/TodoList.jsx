@@ -1,13 +1,19 @@
 import TodoItem from '../TodoItem/TodoItem.jsx';
 import './TodoList.css';
 
-function TodoList({ title, todos, onToggleTodo, onDeleteTodo }) {
+function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
   return (
     <div className="todo-list-section">
       <h2 className="todo-list-title">{title}</h2>
       <ul className="todo-list">
         {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} onToggle={onToggleTodo} onDelete={onDeleteTodo} />
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={onToggleTodo}
+            onEdit={onEditTodo}
+            onDelete={onDeleteTodo}
+          />
         ))}
       </ul>
     </div>

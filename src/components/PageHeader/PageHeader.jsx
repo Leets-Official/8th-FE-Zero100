@@ -1,13 +1,14 @@
+import { Link } from 'react-router-dom';
 import './PageHeader.css';
 
-function PageHeader({ title, navLabel, subtitle }) {
+function PageHeader({ title, navLabel, navTo, subtitle }) {
   return (
     <header className="page-header">
       <div className="page-title-row">
         <h1 className="page-title">{title}</h1>
-        <button className="page-nav-link" type="button">
+        <Link className="page-nav-link" to={navTo}>
           {navLabel}
-        </button>
+        </Link>
       </div>
       {subtitle && (
         <div className="page-subtitle-wrapper">

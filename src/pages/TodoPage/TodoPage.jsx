@@ -5,16 +5,15 @@ import PageLayout from '../../components/PageLayout/PageLayout.jsx';
 import TodoList from '../../components/TodoList/TodoList.jsx';
 import './TodoPage.css';
 
-const INITIAL_TODOS = [
-  { id: 1, title: '밥 먹기', completed: false },
-  { id: 2, title: '잠자기', completed: false },
-];
+const FILTER_ALL = 'all';
+const FILTER_ACTIVE = 'active';
 
-function TodoPage() {
-  const [todos, setTodos] = useState(INITIAL_TODOS);
+function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) {
   const [inputValue, setInputValue] = useState('');
+  const [filter, setFilter] = useState(FILTER_ALL);
 
   const remainingCount = todos.filter((todo) => !todo.completed).length;
+  const visibleTodos = filter === FILTER_ACTIVE ? todos.filter((todo) => !todo.completed) : todos;
 
   const handleAddTodo = (event) => {
     event.preventDefault();
@@ -22,24 +21,23 @@ function TodoPage() {
     const title = inputValue.trim();
     if (!title) return;
 
-    const newTodo = { id: crypto.randomUUID(), title, completed: false };
-    setTodos([...todos, newTodo]);
+    onAddTodo(title);
     setInputValue('');
   };
 
-  const handleToggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)),
-    );
-  };
-
-  const handleDeleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
+  const getFilterButtonProps = (buttonFilter) =>
+    filter === buttonFilter
+      ? { variant: 'primary', className: 'todo-filter-button-selected' }
+      : { variant: 'secondary' };
 
   return (
     <PageLayout>
-      <PageHeader title="TodoMatic" navLabel="완료 목록 →" subtitle="할 일을 입력하세요" />
+      <PageHeader
+        title="TodoMatic"
+        navLabel="완료 목록 →"
+        navTo="/completed"
+        subtitle="할 일을 입력하세요"
+      />
       <div className="todo-controls">
         <form className="todo-form" onSubmit={handleAddTodo}>
           <input
@@ -54,19 +52,28 @@ function TodoPage() {
           </Button>
         </form>
         <div className="todo-filter">
-          <Button variant="primary" size="medium" className="todo-filter-button-selected">
+          <Button
+            size="medium"
+            {...getFilterButtonProps(FILTER_ALL)}
+            onClick={() => setFilter(FILTER_ALL)}
+          >
             전체보기
           </Button>
-          <Button variant="secondary" size="medium">
+          <Button
+            size="medium"
+            {...getFilterButtonProps(FILTER_ACTIVE)}
+            onClick={() => setFilter(FILTER_ACTIVE)}
+          >
             진행 중
           </Button>
         </div>
       </div>
       <TodoList
         title={`남은 할 일 ${remainingCount}개`}
-        todos={todos}
-        onToggleTodo={handleToggleTodo}
-        onDeleteTodo={handleDeleteTodo}
+        todos={visibleTodos}
+        onToggleTodo={onToggleTodo}
+        onEditTodo={onEditTodo}
+        onDeleteTodo={onDeleteTodo}
       />
     </PageLayout>
   );
