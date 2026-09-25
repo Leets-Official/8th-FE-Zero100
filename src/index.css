@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  background: #ffffff;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  justify-content: safe center;
+  align-items: safe center;
+  min-height: 100vh;
+}

@@ -21,6 +21,6 @@ export default defineConfig([
       },
     },
   },
-  // Prettier와 충돌하는 스타일 규칙을 끄기 위해 항상 마지막에 둔다.
+
   prettierConfig,
 ]);
