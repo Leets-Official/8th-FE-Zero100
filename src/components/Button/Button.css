@@ -1,0 +1,27 @@
+.button {
+  box-sizing: border-box;
+  margin: 0;
+  border-radius: var(--radius-control);
+}
+
+.button-medium {
+  height: 44.8px;
+  padding: 10px 22px;
+}
+
+.button-primary {
+  border: none;
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.button-secondary {
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+}
+
+.button-danger {
+  border: 1px solid #ffaaaa;
+  background: #ffffff;
+  color: #e53935;
+}

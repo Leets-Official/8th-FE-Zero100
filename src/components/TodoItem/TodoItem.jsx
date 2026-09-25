@@ -1,21 +1,24 @@
+import Button from '../Button/Button.jsx';
+import Checkbox from '../Checkbox/Checkbox.jsx';
+import './TodoItem.css';
+
 function TodoItem({ todo }) {
   const itemClassName = todo.completed ? 'todo-item todo-item-completed' : 'todo-item';
 
   return (
     <li className={itemClassName}>
       <div className="todo-content">
-        <label className="todo-checkbox">
-          <input className="todo-checkbox-input" type="checkbox" defaultChecked={todo.completed} />
+        <Checkbox defaultChecked={todo.completed}>
           <span className="todo-title">{todo.title}</span>
-        </label>
+        </Checkbox>
       </div>
       <div className="todo-actions">
-        <button className="todo-edit-button" type="button">
+        <Button variant="secondary" className="todo-action-button todo-edit-button">
           수정
-        </button>
-        <button className="todo-delete-button" type="button">
+        </Button>
+        <Button variant="danger" className="todo-action-button">
           삭제
-        </button>
+        </Button>
       </div>
     </li>
   );

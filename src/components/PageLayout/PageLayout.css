@@ -1,0 +1,12 @@
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 520px;
+}
