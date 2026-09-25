@@ -41,7 +41,8 @@
   color: #111111;
 }
 
-.completed-link {
+.completed-link,
+.active-list-link {
   flex: none;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 600;
@@ -49,6 +50,13 @@
   line-height: 20.4px;
   letter-spacing: 0px;
   color: #4f46e5;
+}
+
+.active-list-link {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
 }
 
 .heading2-margin {
@@ -190,6 +198,7 @@
   justify-content: flex-start;
   align-items: center;
   gap: 8px;
+  padding-left: calc(20px + 10px);
 }
 
 .todo-edit-button,
@@ -219,4 +228,55 @@
 .todo-delete-button {
   border: 1px solid #ffaaaa;
   color: #e53935;
+}
+
+.todo-content {
+  display: flex;
+  flex-direction: row;
+  align-self: stretch;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-checkbox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.todo-checkbox-input {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 1.18px solid #767676;
+  border-radius: 2.35px;
+  background-color: #ffffff;
+}
+
+.todo-checkbox-input:checked {
+  border-color: #4f46e5;
+  background: #4f46e5
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M4.855 10.385L8.455 14.125L15.145 5.885' fill='none' stroke='%23ffffff' stroke-width='2.06' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 20px 20px no-repeat;
+  background-origin: border-box;
+}
+
+.todo-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22.8px;
+  letter-spacing: 0px;
+  color: #111111;
+  text-decoration: none;
+}
+
+.todo-item-completed .todo-title {
+  color: #999999;
+  text-decoration: line-through;
 }
