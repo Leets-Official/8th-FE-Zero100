@@ -1,18 +1,16 @@
-# 8th-FE-Mission-Zero100
+# React + Vite
 
-8기 FE Zero100 미션을 위한 레포지토리입니다.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🎯 미션 요구사항
-1. 미션 진행 방법을 꼭 읽고 진행해주세요
-   [미션 진행 방법](https://leets-workspace.notion.site/3e3ca3362bee809b9342ed35b1993b83)
+Currently, two official plugins are available:
 
-## 💭 이런 것들을 신경 써보면 좋아요
-- 컴포넌트를 하나에 다 몰아넣지 말고, 역할별로 나눠보기 (버튼, 리스트, 카드처럼 보이는 단위로)
-- 변수/함수/컴포넌트 이름만 봐도 뭘 하는지 알 수 있게 짓기
-- 콘솔에 에러나 경고 뜨는 거 그대로 두지 않기
-- 로딩 중인지, 에러가 났는지, 성공했는지 화면에서 구분되게 보여주기
-- 커밋을 너무 크게 한 번에 몰아서 하지 말고, 작업 단위로 나눠서 커밋하기
-- ESLint/Prettier 같은 포맷터 경고 무시하지 않고 맞춰주기
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## 🎨 디자인
-Figma: [디자인 링크](https://www.figma.com/design/5udme3sBNisPIOyu57QfmD/Zero100-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=105-165&m=dev&t=emvJcXPYT63tSQUZ-1)
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
