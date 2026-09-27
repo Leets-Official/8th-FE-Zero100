@@ -36,6 +36,29 @@ function App() {
     return true;
   })
 
+  const editWork = (id) => {
+    setWork(work.map((task) =>
+      task.id === id ? {...task, edit: true, origin: task.text} : task
+    ));
+  };
+
+  const changeText = (id, newText) => {
+    setWork(work.map((task) =>
+      task.id === id ? {...task, text: newText} : task
+    ));
+  };
+
+  const saveEdit = (id) => {
+    setWork(work.map((task) =>
+      task.id === id ? {...task, edit: false, origin: undefined} : task
+    ));
+  };
+
+  const cancelEdit = (id) => {
+    setWork(work.map((task) =>
+      task.id === id ? {...task, edit: false, text: task.origin} : task
+    ));
+  };
 
   return (
     <>
@@ -54,9 +77,20 @@ function App() {
       {display.map((task) => (
         <div key={task.id}>
           <Checkbox checked={task.done} onChange={() => checkClear(task.id)} />
-          <Text>{task.text}</Text>
-          <Button>수정</Button>
-          <Button onClick={() => deleteWork(task.id)}>삭제</Button>
+
+          {task.edit ? (
+            <>
+              <input type="text" value={task.text} onChange={(event) => changeText(task.id, event.target.value)} />
+              <Button onClick={() => saveEdit(task.id)}>저장</Button>
+              <Button onClick={() => cancelEdit(task.id)}>취소</Button>
+            </>
+          ) : (
+            <>
+              <Text>{task.text}</Text>
+              <Button onClick={() => editWork(task.id)}>수정</Button>
+              <Button onClick={() => deleteWork(task.id)}>삭제</Button>
+            </>
+          )}
         </div>
       ))}
     </>
