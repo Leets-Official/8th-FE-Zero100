@@ -11,7 +11,7 @@ function Input(props) {
 
     return (
         <div className={styles.wrap}>
-            <input type="text" value={inputValue}
+            <input type="text" className={styles.input} value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
             placeholder='새 할 일 추가'/>
 

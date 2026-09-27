@@ -3,7 +3,7 @@ import Text from './components/Text';
 import Button from './components/Button';
 import Checkbox from './components/Checkbox';
 import Input from './components/Input';
-// import './App.css'
+import './App.css'
 
 function App() {
   const [work, setWork] = useState([]);
@@ -61,39 +61,46 @@ function App() {
   };
 
   return (
-    <>
-      <h1>TodoMatic</h1>
-      <p>할 일을 입력하세요</p>
+    <div className="app">
+      <h1 className="title">TodoMatic</h1>
+      <p className="midText">할 일을 입력하세요</p>
       <Input newWork={addWork} />
 
-      <div>
+      <div className="displayRow">
         <Button variant={displayWork === 'total' ? 'primary' : 'default'} onClick={() => setDisplayWork('total')}>전체보기</Button>
         <Button variant={displayWork === 'inProgress' ? 'primary' : 'default'} onClick={() => setDisplayWork('inProgress')}>진행 중</Button>
-        <Button onClick={() => setDisplayWork('completed')}>완료됨</Button>
+        <Button variant={displayWork === 'completed' ? 'primary' : 'default'} onClick={() => setDisplayWork('completed')}>완료됨</Button>
       </div>
 
-      <p>남은 할 일 {work.filter((task) => task.done === false).length}개</p>
+      <p className="midText">남은 할 일 {work.filter((task) => task.done === false).length}개</p>
 
       {display.map((task) => (
-        <div key={task.id}>
-          <Checkbox checked={task.done} onChange={() => checkClear(task.id)} />
+        <div className='taskCard' key={task.id}>
+          <div className='taskCheck'>
+            <Checkbox checked={task.done} onChange={() => checkClear(task.id)} />
 
-          {task.edit ? (
-            <>
+            {task.edit ? (
               <input type="text" value={task.text} onChange={(event) => changeText(task.id, event.target.value)} />
-              <Button onClick={() => saveEdit(task.id)}>저장</Button>
-              <Button onClick={() => cancelEdit(task.id)}>취소</Button>
-            </>
-          ) : (
-            <>
+            ) : (
               <Text done={task.done}>{task.text}</Text>
-              <Button onClick={() => editWork(task.id)}>수정</Button>
-              <Button variant="delete" onClick={() => deleteWork(task.id)}>삭제</Button>
-            </>
-          )}
+            )}
+          </div>
+          <div className='taskButtons'>
+            {task.edit ? (
+              <>
+                <Button onClick={() => saveEdit(task.id)}>저장</Button>
+                <Button onClick={() => cancelEdit(task.id)}>취소</Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={() => editWork(task.id)}>수정</Button>
+                <Button variant="delete" onClick={() => deleteWork(task.id)}>삭제</Button>
+              </>
+            )}
+          </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
 

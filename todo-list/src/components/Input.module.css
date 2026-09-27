@@ -1,6 +1,7 @@
 .wrap {
     display: flex;
     gap: 8px;
+    margin-bottom: 6px;
 }
 
 .input {
@@ -12,6 +13,7 @@
 }
 
 .button {
+    flex-shrink: 0;
     padding: 10px 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
