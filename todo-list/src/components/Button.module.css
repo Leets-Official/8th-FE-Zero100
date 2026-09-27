@@ -1,0 +1,21 @@
+.button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: white;
+    color: black;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.primary {
+    background: #6366f1;
+    color: white;
+    border: 1px solid #ccc;
+}
+
+.delete {
+    color: red;
+    border: 1px solid red;
+}

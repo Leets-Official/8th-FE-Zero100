@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from './Input.module.css';
 
 function Input(props) {
     const [inputValue, setInputValue] = useState('');
@@ -9,13 +10,13 @@ function Input(props) {
     }
 
     return (
-        <>
+        <div className={styles.wrap}>
             <input type="text" value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
             placeholder='새 할 일 추가'/>
 
-            <button onClick={addWork}>추가</button>
-        </>
+            <button className={styles.button} onClick={addWork}>추가</button>
+        </div>
     )
 }
 

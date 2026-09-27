@@ -1,0 +1,10 @@
+.normal {
+    font-size: 15px;
+    color: #000;
+}
+
+.done {
+    font-size: 15px;
+    color: gray;
+    text-decoration: line-through;
+}

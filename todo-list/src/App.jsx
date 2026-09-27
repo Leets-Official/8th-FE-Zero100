@@ -67,8 +67,8 @@ function App() {
       <Input newWork={addWork} />
 
       <div>
-        <Button onClick={() => setDisplayWork('total')}>전체보기</Button>
-        <Button onClick={() => setDisplayWork('inProgress')}>진행 중</Button>
+        <Button variant={displayWork === 'total' ? 'primary' : 'default'} onClick={() => setDisplayWork('total')}>전체보기</Button>
+        <Button variant={displayWork === 'inProgress' ? 'primary' : 'default'} onClick={() => setDisplayWork('inProgress')}>진행 중</Button>
         <Button onClick={() => setDisplayWork('completed')}>완료됨</Button>
       </div>
 
@@ -86,9 +86,9 @@ function App() {
             </>
           ) : (
             <>
-              <Text>{task.text}</Text>
+              <Text done={task.done}>{task.text}</Text>
               <Button onClick={() => editWork(task.id)}>수정</Button>
-              <Button onClick={() => deleteWork(task.id)}>삭제</Button>
+              <Button variant="delete" onClick={() => deleteWork(task.id)}>삭제</Button>
             </>
           )}
         </div>
