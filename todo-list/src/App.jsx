@@ -6,12 +6,59 @@ import Input from './components/Input';
 // import './App.css'
 
 function App() {
+  const [work, setWork] = useState([]);
+  const [addId, setAddId] = useState(1);
+  const [displayWork, setDisplayWork] = useState('total');
+
+  const addWork = (text) => {
+    setWork([...work, {id: addId, text, done: false}]);
+    setAddId(addId + 1);
+  };
+
+  const checkClear = (id) => {
+    const newWork = work.map((task) => {
+      if (task.id === id) {
+        return {...task, done: !task.done};
+      } else {
+        return task;
+      }
+    });
+    setWork(newWork);
+  }
+
+  const deleteWork = (id) => {
+    setWork(work.filter((task) => task.id != id));
+  };
+
+  const display = work.filter((task) => {
+    if (displayWork === 'inProgress') return task.done === false;
+    if (displayWork === 'completed') return task.done === true;
+    return true;
+  })
 
 
   return (
     <>
       <h1>TodoMatic</h1>
       <p>할 일을 입력하세요</p>
+      <Input newWork={addWork} />
+
+      <div>
+        <Button onClick={() => setDisplayWork('total')}>전체보기</Button>
+        <Button onClick={() => setDisplayWork('inProgress')}>진행 중</Button>
+        <Button onClick={() => setDisplayWork('completed')}>완료됨</Button>
+      </div>
+
+      <p>남은 할 일 {work.filter((task) => task.done === false).length}개</p>
+
+      {display.map((task) => (
+        <div key={task.id}>
+          <Checkbox checked={task.done} onChange={() => checkClear(task.id)} />
+          <Text>{task.text}</Text>
+          <Button>수정</Button>
+          <Button onClick={() => deleteWork(task.id)}>삭제</Button>
+        </div>
+      ))}
     </>
   );
 }

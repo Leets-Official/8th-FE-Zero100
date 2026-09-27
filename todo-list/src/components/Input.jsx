@@ -4,16 +4,17 @@ function Input(props) {
     const [inputValue, setInputValue] = useState('');
 
     const addWork = () => {
-        
+        props.newWork(inputValue);
+        setInputValue('');
     }
 
     return (
         <>
-            <input type="text" value={value}
+            <input type="text" value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
             placeholder='새 할 일 추가'/>
 
-            <button>추가</button>
+            <button onClick={addWork}>추가</button>
         </>
     )
 }
