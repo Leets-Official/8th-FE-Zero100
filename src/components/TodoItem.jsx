@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 import Button from './Button.jsx';
 import Checkbox from './Checkbox.jsx';
 
@@ -35,13 +36,23 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
   const ContentWrapper = isEditing ? 'form' : 'div';
 
   return (
-    <li className="box-border flex flex-col gap-[8px] w-[520px] py-[14px] px-[16px] border-[1px] border-solid border-[#eeeeee] rounded-[8px] bg-[#ffffff]">
-      <ContentWrapper className="contents" onSubmit={isEditing ? handleSaveEdit : undefined}>
-        <div className="flex flex-row self-stretch items-center gap-[10px]">
+    <li
+      className={twMerge(
+        'box-border flex flex-col gap-[8px] w-[520px] py-[14px] px-[16px] border-[1px] border-solid border-[#eeeeee] rounded-[8px] bg-[#ffffff]',
+      )}
+    >
+      <ContentWrapper
+        className={twMerge('contents')}
+        onSubmit={isEditing ? handleSaveEdit : undefined}
+      >
+        <div className={twMerge('flex flex-row self-stretch items-center gap-[10px]')}>
           <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)}>
             {!isEditing && (
               <span
-                className={`font-[family-name:var(--font-family-base)] font-medium text-[16px] leading-[22.8px] tracking-[0px] min-w-0 wrap-anywhere ${titleStateClassName}`}
+                className={twMerge(
+                  'font-[family-name:var(--font-family-base)] font-medium text-[16px] leading-[22.8px] tracking-[0px] min-w-0 wrap-anywhere',
+                  titleStateClassName,
+                )}
               >
                 {todo.title}
               </span>
@@ -56,7 +67,11 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
             />
           )}
         </div>
-        <div className="flex flex-row justify-start items-center gap-[8px] pl-[calc(var(--checkbox-size)_+_var(--checkbox-gap))]">
+        <div
+          className={twMerge(
+            'flex flex-row justify-start items-center gap-[8px] pl-[calc(var(--checkbox-size)_+_var(--checkbox-gap))]',
+          )}
+        >
           {isEditing ? (
             <>
               <Button

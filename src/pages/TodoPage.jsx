@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { twMerge } from 'tailwind-merge';
 import Button from '../components/Button.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import PageLayout from '../components/PageLayout.jsx';
@@ -41,10 +42,12 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
         navTo="/completed"
         subtitle="할 일을 입력하세요"
       />
-      <div className="flex flex-col self-stretch gap-[8px]">
-        <form className="flex flex-row gap-[8px] w-max" onSubmit={handleAddTodo}>
+      <div className={twMerge('flex flex-col self-stretch gap-[8px]')}>
+        <form className={twMerge('flex flex-row gap-[8px] w-max')} onSubmit={handleAddTodo}>
           <input
-            className="box-border min-w-[440px] h-[44px] py-[10px] px-[14px] border-[1px] border-solid border-[#cccccc] rounded-[var(--radius-control)] bg-[#ffffff]"
+            className={twMerge(
+              'box-border min-w-[440px] h-[44px] py-[10px] px-[14px] border-[1px] border-solid border-[#cccccc] rounded-[var(--radius-control)] bg-[#ffffff]',
+            )}
             type="text"
             placeholder="새 할 일 추가"
             value={inputValue}
@@ -54,7 +57,7 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
             추가
           </Button>
         </form>
-        <div className="flex flex-row gap-[8px] w-[520px] h-[44.8px]">
+        <div className={twMerge('flex flex-row gap-[8px] w-[520px] h-[44.8px]')}>
           <Button
             size="medium"
             {...getFilterButtonProps(FILTER_ALL)}

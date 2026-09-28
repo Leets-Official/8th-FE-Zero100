@@ -1,3 +1,5 @@
+import { twMerge } from 'tailwind-merge';
+
 const BASE_CLASS_NAME = 'box-border m-0 rounded-[var(--radius-control)]';
 
 const VARIANT_CLASS_NAMES = {
@@ -11,14 +13,13 @@ const SIZE_CLASS_NAMES = {
 };
 
 function Button({ variant = 'primary', size, className, children, ...props }) {
-  const classNames = [
+  // 뒤에 오는 클래스가 우선하도록 충돌하는 Tailwind 클래스를 정리한다. (className > size > variant > base)
+  const classNames = twMerge(
     BASE_CLASS_NAME,
     VARIANT_CLASS_NAMES[variant],
     SIZE_CLASS_NAMES[size],
     className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  );
 
   return (
     <button type="button" className={classNames} {...props}>
