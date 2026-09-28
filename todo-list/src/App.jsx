@@ -27,7 +27,7 @@ function App() {
   }
 
   const deleteWork = (id) => {
-    setWork(work.filter((task) => task.id != id));
+    setWork(work.filter((task) => task.id !== id));
   };
 
   const display = work.filter((task) => {
