@@ -25,6 +25,11 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
     setIsEditing(false);
   };
 
+  const handleCancelEdit = () => {
+    setEditValue(todo.title);
+    setIsEditing(false);
+  };
+
   return (
     <li className="box-border flex flex-col gap-[8px] w-[520px] py-[14px] px-[16px] border-[1px] border-solid border-[#eeeeee] rounded-[8px] bg-[#ffffff]">
       <div className="flex flex-row self-stretch items-center gap-[10px]">
@@ -56,6 +61,15 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
         >
           {isEditing ? '저장' : '수정'}
         </Button>
+        {isEditing && (
+          <Button
+            variant="secondary"
+            className="inline-flex items-center justify-center min-w-[74px] h-[44px] px-[20px] py-[0px] font-[family-name:var(--font-family-base)] font-semibold text-[16px] leading-none tracking-[0] text-[#555555]"
+            onClick={handleCancelEdit}
+          >
+            취소
+          </Button>
+        )}
         <Button
           variant="danger"
           className="inline-flex items-center justify-center min-w-[74px] h-[44px] px-[20px] py-[0px] font-[family-name:var(--font-family-base)] font-semibold text-[16px] leading-none tracking-[0]"
