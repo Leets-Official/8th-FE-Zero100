@@ -26,6 +26,8 @@
   letter-spacing: 0px;
   color: var(--color-text-primary);
   text-decoration: none;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .todo-item-completed .todo-title {
