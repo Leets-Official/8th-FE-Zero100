@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import CompletedTodoPage from './pages/CompletedTodoPage/CompletedTodoPage.jsx';
-import TodoPage from './pages/TodoPage/TodoPage.jsx';
+import CompletedTodoPage from './pages/CompletedTodoPage.jsx';
+import TodoPage from './pages/TodoPage.jsx';
 
 const INITIAL_TODOS = [
   { id: 1, title: '밥 먹기', completed: false },

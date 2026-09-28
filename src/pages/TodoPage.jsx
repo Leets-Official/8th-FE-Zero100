@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import Button from '../../components/Button/Button.jsx';
-import PageHeader from '../../components/PageHeader/PageHeader.jsx';
-import PageLayout from '../../components/PageLayout/PageLayout.jsx';
-import TodoList from '../../components/TodoList/TodoList.jsx';
-import './TodoPage.css';
+import Button from '../components/Button.jsx';
+import PageHeader from '../components/PageHeader.jsx';
+import PageLayout from '../components/PageLayout.jsx';
+import TodoList from '../components/TodoList.jsx';
 
 const FILTER_ALL = 'all';
 const FILTER_ACTIVE = 'active';
@@ -27,7 +26,11 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
 
   const getFilterButtonProps = (buttonFilter) =>
     filter === buttonFilter
-      ? { variant: 'primary', className: 'todo-filter-button-selected' }
+      ? {
+          variant: 'primary',
+          className:
+            'font-[family-name:var(--font-family-base)] font-semibold text-[14.4px] leading-[21.6px] tracking-[0px] text-center',
+        }
       : { variant: 'secondary' };
 
   return (
@@ -38,10 +41,10 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
         navTo="/completed"
         subtitle="할 일을 입력하세요"
       />
-      <div className="todo-controls">
-        <form className="todo-form" onSubmit={handleAddTodo}>
+      <div className="flex flex-col self-stretch gap-[8px]">
+        <form className="flex flex-row gap-[8px] w-max" onSubmit={handleAddTodo}>
           <input
-            className="todo-input"
+            className="box-border min-w-[440px] h-[44px] py-[10px] px-[14px] border-[1px] border-solid border-[#cccccc] rounded-[var(--radius-control)] bg-[#ffffff]"
             type="text"
             placeholder="새 할 일 추가"
             value={inputValue}
@@ -51,7 +54,7 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
             추가
           </Button>
         </form>
-        <div className="todo-filter">
+        <div className="flex flex-row gap-[8px] w-[520px] h-[44.8px]">
           <Button
             size="medium"
             {...getFilterButtonProps(FILTER_ALL)}
