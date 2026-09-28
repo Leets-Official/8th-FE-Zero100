@@ -1,0 +1,13 @@
+.todo-text {
+  margin: 0;
+  color: #222222;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 26.4px;
+  letter-spacing: 0;
+}
+
+.todo-text--completed {
+  color: #999999;
+  text-decoration: line-through;
+}

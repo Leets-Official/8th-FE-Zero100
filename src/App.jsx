@@ -1,101 +1,81 @@
 import { useState } from 'react';
-import heroImg from './assets/hero.png';
-import reactLogo from './assets/react.svg';
-import viteLogo from './assets/vite.svg';
+import Text from './components/Text/Text';
+import Button from './components/Button/Button';
+import Checkbox from './components/Checkbox/Checkbox';
+import Input from './components/Input/Input';
 import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [inputValue, setInputValue] = useState('');
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  function handleInputChange(event) {
+    setInputValue(event.target.value);
+  }
+
+  function handleCompletedChange(event) {
+    setIsCompleted(event.target.checked);
+  }
+
+  function handleReset() {
+    setInputValue('');
+    setIsCompleted(false);
+  }
+
+  function handleClearInput() {
+    setInputValue('');
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button type="button" className="counter" onClick={() => setCount((count) => count + 1)}>
-          Count is {count}
-        </button>
+    <main className="ui-preview">
+      <h1 className="ui-preview__title">공통 UI 컴포넌트</h1>
+
+      <section className="ui-preview__section">
+        <h2 className="ui-preview__heading">Input</h2>
+
+        <label htmlFor="preview-todo">할 일을 입력하세요</label>
+
+        <Input
+          id="preview-todo"
+          label="할 일"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="새 할 일 추가"
+        />
       </section>
 
-      <div className="ticks"></div>
+      <section className="ui-preview__section">
+        <h2 className="ui-preview__heading">Checkbox와 Text</h2>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg className="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg className="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg className="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg className="button-icon" role="presentation" aria-hidden="true">
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        <div className="ui-preview__item">
+          <Checkbox
+            label="미리보기 작업 완료"
+            checked={isCompleted}
+            onChange={handleCompletedChange}
+          />
+
+          <Text completed={isCompleted}>{inputValue === '' ? '할 일 미리보기' : inputValue}</Text>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <section className="ui-preview__section">
+        <h2 className="ui-preview__heading">Button</h2>
+
+        <div className="ui-preview__buttons">
+          <Button onClick={handleReset}>초기화</Button>
+
+          <Button variant="secondary" onClick={handleClearInput}>
+            입력 지우기
+          </Button>
+
+          <Button variant="danger" onClick={handleReset}>
+            초기화
+          </Button>
+
+          <Button disabled={true}>비활성</Button>
+        </div>
+      </section>
+    </main>
   );
 }
 
