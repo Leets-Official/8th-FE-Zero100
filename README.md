@@ -3,10 +3,12 @@
 8기 FE Zero100 미션을 위한 레포지토리입니다.
 
 ## 🎯 미션 요구사항
+
 1. 미션 진행 방법을 꼭 읽고 진행해주세요
    [미션 진행 방법](https://leets-workspace.notion.site/3e3ca3362bee809b9342ed35b1993b83)
 
 ## 💭 이런 것들을 신경 써보면 좋아요
+
 - 컴포넌트를 하나에 다 몰아넣지 말고, 역할별로 나눠보기 (버튼, 리스트, 카드처럼 보이는 단위로)
 - 변수/함수/컴포넌트 이름만 봐도 뭘 하는지 알 수 있게 짓기
 - 콘솔에 에러나 경고 뜨는 거 그대로 두지 않기
@@ -15,4 +17,35 @@
 - ESLint/Prettier 같은 포맷터 경고 무시하지 않고 맞춰주기
 
 ## 🎨 디자인
+
 Figma: [디자인 링크](https://www.figma.com/design/5udme3sBNisPIOyu57QfmD/Zero100-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=105-165&m=dev&t=emvJcXPYT63tSQUZ-1)
+
+## 시작하기
+
+```bash
+npm install
+npm run dev
+```
+
+## 코드 확인
+
+```bash
+npm run lint
+npm run format:check
+npm run build
+```
+
+## 폴더 구조
+
+```text
+src/
+  components/  # Button, Checkbox, Input, TodoItem
+  App.jsx      # Todo 상태, 필터, 화면 조합
+  index.css    # Tailwind CSS 진입점
+  main.jsx     # React 진입점
+```
+
+Prettier는 ESLint와 별도로 실행합니다. VS Code를 사용한다면 Prettier 확장 프로그램을 설치해 저장 시 포맷을 적용할 수 있습니다.
+Tailwind 클래스는 Prettier 플러그인이 자동 정렬합니다.
+
+할 일 추가, 완료 상태 변경, 전체/진행 중/완료됨 필터, 수정, 삭제를 사용할 수 있습니다.
