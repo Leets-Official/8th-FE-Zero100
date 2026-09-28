@@ -4,32 +4,49 @@ import Button from './components/Button/Button';
 import TodoItem from './components/TodoItem/TodoItem';
 import './App.css';
 
-const sampleTodos = [
+const initialTodos = [
   { id: 1, text: '밥 먹기', completed: false },
   { id: 2, text: '리츠 출석하기', completed: true },
   { id: 3, text: '잠자기', completed: false },
 ];
 
 function App() {
+  const [todos, setTodos] = useState(initialTodos);
   const [inputValue, setInputValue] = useState('');
 
-  const filter = 'all';
+  const remainingCount = todos.filter((todo) => !todo.completed).length;
 
-  const remainingCount = sampleTodos.filter((todo) => !todo.completed).length;
+  function handleAdd(event) {
+    event.preventDefault();
 
-  function handleInputChange(event) {
-    setInputValue(event.target.value);
+    const text = inputValue.trim();
+    if (!text) return;
+
+    const newTodo = {
+      id: crypto.randomUUID(),
+      text,
+      completed: false,
+    };
+
+    setTodos((prev) => [...prev, newTodo]);
+    setInputValue('');
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleToggle(id) {
+    setTodos((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo)),
+    );
+  }
+
+  function handleDelete(id) {
+    setTodos((prev) => prev.filter((todo) => todo.id !== id));
   }
 
   return (
     <main className="todo-app">
       <h1 className="todo-app__title">TodoMatic</h1>
 
-      <form className="todo-form" onSubmit={handleSubmit}>
+      <form className="todo-form" onSubmit={handleAdd}>
         <label className="todo-form__label" htmlFor="new-todo">
           할 일을 입력하세요
         </label>
@@ -39,7 +56,7 @@ function App() {
             id="new-todo"
             label="새 할 일"
             value={inputValue}
-            onChange={handleInputChange}
+            onChange={(e) => setInputValue(e.target.value)}
             placeholder="새 할 일 추가"
           />
 
@@ -48,21 +65,13 @@ function App() {
       </form>
 
       <div className="todo-filter" role="group" aria-label="작업 조회 조건">
-        <Button variant={filter === 'all' ? 'primary' : 'secondary'} pressed={filter === 'all'}>
-          전체보기
-        </Button>
+        <Button pressed={true}>전체보기</Button>
 
-        <Button
-          variant={filter === 'active' ? 'primary' : 'secondary'}
-          pressed={filter === 'active'}
-        >
+        <Button variant="secondary" pressed={false}>
           진행 중
         </Button>
 
-        <Button
-          variant={filter === 'completed' ? 'primary' : 'secondary'}
-          pressed={filter === 'completed'}
-        >
+        <Button variant="secondary" pressed={false}>
           완료됨
         </Button>
       </div>
@@ -72,12 +81,12 @@ function App() {
           남은 할 일 {remainingCount}개
         </h2>
 
-        {sampleTodos.length === 0 ? (
+        {todos.length === 0 ? (
           <p className="todo-tasks__empty">등록된 할 일이 없습니다.</p>
         ) : (
           <ul className="todo-list">
-            {sampleTodos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
+            {todos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} onToggle={handleToggle} onDelete={handleDelete} />
             ))}
           </ul>
         )}
