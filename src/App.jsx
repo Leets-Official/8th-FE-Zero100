@@ -10,11 +10,25 @@ const initialTodos = [
   { id: 3, text: '잠자기', completed: false },
 ];
 
+const filters = [
+  { value: 'all', label: '전체보기' },
+  { value: 'active', label: '진행 중' },
+  { value: 'completed', label: '완료됨' },
+];
+
 function App() {
   const [todos, setTodos] = useState(initialTodos);
   const [inputValue, setInputValue] = useState('');
+  const [filter, setFilter] = useState('all');
 
   const remainingCount = todos.filter((todo) => !todo.completed).length;
+  const completedCount = todos.filter((todo) => todo.completed).length;
+
+  const visibleTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
 
   function handleAdd(event) {
     event.preventDefault();
@@ -42,6 +56,10 @@ function App() {
     setTodos((prev) => prev.filter((todo) => todo.id !== id));
   }
 
+  function handleEdit(id, text) {
+    setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
+  }
+
   return (
     <main className="todo-app">
       <h1 className="todo-app__title">TodoMatic</h1>
@@ -65,28 +83,37 @@ function App() {
       </form>
 
       <div className="todo-filter" role="group" aria-label="작업 조회 조건">
-        <Button pressed={true}>전체보기</Button>
-
-        <Button variant="secondary" pressed={false}>
-          진행 중
-        </Button>
-
-        <Button variant="secondary" pressed={false}>
-          완료됨
-        </Button>
+        {filters.map((option) => (
+          <Button
+            key={option.value}
+            variant={filter === option.value ? 'primary' : 'secondary'}
+            pressed={filter === option.value}
+            onClick={() => setFilter(option.value)}
+          >
+            {option.label}
+          </Button>
+        ))}
       </div>
 
       <section className="todo-tasks" aria-labelledby="todo-count">
         <h2 id="todo-count" className="todo-tasks__count">
-          남은 할 일 {remainingCount}개
+          {filter === 'completed'
+            ? `완료된 작업 ${completedCount}개`
+            : `남은 할 일 ${remainingCount}개`}
         </h2>
 
-        {todos.length === 0 ? (
+        {visibleTodos.length === 0 ? (
           <p className="todo-tasks__empty">등록된 할 일이 없습니다.</p>
         ) : (
           <ul className="todo-list">
-            {todos.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} onToggle={handleToggle} onDelete={handleDelete} />
+            {visibleTodos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                onToggle={handleToggle}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
             ))}
           </ul>
         )}
