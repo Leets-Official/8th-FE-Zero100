@@ -1,79 +1,86 @@
 import { useState } from 'react';
-import Text from './components/Text/Text';
-import Button from './components/Button/Button';
-import Checkbox from './components/Checkbox/Checkbox';
 import Input from './components/Input/Input';
+import Button from './components/Button/Button';
+import TodoItem from './components/TodoItem/TodoItem';
 import './App.css';
+
+const sampleTodos = [
+  { id: 1, text: '밥 먹기', completed: false },
+  { id: 2, text: '리츠 출석하기', completed: true },
+  { id: 3, text: '잠자기', completed: false },
+];
 
 function App() {
   const [inputValue, setInputValue] = useState('');
-  const [isCompleted, setIsCompleted] = useState(false);
+
+  const filter = 'all';
+
+  const remainingCount = sampleTodos.filter((todo) => !todo.completed).length;
 
   function handleInputChange(event) {
     setInputValue(event.target.value);
   }
 
-  function handleCompletedChange(event) {
-    setIsCompleted(event.target.checked);
-  }
-
-  function handleReset() {
-    setInputValue('');
-    setIsCompleted(false);
-  }
-
-  function handleClearInput() {
-    setInputValue('');
+  function handleSubmit(event) {
+    event.preventDefault();
   }
 
   return (
-    <main className="ui-preview">
-      <h1 className="ui-preview__title">공통 UI 컴포넌트</h1>
+    <main className="todo-app">
+      <h1 className="todo-app__title">TodoMatic</h1>
 
-      <section className="ui-preview__section">
-        <h2 className="ui-preview__heading">Input</h2>
+      <form className="todo-form" onSubmit={handleSubmit}>
+        <label className="todo-form__label" htmlFor="new-todo">
+          할 일을 입력하세요
+        </label>
 
-        <label htmlFor="preview-todo">할 일을 입력하세요</label>
-
-        <Input
-          id="preview-todo"
-          label="할 일"
-          value={inputValue}
-          onChange={handleInputChange}
-          placeholder="새 할 일 추가"
-        />
-      </section>
-
-      <section className="ui-preview__section">
-        <h2 className="ui-preview__heading">Checkbox와 Text</h2>
-
-        <div className="ui-preview__item">
-          <Checkbox
-            label="미리보기 작업 완료"
-            checked={isCompleted}
-            onChange={handleCompletedChange}
+        <div className="todo-form__controls">
+          <Input
+            id="new-todo"
+            label="새 할 일"
+            value={inputValue}
+            onChange={handleInputChange}
+            placeholder="새 할 일 추가"
           />
 
-          <Text completed={isCompleted}>{inputValue === '' ? '할 일 미리보기' : inputValue}</Text>
+          <Button type="submit">추가</Button>
         </div>
-      </section>
+      </form>
 
-      <section className="ui-preview__section">
-        <h2 className="ui-preview__heading">Button</h2>
+      <div className="todo-filter" role="group" aria-label="작업 조회 조건">
+        <Button variant={filter === 'all' ? 'primary' : 'secondary'} pressed={filter === 'all'}>
+          전체보기
+        </Button>
 
-        <div className="ui-preview__buttons">
-          <Button onClick={handleReset}>초기화</Button>
+        <Button
+          variant={filter === 'active' ? 'primary' : 'secondary'}
+          pressed={filter === 'active'}
+        >
+          진행 중
+        </Button>
 
-          <Button variant="secondary" onClick={handleClearInput}>
-            입력 지우기
-          </Button>
+        <Button
+          variant={filter === 'completed' ? 'primary' : 'secondary'}
+          pressed={filter === 'completed'}
+        >
+          완료됨
+        </Button>
+      </div>
 
-          <Button variant="danger" onClick={handleReset}>
-            초기화
-          </Button>
+      <section className="todo-tasks" aria-labelledby="todo-count">
+        <h2 id="todo-count" className="todo-tasks__count">
+          남은 할 일 {remainingCount}개
+        </h2>
 
-          <Button disabled={true}>비활성</Button>
-        </div>
+        {sampleTodos.length === 0 ? (
+          <p className="todo-tasks__empty">등록된 할 일이 없습니다.</p>
+        ) : (
+          <ul className="todo-list">
+            {sampleTodos.map((todo) => (
+              <TodoItem key={todo.id} todo={todo} />
+            ))}
+          </ul>
+        )}
       </section>
     </main>
   );

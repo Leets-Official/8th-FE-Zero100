@@ -1,6 +1,6 @@
 import './Checkbox.css';
 
-function Checkbox({ checked, onChange, label, disabled = false }) {
+function Checkbox({ checked, onChange, label, disabled = false, readOnly = false }) {
   return (
     <input
       className="todo-checkbox"
@@ -9,6 +9,7 @@ function Checkbox({ checked, onChange, label, disabled = false }) {
       onChange={onChange}
       aria-label={label}
       disabled={disabled}
+      readOnly={readOnly}
     />
   );
 }
