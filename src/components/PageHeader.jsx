@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 function PageHeader({ title, navLabel, navTo, subtitle }) {
   return (
