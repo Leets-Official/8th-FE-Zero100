@@ -1,0 +1,34 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-danger: #dc2626;
+  --color-danger-border: #fca5a5;
+  --color-danger-bg-hover: #fef2f2;
+  --color-text: #111111;
+  --color-text-sub: #222222;
+  --color-text-muted: #9ca3af;
+  --color-border: #dddddd;
+  --color-border-card: #e5e7eb;
+  --color-bg: #ffffff;
+  --color-bg-hover: #f9fafb;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
