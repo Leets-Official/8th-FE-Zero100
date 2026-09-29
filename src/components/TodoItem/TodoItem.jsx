@@ -1,5 +1,5 @@
 import Checkbox from '../Checkbox/Checkbox';
-import Text from '../Text/Text';
+import TodoText from '../TodoText/TodoText';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import './TodoItem.css';
@@ -68,7 +68,7 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
               onChange={() => onToggle(todo.id)}
             />
 
-            <Text completed={todo.completed}>{todo.text}</Text>
+            <TodoText completed={todo.completed}>{todo.text}</TodoText>
           </div>
 
           <div className="todo-item__actions" role="group" aria-label={`${todo.text} 관리`}>

@@ -16,6 +16,12 @@ const filters = [
   { value: 'completed', label: '완료됨' },
 ];
 
+const emptyMessages = {
+  all: '등록된 할 일이 없습니다.',
+  active: '진행 중인 할 일이 없습니다.',
+  completed: '완료된 할 일이 없습니다.',
+};
+
 function App() {
   const [todos, setTodos] = useState(initialTodos);
   const [inputValue, setInputValue] = useState('');
@@ -103,7 +109,7 @@ function App() {
         </h2>
 
         {visibleTodos.length === 0 ? (
-          <p className="todo-tasks__empty">등록된 할 일이 없습니다.</p>
+          <p className="todo-tasks__empty">{emptyMessages[filter]}</p>
         ) : (
           <ul className="todo-list">
             {visibleTodos.map((todo) => (
