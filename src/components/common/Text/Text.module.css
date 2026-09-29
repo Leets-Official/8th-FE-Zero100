@@ -1,7 +1,7 @@
 .text {
   color: var(--color-text);
   letter-spacing: -0.02em;
-  word-break: break-all;
+  overflow-wrap: anywhere;
 }
 
 .title {
