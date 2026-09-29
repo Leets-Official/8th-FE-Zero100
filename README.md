@@ -16,5 +16,3 @@
 
 ## 🎨 디자인
 Figma: [디자인 링크](https://www.figma.com/design/5udme3sBNisPIOyu57QfmD/Zero100-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=105-165&m=dev&t=emvJcXPYT63tSQUZ-1)
-
-pr test
