@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Button from '../../common/Button/Button';
 import Checkbox from '../../common/Checkbox/Checkbox';
 import Input from '../../common/Input/Input';
@@ -10,26 +10,44 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(todo.text);
   const trimmedEditingText = editingText.trim();
+  // 저장/취소로 입력창이 사라질 때 포커스를 잃지 않도록, 다시 나타나는 수정 버튼으로 포커스를 옮긴다.
+  const shouldFocusEditButtonRef = useRef(false);
 
   const startEditing = () => {
     setEditingText(todo.text);
     setIsEditing(true);
   };
 
+  const finishEditing = () => {
+    shouldFocusEditButtonRef.current = true;
+    setIsEditing(false);
+  };
+
   const cancelEditing = () => {
     setEditingText(todo.text);
-    setIsEditing(false);
+    finishEditing();
   };
 
   const saveEditing = () => {
     if (!trimmedEditingText) return;
 
     onEditTodo(todo.id, trimmedEditingText);
-    setIsEditing(false);
+    finishEditing();
+  };
+
+  const focusEditButtonAfterEditing = (button) => {
+    if (!button || !shouldFocusEditButtonRef.current) return;
+
+    button.focus();
+    shouldFocusEditButtonRef.current = false;
   };
 
   const handleEditKeyDown = (event) => {
-    if (isEnterKey(event)) saveEditing();
+    if (isEnterKey(event)) {
+      // 기본 동작을 막지 않으면, 같은 Enter가 포커스를 받은 수정 버튼까지 눌러 다시 수정 모드가 된다.
+      event.preventDefault();
+      saveEditing();
+    }
     if (event.key === 'Escape') cancelEditing();
   };
 
@@ -66,6 +84,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
         ) : (
           <>
             <Button
+              ref={focusEditButtonAfterEditing}
               variant="secondary"
               onClick={startEditing}
               aria-label={`"${todo.text}" 수정하기`}
