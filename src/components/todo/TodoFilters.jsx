@@ -1,10 +1,10 @@
-import Button from '../common/Button.jsx'
+import Button from '../common/Button.jsx';
 
 const filters = [
   { value: 'all', label: '전체 보기' },
   { value: 'active', label: '진행 중' },
   { value: 'completed', label: '완료됨' },
-]
+];
 
 function TodoFilters({ activeFilter, onFilterChange }) {
   return (
@@ -20,7 +20,7 @@ function TodoFilters({ activeFilter, onFilterChange }) {
         </Button>
       ))}
     </div>
-  )
+  );
 }
 
-export default TodoFilters
+export default TodoFilters;

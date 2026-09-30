@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import Button from '../common/Button.jsx'
-import Input from '../common/Input.jsx'
+import { useState } from 'react';
+import Button from '../common/Button.jsx';
+import Input from '../common/Input.jsx';
 
 function TodoForm({ onAddTodo }) {
-  const [title, setTitle] = useState('')
-  const trimmedTitle = title.trim()
+  const [title, setTitle] = useState('');
+  const trimmedTitle = title.trim();
 
   function handleSubmit(event) {
-    event.preventDefault()
-    if (!trimmedTitle) return
+    event.preventDefault();
+    if (!trimmedTitle) return;
 
-    onAddTodo(trimmedTitle)
-    setTitle('')
+    onAddTodo(trimmedTitle);
+    setTitle('');
   }
 
   function handleKeyDown(event) {
@@ -19,7 +19,7 @@ function TodoForm({ onAddTodo }) {
       event.key === 'Enter' &&
       (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229)
     ) {
-      event.preventDefault()
+      event.preventDefault();
     }
   }
 
@@ -40,7 +40,7 @@ function TodoForm({ onAddTodo }) {
         추가
       </Button>
     </form>
-  )
+  );
 }
 
-export default TodoForm
+export default TodoForm;

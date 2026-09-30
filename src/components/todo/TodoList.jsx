@@ -1,5 +1,5 @@
-import Text from '../common/Text.jsx'
-import TodoItem from './TodoItem.jsx'
+import Text from '../common/Text.jsx';
+import TodoItem from './TodoItem.jsx';
 
 function TodoList({ todos, emptyMessage, onToggleTodo, onUpdateTodo, onDeleteTodo }) {
   if (todos.length === 0) {
@@ -7,7 +7,7 @@ function TodoList({ todos, emptyMessage, onToggleTodo, onUpdateTodo, onDeleteTod
       <Text as="p" variant="empty" role="status">
         {emptyMessage}
       </Text>
-    )
+    );
   }
 
   return (
@@ -22,7 +22,7 @@ function TodoList({ todos, emptyMessage, onToggleTodo, onUpdateTodo, onDeleteTod
         />
       ))}
     </ul>
-  )
+  );
 }
 
-export default TodoList
+export default TodoList;

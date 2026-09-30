@@ -1,9 +1,9 @@
-import Button from '../components/common/Button.jsx'
-import Text from '../components/common/Text.jsx'
-import TodoList from '../components/todo/TodoList.jsx'
+import Button from '../components/common/Button.jsx';
+import Text from '../components/common/Text.jsx';
+import TodoList from '../components/todo/TodoList.jsx';
 
 function CompletedPage({ todos, onToggleTodo, onUpdateTodo, onDeleteTodo, onBack }) {
-  const completedTodos = todos.filter((todo) => todo.completed)
+  const completedTodos = todos.filter((todo) => todo.completed);
 
   return (
     <main className="app-shell">
@@ -28,7 +28,7 @@ function CompletedPage({ todos, onToggleTodo, onUpdateTodo, onDeleteTodo, onBack
         onDeleteTodo={onDeleteTodo}
       />
     </main>
-  )
+  );
 }
 
-export default CompletedPage
+export default CompletedPage;

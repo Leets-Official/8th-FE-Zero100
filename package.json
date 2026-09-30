@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,9 +19,12 @@
     "@eslint/js": "latest",
     "@vitejs/plugin-react": "^6.1.1",
     "eslint": "latest",
+    "eslint-config-prettier": "10.1.8",
     "eslint-plugin-react-hooks": "latest",
     "eslint-plugin-react-refresh": "latest",
+    "eslint-plugin-unused-imports": "4.4.1",
     "globals": "latest",
+    "prettier": "3.9.6",
     "vite": "^8.3.0"
   }
 }
