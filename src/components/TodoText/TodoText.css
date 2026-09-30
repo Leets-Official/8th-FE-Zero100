@@ -5,6 +5,7 @@
   font-size: 20px;
   line-height: 26.4px;
   letter-spacing: 0;
+  cursor: pointer;
 }
 
 .todo-text--completed {

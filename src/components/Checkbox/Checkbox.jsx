@@ -1,8 +1,9 @@
 import './Checkbox.css';
 
-function Checkbox({ checked, onChange, label, disabled = false, readOnly = false }) {
+function Checkbox({ id, checked, onChange, label, disabled = false, readOnly = false }) {
   return (
     <input
+      id={id}
       className="todo-checkbox"
       type="checkbox"
       checked={checked}

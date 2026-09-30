@@ -69,12 +69,15 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
         <>
           <div className="todo-item__content">
             <Checkbox
+              id={`todo-${todo.id}`}
               label={`${todo.text} 완료`}
               checked={todo.completed}
               onChange={() => onToggle(todo.id)}
             />
 
-            <TodoText completed={todo.completed}>{todo.text}</TodoText>
+            <TodoText htmlFor={`todo-${todo.id}`} completed={todo.completed}>
+              {todo.text}
+            </TodoText>
           </div>
 
           <div className="todo-item__actions" role="group" aria-label={`${todo.text} 관리`}>
