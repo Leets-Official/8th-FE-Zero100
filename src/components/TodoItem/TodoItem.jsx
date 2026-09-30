@@ -32,7 +32,13 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
   return (
     <li className="todo-item">
       {isEditing ? (
-        <form onSubmit={handleSave}>
+        <form
+          onSubmit={handleSave}
+          onKeyDown={(event) => {
+            if (event.nativeEvent.isComposing) return;
+            if (event.key === 'Escape') handleCancel();
+          }}
+        >
           <div className="todo-item__content">
             <Checkbox
               label={`${todo.text} 완료`}
