@@ -11,6 +11,7 @@ const initialTodos = [
 function App() {
   const [todos, setTodos] = useState(initialTodos);
   const [showCompletedPage, setShowCompletedPage] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
 
   function addTodo(title) {
     setTodos((currentTodos) => [
@@ -50,7 +51,12 @@ function App() {
       {showCompletedPage ? (
         <CompletedPage {...sharedTodoProps} onBack={() => setShowCompletedPage(false)} />
       ) : (
-        <TodoPage {...sharedTodoProps} onViewCompleted={() => setShowCompletedPage(true)} />
+        <TodoPage
+          {...sharedTodoProps}
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+          onViewCompleted={() => setShowCompletedPage(true)}
+        />
       )}
     </div>
   );

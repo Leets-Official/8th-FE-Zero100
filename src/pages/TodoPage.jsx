@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Button from '../components/common/Button.jsx';
 import Text from '../components/common/Text.jsx';
 import TodoFilters from '../components/todo/TodoFilters.jsx';
@@ -11,8 +10,16 @@ const emptyMessages = {
   completed: '완료된 할 일이 없어요.',
 };
 
-function TodoPage({ todos, onAddTodo, onToggleTodo, onUpdateTodo, onDeleteTodo, onViewCompleted }) {
-  const [activeFilter, setActiveFilter] = useState('all');
+function TodoPage({
+  todos,
+  activeFilter,
+  onFilterChange,
+  onAddTodo,
+  onToggleTodo,
+  onUpdateTodo,
+  onDeleteTodo,
+  onViewCompleted,
+}) {
   const remainingCount = todos.filter((todo) => !todo.completed).length;
   const visibleTodos = todos.filter((todo) => {
     if (activeFilter === 'active') return !todo.completed;
@@ -44,7 +51,7 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onUpdateTodo, onDeleteTodo, 
 
       <TodoForm onAddTodo={onAddTodo} />
 
-      <TodoFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
+      <TodoFilters activeFilter={activeFilter} onFilterChange={onFilterChange} />
 
       <Text as="p" variant="count" aria-live="polite">
         남은 할 일 {remainingCount}개

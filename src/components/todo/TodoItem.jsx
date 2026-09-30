@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../common/Button.jsx';
 import Checkbox from '../common/Checkbox.jsx';
 import Input from '../common/Input.jsx';
@@ -7,7 +7,16 @@ import Text from '../common/Text.jsx';
 function TodoItem({ todo, onToggle, onUpdate, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(todo.title);
+  const editButtonRef = useRef(null);
+  const shouldRestoreFocusRef = useRef(false);
   const trimmedTitle = draftTitle.trim();
+
+  useEffect(() => {
+    if (!isEditing && shouldRestoreFocusRef.current) {
+      editButtonRef.current?.focus();
+      shouldRestoreFocusRef.current = false;
+    }
+  }, [isEditing]);
 
   function startEditing() {
     setDraftTitle(todo.title);
@@ -16,6 +25,7 @@ function TodoItem({ todo, onToggle, onUpdate, onDelete }) {
 
   function cancelEditing() {
     setDraftTitle(todo.title);
+    shouldRestoreFocusRef.current = true;
     setIsEditing(false);
   }
 
@@ -24,6 +34,7 @@ function TodoItem({ todo, onToggle, onUpdate, onDelete }) {
     if (!trimmedTitle) return;
 
     onUpdate(trimmedTitle);
+    shouldRestoreFocusRef.current = true;
     setIsEditing(false);
   }
 
@@ -62,7 +73,7 @@ function TodoItem({ todo, onToggle, onUpdate, onDelete }) {
         </form>
       ) : (
         <>
-          <div className="todo-card__main">
+          <label className="todo-card__main">
             <Checkbox
               checked={todo.completed}
               onChange={onToggle}
@@ -75,9 +86,9 @@ function TodoItem({ todo, onToggle, onUpdate, onDelete }) {
             >
               {todo.title}
             </Text>
-          </div>
+          </label>
           <div className="todo-actions">
-            <Button onClick={startEditing} aria-label={`${todo.title} 수정`}>
+            <Button ref={editButtonRef} onClick={startEditing} aria-label={`${todo.title} 수정`}>
               수정
             </Button>
             <Button variant="danger" onClick={onDelete} aria-label={`${todo.title} 삭제`}>
