@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router';
 import { twMerge } from 'tailwind-merge';
 import Button from '../components/Button.jsx';
 import PageHeader from '../components/PageHeader.jsx';
@@ -36,12 +37,34 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
 
   return (
     <PageLayout>
-      <PageHeader
-        title="TodoMatic"
-        navLabel="완료 목록 →"
-        navTo="/completed"
-        subtitle="할 일을 입력하세요"
-      />
+      <PageHeader title="TodoMatic" navLabel="완료 목록 →" navTo="/completed" />
+      {/* content-box: 높이 32.5px + 하단 border 1.5px = 34px. 메뉴의 2px border는 회색 선 바로 위에 붙는다. */}
+      <nav
+        className={twMerge(
+          'flex flex-row items-start gap-[24px] w-[520px] h-[32.5px] border-0 border-b-[1.5px] border-solid border-[#e5e5e5]',
+        )}
+      >
+        <NavLink
+          className={({ isActive }) =>
+            twMerge(
+              'box-border flex items-center justify-center w-[63px] h-[32.5px] border-0 border-b-2 border-solid border-transparent font-[family-name:var(--font-family-base)] font-semibold text-[14.08px] leading-[21.12px] tracking-[0px] text-[#888888] no-underline whitespace-nowrap',
+              isActive && 'border-[color:var(--color-primary)] text-[color:var(--color-primary)]',
+            )
+          }
+          to="/"
+          end
+        >
+          할 일 목록
+        </NavLink>
+        {/* 통계 route가 아직 없어 링크 없이 메뉴만 표시한다. */}
+        <span
+          className={twMerge(
+            'box-border flex items-center justify-center w-[30px] h-[32.5px] border-0 border-b-2 border-solid border-transparent font-[family-name:var(--font-family-base)] font-semibold text-[14.08px] leading-[21.12px] tracking-[0px] text-[#888888] whitespace-nowrap',
+          )}
+        >
+          통계
+        </span>
+      </nav>
       <div className={twMerge('flex flex-col self-stretch gap-[8px]')}>
         <form className={twMerge('flex flex-row gap-[8px] w-max')} onSubmit={handleAddTodo}>
           <input
