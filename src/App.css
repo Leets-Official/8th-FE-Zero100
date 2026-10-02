@@ -1,0 +1,103 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 60px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.todo-app {
+  width: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.logo-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #111111;
+  line-height: 1;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 520px;
+  height: 44.8px;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-heading {
+  font-size: 20px;
+  font-weight: 500;
+  color: #222222;
+}
+
+.todo-list-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todo-card {
+  width: 520px;
+  padding: 16px 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.todo-card-top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-input-wrapper {
+  width: 100%;
+  padding-right: 8px;
+}
+
+.todo-card-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 30px;
+}

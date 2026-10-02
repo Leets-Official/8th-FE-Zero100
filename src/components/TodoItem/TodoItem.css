@@ -1,0 +1,25 @@
+.todo-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+.todo-card-top {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-input-wrapper {
+  width: 100%;
+}
+
+.todo-card-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
