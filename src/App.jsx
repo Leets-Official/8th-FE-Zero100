@@ -3,6 +3,7 @@ import Text from './components/Text';
 import Button from './components/Button';
 import Checkbox from './components/Checkbox';
 import Input from './components/Input';
+import FilterButtons from './components/todo/FilterButtons';
 import './App.css'
 
 function App() {
@@ -66,11 +67,7 @@ function App() {
       <p className="midText">할 일을 입력하세요</p>
       <Input newWork={addWork} />
 
-      <div className="displayRow">
-        <Button variant={displayWork === 'total' ? 'primary' : 'default'} onClick={() => setDisplayWork('total')}>전체보기</Button>
-        <Button variant={displayWork === 'inProgress' ? 'primary' : 'default'} onClick={() => setDisplayWork('inProgress')}>진행 중</Button>
-        <Button variant={displayWork === 'completed' ? 'primary' : 'default'} onClick={() => setDisplayWork('completed')}>완료됨</Button>
-      </div>
+      <FilterButtons filter={displayWork} onChange={setDisplayWork}/>
 
       <p className="midText">남은 할 일 {work.filter((task) => task.done === false).length}개</p>
 
