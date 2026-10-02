@@ -5,9 +5,10 @@ function Input(props) {
     const [inputValue, setInputValue] = useState('');
 
     const addWork = () => {
-        props.newWork(inputValue);
+        if (inputValue.trim() === '') return;
+        props.newWork(inputValue.trim());
         setInputValue('');
-    }
+    };
 
     return (
         <div className={styles.wrap}>
