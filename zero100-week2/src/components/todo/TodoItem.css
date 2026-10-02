@@ -1,0 +1,38 @@
+.todo-item {
+  border: 1px solid #e5e5eb;
+  border-radius: 8px;
+  padding: 18px;
+  box-shadow: 0 1px 3px #17171706;
+}
+
+.todo-item--completed .checkbox-field label {
+  color: #777780;
+  text-decoration: line-through;
+}
+
+.item-actions {
+  display: flex;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.item-actions--indented {
+  margin-left: 33px;
+}
+
+.item-actions .button {
+  min-height: 43px;
+  padding: 9px 22px;
+}
+
+.edit-label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+  .todo-item {
+    padding: 15px;
+  }
+}

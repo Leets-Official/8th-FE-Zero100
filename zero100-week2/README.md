@@ -27,7 +27,7 @@ npm run preview
 - [x] 작업 삭제
 - [x] 작업 편집, 저장, 취소 및 Escape 취소
 - [x] 전체보기 / 진행 중 / 완료됨 필터
-- [x] 남은 할 일 개수 표시
+- [x] 선택한 필터에 해당하는 할 일 개수 표시
 - [x] Text / Button / Checkbox / Input 공통 컴포넌트
 - [x] 기능별 컴포넌트 분리 및 상태에 따른 동적 스타일
 - [x] 공백 입력 검증, 빈 목록 안내, 모바일 대응
@@ -41,7 +41,7 @@ App.jsx는 공통 Text와 기능별 컴포넌트를 호출합니다. Button, Che
 - `src/components/commons/`: Text, Button, Checkbox, Input
 - `src/components/todo/`: TodoForm, TodoFilters, TodoList, TodoItem
 - `src/constants/todos.js`: 초기 예시 데이터와 필터 설정
-- `src/styles/global.css`: 공통 스타일과 반응형 스타일
+- `src/styles/global.css`: 전역 및 공통 스타일 (Todo별 스타일은 각 컴포넌트 옆 CSS에 배치)
 - `docs/PR_DESCRIPTION.md`: PR 제목과 본문
 - `docs/SUBMISSION.md`: 파일 복사 및 제출 방법
 

@@ -9,43 +9,29 @@
   --primary: #4f39e8;
   --border: #dedee5;
 }
+
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   min-width: 320px;
 }
+
 button,
 input {
   font: inherit;
 }
+
 button {
   cursor: pointer;
 }
+
 .text {
   margin: 0;
 }
-.app {
-  width: min(100% - 40px, 680px);
-  margin: 64px auto;
-}
-.app-title {
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  margin-bottom: 30px;
-}
-.form-label {
-  display: block;
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-.input-row {
-  display: flex;
-  gap: 10px;
-}
+
 .input {
   min-width: 0;
   width: 100%;
@@ -56,12 +42,15 @@ button {
   background: #fff;
   color: inherit;
 }
+
 .input::placeholder {
   color: #777780;
 }
+
 .input[aria-invalid='true'] {
   border-color: #bd2146;
 }
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -76,58 +65,42 @@ button {
   line-height: 1.4;
   transition: background-color 120ms ease;
 }
+
 .button:hover {
   background: #f4f4f8;
 }
+
 .button--primary {
   background: var(--primary);
   border-color: var(--primary);
   color: white;
 }
+
 .button--primary:hover {
   background: #3d28c8;
   border-color: #3d28c8;
 }
+
 .button--danger {
   color: #c52c50;
   border-color: #e8c9d0;
 }
+
 .button--danger:hover {
   background: #fff1f4;
 }
+
 :where(button, input):focus-visible {
   outline: 3px solid #b7a9ff;
   outline-offset: 3px;
 }
-.filters {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-  margin-bottom: 32px;
-}
-.remaining-count {
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-.todo-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 12px;
-}
-.todo-item {
-  border: 1px solid #e5e5eb;
-  border-radius: 8px;
-  padding: 18px;
-  box-shadow: 0 1px 3px #17171706;
-}
+
 .checkbox-field {
   display: flex;
   align-items: flex-start;
   gap: 12px;
 }
+
 .checkbox-field input {
   width: 21px;
   height: 21px;
@@ -136,62 +109,16 @@ button {
   flex-shrink: 0;
   cursor: pointer;
 }
+
 .checkbox-field label {
   font-size: 17px;
   line-height: 1.5;
   overflow-wrap: anywhere;
   cursor: pointer;
 }
-.todo-item--completed .checkbox-field label {
-  color: #777780;
-  text-decoration: line-through;
-}
-.item-actions {
-  display: flex;
-  gap: 9px;
-  margin-top: 12px;
-}
-.item-actions--indented {
-  margin-left: 33px;
-}
-.item-actions .button {
-  min-height: 43px;
-  padding: 9px 22px;
-}
-.edit-label {
-  display: block;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
+
 .error {
   color: #bd2146;
   font-size: 14px;
   margin-top: 9px;
-}
-.empty-message {
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  padding: 30px 20px;
-  text-align: center;
-  color: #666674;
-  line-height: 1.7;
-}
-@media (max-width: 480px) {
-  .app {
-    width: calc(100% - 32px);
-    margin: 32px auto;
-  }
-  .app-title {
-    font-size: 36px;
-  }
-  .filters {
-    gap: 8px;
-  }
-  .filters .button {
-    flex: 1;
-    padding: 11px 8px;
-  }
-  .todo-item {
-    padding: 15px;
-  }
 }

@@ -1,3 +1,3 @@
-export default function Input({ className = '', ...props }) {
-  return <input type="text" className={`input ${className}`} {...props} />;
+export default function Input({ type = 'text', className = '', ...props }) {
+  return <input type={type} className={`input ${className}`} {...props} />;
 }

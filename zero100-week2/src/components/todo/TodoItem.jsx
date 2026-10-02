@@ -1,3 +1,4 @@
+import './TodoItem.css';
 import { useRef, useState } from 'react';
 import Button from '../commons/Button';
 import Checkbox from '../commons/Checkbox';

@@ -1,0 +1,16 @@
+.todo-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.empty-message {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 30px 20px;
+  text-align: center;
+  color: #666674;
+  line-height: 1.7;
+}

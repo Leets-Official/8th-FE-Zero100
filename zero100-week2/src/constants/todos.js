@@ -16,3 +16,9 @@ export const EMPTY_MESSAGES = {
   active: '진행 중인 할 일이 없어요. 모두 완료했어요!',
   completed: '아직 완료한 할 일이 없어요. 체크박스를 눌러 완료해 보세요.',
 };
+
+export const COUNT_LABELS = {
+  all: '전체 할 일',
+  active: '진행 중인 할 일',
+  completed: '완료된 할 일',
+};

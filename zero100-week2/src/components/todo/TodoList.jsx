@@ -1,3 +1,4 @@
+import './TodoList.css';
 import Text from '../commons/Text';
 import TodoItem from './TodoItem';
 import { EMPTY_MESSAGES } from '../../constants/todos';

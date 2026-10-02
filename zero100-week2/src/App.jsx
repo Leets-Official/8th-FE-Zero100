@@ -3,7 +3,8 @@ import Text from './components/commons/Text';
 import TodoForm from './components/todo/TodoForm';
 import TodoFilters from './components/todo/TodoFilters';
 import TodoList from './components/todo/TodoList';
-import { INITIAL_TODOS } from './constants/todos';
+import './App.css';
+import { COUNT_LABELS, INITIAL_TODOS } from './constants/todos';
 
 export default function App() {
   const [todos, setTodos] = useState(INITIAL_TODOS);
@@ -30,7 +31,6 @@ export default function App() {
     setTodos((previous) => previous.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
   }
 
-  const remainingCount = todos.filter((todo) => !todo.completed).length;
   const visibleTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
@@ -44,9 +44,9 @@ export default function App() {
       </Text>
       <TodoForm onAdd={addTodo} />
       <TodoFilters filter={filter} onFilterChange={setFilter} />
-      <section aria-labelledby="remaining-heading">
-        <Text as="h2" id="remaining-heading" className="remaining-count" aria-live="polite">
-          남은 할 일 {remainingCount}개
+      <section aria-labelledby="todo-count-heading">
+        <Text as="h2" id="todo-count-heading" className="todo-count" aria-live="polite">
+          {COUNT_LABELS[filter]} {visibleTodos.length}개
         </Text>
         <TodoList
           todos={visibleTodos}

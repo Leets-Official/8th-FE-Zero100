@@ -1,3 +1,4 @@
+import './TodoFilters.css';
 import Button from '../commons/Button';
 import { FILTERS } from '../../constants/todos';
 
