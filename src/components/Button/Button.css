@@ -1,0 +1,54 @@
+.todo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+  padding: 10px 22px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21.6px;
+  cursor: pointer;
+}
+
+.todo-button--primary {
+  color: #ffffff;
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.todo-button--primary:hover:not(:disabled) {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
+}
+
+.todo-button--secondary {
+  color: #555555;
+  background-color: #ffffff;
+  border-color: #dddddd;
+}
+
+.todo-button--secondary:hover:not(:disabled) {
+  background-color: #f5f5f5;
+}
+
+.todo-button--danger {
+  color: #dc2626;
+  background-color: #ffffff;
+  border-color: #fca5a5;
+}
+
+.todo-button--danger:hover:not(:disabled) {
+  background-color: #fff1f1;
+}
+
+.todo-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.todo-button:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 0;
+}
