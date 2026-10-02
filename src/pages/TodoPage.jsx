@@ -39,9 +39,13 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
       ? {
           variant: 'primary',
           className:
-            'font-[family-name:var(--font-family-base)] font-semibold text-[14.4px] leading-[21.6px] tracking-[0px] text-center',
+            'font-[family-name:var(--font-family-base)] font-bold text-[14.4px] leading-[21.6px] tracking-[0px] text-center',
         }
-      : { variant: 'secondary' };
+      : {
+          variant: 'secondary',
+          className:
+            'font-[family-name:var(--font-family-base)] font-bold text-[14.4px] leading-[21.6px] tracking-[0px] text-center text-[#555555]',
+        };
 
   const getTabClassName = (tab, widthClassName) =>
     twMerge(

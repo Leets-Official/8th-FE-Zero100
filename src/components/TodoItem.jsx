@@ -3,8 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import Button from './Button.jsx';
 import Checkbox from './Checkbox.jsx';
 
-function TodoItem({ todo, onToggle, onEdit, onDelete }) {
-  const [isEditing, setIsEditing] = useState(false);
+function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit, onDelete }) {
   const [editValue, setEditValue] = useState('');
 
   const titleStateClassName = todo.completed
@@ -13,7 +12,7 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
 
   const handleStartEdit = () => {
     setEditValue(todo.title);
-    setIsEditing(true);
+    onStartEdit();
   };
 
   const handleSaveEdit = (event) => {
@@ -23,12 +22,12 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
     if (!title) return;
 
     onEdit(todo.id, title);
-    setIsEditing(false);
+    onEndEdit();
   };
 
   const handleCancelEdit = () => {
     setEditValue(todo.title);
-    setIsEditing(false);
+    onEndEdit();
   };
 
   // 수정 모드에서는 입력창과 저장/취소 버튼을 하나의 form으로 묶어 저장을 onSubmit으로 처리한다.
@@ -39,6 +38,7 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
     <li
       className={twMerge(
         'box-border flex flex-col gap-[8px] w-[520px] py-[14px] px-[16px] border-[1px] border-solid border-[#eeeeee] rounded-[8px] bg-[#ffffff]',
+        isEditing && 'gap-[6px] p-[12px] mb-[112px] last:mb-0',
       )}
     >
       <ContentWrapper
@@ -60,6 +60,9 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
           </Checkbox>
           {isEditing && (
             <input
+              className={twMerge(
+                'box-border flex-[1_1_0] min-w-0 h-[36.8px] py-[6px] px-[8px] m-0 border-[1px] border-solid border-[color:var(--color-primary)] shadow-[0_0_0_0.25px_var(--color-primary)] rounded-[4px] bg-[#ffffff] font-[family-name:var(--font-family-base)] font-medium text-[16px] leading-[22.8px] tracking-[0px] text-[color:var(--color-text-primary)] outline-none',
+              )}
               type="text"
               value={editValue}
               onChange={(event) => setEditValue(event.target.value)}
@@ -99,13 +102,16 @@ function TodoItem({ todo, onToggle, onEdit, onDelete }) {
               수정
             </Button>
           )}
-          <Button
-            variant="danger"
-            className="inline-flex items-center justify-center min-w-[74px] h-[44px] px-[20px] py-[0px] font-[family-name:var(--font-family-base)] font-semibold text-[16px] leading-none tracking-[0]"
-            onClick={() => onDelete(todo.id)}
-          >
-            삭제
-          </Button>
+
+          {!isEditing && (
+            <Button
+              variant="danger"
+              className="inline-flex items-center justify-center min-w-[74px] h-[44px] px-[20px] py-[0px] font-[family-name:var(--font-family-base)] font-semibold text-[16px] leading-none tracking-[0]"
+              onClick={() => onDelete(todo.id)}
+            >
+              삭제
+            </Button>
+          )}
         </div>
       </ContentWrapper>
     </li>
