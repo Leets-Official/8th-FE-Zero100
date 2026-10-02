@@ -1,0 +1,10 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.empty {
+  padding: 32px 0;
+  text-align: center;
+}
