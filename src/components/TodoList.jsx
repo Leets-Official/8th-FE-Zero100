@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import TodoItem from './TodoItem.jsx';
 
-function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
+function TodoList({ title, todos, onToggleTodo, onEditTodo }) {
   const [editingId, setEditingId] = useState(null);
 
   return (
@@ -24,7 +24,6 @@ function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
             onEndEdit={() => setEditingId(null)}
             onToggle={onToggleTodo}
             onEdit={onEditTodo}
-            onDelete={onDeleteTodo}
           />
         ))}
       </ul>

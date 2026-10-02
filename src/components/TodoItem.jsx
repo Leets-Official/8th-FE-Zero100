@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
+import { useModal } from '../contexts/ModalContext.js';
 import Button from './Button.jsx';
 import Checkbox from './Checkbox.jsx';
 
-function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit, onDelete }) {
+function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit }) {
+  const { openModal } = useModal();
   const [editValue, setEditValue] = useState('');
 
   const titleStateClassName = todo.completed
@@ -107,7 +109,7 @@ function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit, o
             <Button
               variant="danger"
               className="inline-flex items-center justify-center min-w-[74px] h-[44px] px-[20px] py-[0px] font-[family-name:var(--font-family-base)] font-semibold text-[16px] leading-none tracking-[0]"
-              onClick={() => onDelete(todo.id)}
+              onClick={() => openModal(todo.id)}
             >
               삭제
             </Button>

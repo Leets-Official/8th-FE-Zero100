@@ -2,7 +2,7 @@ import PageHeader from '../components/PageHeader.jsx';
 import PageLayout from '../components/PageLayout.jsx';
 import TodoList from '../components/TodoList.jsx';
 
-function CompletedTodoPage({ todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
+function CompletedTodoPage({ todos, onToggleTodo, onEditTodo }) {
   const completedTodos = todos.filter((todo) => todo.completed);
 
   return (
@@ -13,7 +13,6 @@ function CompletedTodoPage({ todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
         todos={completedTodos}
         onToggleTodo={onToggleTodo}
         onEditTodo={onEditTodo}
-        onDeleteTodo={onDeleteTodo}
       />
     </PageLayout>
   );

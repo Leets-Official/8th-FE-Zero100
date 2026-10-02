@@ -16,7 +16,7 @@ const TAB_STATISTICS = 'statistics';
 const TAB_BASE_CLASS_NAME =
   'box-border flex items-center justify-center h-[32.5px] m-0 p-0 border-0 border-b-2 border-solid border-transparent bg-transparent font-[family-name:var(--font-family-base)] font-semibold text-[14.08px] leading-[21.12px] tracking-[0px] text-[#888888] whitespace-nowrap cursor-pointer';
 
-function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) {
+function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo }) {
   const [inputValue, setInputValue] = useState('');
   const [filter, setFilter] = useState(FILTER_ALL);
   const [activeTab, setActiveTab] = useState(TAB_TODO);
@@ -118,7 +118,6 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo, onDeleteTodo }) 
             todos={visibleTodos}
             onToggleTodo={onToggleTodo}
             onEditTodo={onEditTodo}
-            onDeleteTodo={onDeleteTodo}
           />
         </>
       )}

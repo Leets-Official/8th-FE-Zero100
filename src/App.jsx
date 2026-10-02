@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
+import DeleteModal from './components/DeleteModal.jsx';
 import CompletedTodoPage from './pages/CompletedTodoPage.jsx';
 import TodoPage from './pages/TodoPage.jsx';
 
@@ -43,31 +44,33 @@ function App() {
   };
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <TodoPage
-            todos={todos}
-            onAddTodo={handleAddTodo}
-            onToggleTodo={handleToggleTodo}
-            onEditTodo={handleEditTodo}
-            onDeleteTodo={handleDeleteTodo}
-          />
-        }
-      />
-      <Route
-        path="/completed"
-        element={
-          <CompletedTodoPage
-            todos={todos}
-            onToggleTodo={handleToggleTodo}
-            onEditTodo={handleEditTodo}
-            onDeleteTodo={handleDeleteTodo}
-          />
-        }
-      />
-    </Routes>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <TodoPage
+              todos={todos}
+              onAddTodo={handleAddTodo}
+              onToggleTodo={handleToggleTodo}
+              onEditTodo={handleEditTodo}
+            />
+          }
+        />
+        <Route
+          path="/completed"
+          element={
+            <CompletedTodoPage
+              todos={todos}
+              onToggleTodo={handleToggleTodo}
+              onEditTodo={handleEditTodo}
+            />
+          }
+        />
+      </Routes>
+
+      <DeleteModal onConfirm={handleDeleteTodo} />
+    </>
   );
 }
 
