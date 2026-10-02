@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import TodoItem from './TodoItem.jsx';
 
-function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
+function TodoList({ title, todos, onToggleTodo, onEditTodo }) {
+  const [editingId, setEditingId] = useState(null);
+
   return (
     <div className={twMerge('flex flex-col self-stretch gap-[8px]')}>
       <h2
@@ -16,9 +19,11 @@ function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
           <TodoItem
             key={todo.id}
             todo={todo}
+            isEditing={todo.id === editingId}
+            onStartEdit={() => setEditingId(todo.id)}
+            onEndEdit={() => setEditingId(null)}
             onToggle={onToggleTodo}
             onEdit={onEditTodo}
-            onDelete={onDeleteTodo}
           />
         ))}
       </ul>
