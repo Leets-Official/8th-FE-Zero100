@@ -5,7 +5,6 @@ function FilterButtons(props) {
         <div className="displayRow">
             <Button variant={props.filter === 'total' ? 'primary' : 'default'} onClick={() => props.onChange('total')}>전체보기</Button>
             <Button variant={props.filter === 'inProgress' ? 'primary' : 'default'} onClick={() => props.onChange('inProgress')}>진행 중</Button>
-            <Button variant={props.filter === 'completed' ? 'primary' : 'default'} onClick={() => props.onChange('completed')}>완료됨</Button>
         </div>
     );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Input from "../components/Input";
 import FilterButtons from "../components/todo/FilterButtons";
 import TodoItem from "../components/todo/TodoItem";
@@ -8,13 +9,13 @@ function HomePage(props) {
 
     const display = props.tasks.filter((task) => {
         if (displayWork === 'inProgress') return task.done === false;
-        if (displayWork === 'completed') return task.done === true;
         return true;
     });
 
     return (
         <div className="app">
             <h1 className="title">TodoMatic</h1>
+            <Link to="/completed">완료 목록 &rarr;</Link>
             <p className="midText">할 일을 입력하세요</p>
             <Input newWork={props.onAdd} />
 

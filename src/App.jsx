@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import CompletedPage from './pages/CompletedPage';
 import './App.css'
 
 function App() {
@@ -46,6 +47,17 @@ function App() {
           <HomePage
             tasks={work}
             onAdd={addWork}
+            onToggle={checkClear}
+            onDelete={deleteWork}
+            onUpdate={updateWork}
+          />
+        }
+      />
+      <Route
+        path="/completed"
+        element={
+          <CompletedPage
+            tasks={work}
             onToggle={checkClear}
             onDelete={deleteWork}
             onUpdate={updateWork}
