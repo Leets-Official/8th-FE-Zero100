@@ -1,9 +1,7 @@
 import { useState } from 'react'
-import Text from './components/Text';
-import Button from './components/Button';
-import Checkbox from './components/Checkbox';
 import Input from './components/Input';
 import FilterButtons from './components/todo/FilterButtons';
+import TodoItem from './components/todo/TodoItem';
 import './App.css'
 
 function App() {
@@ -37,27 +35,9 @@ function App() {
     return true;
   })
 
-  const editWork = (id) => {
+  const updateWork = (id, newText) => {
     setWork(work.map((task) =>
-      task.id === id ? {...task, edit: true, origin: task.text} : task
-    ));
-  };
-
-  const changeText = (id, newText) => {
-    setWork(work.map((task) =>
-      task.id === id ? {...task, text: newText} : task
-    ));
-  };
-
-  const saveEdit = (id) => {
-    setWork(work.map((task) =>
-      task.id === id ? {...task, edit: false, origin: undefined} : task
-    ));
-  };
-
-  const cancelEdit = (id) => {
-    setWork(work.map((task) =>
-      task.id === id ? {...task, edit: false, text: task.origin} : task
+      task.id === id ? { ...task, text: newText } : task
     ));
   };
 
@@ -72,30 +52,13 @@ function App() {
       <p className="midText">남은 할 일 {work.filter((task) => task.done === false).length}개</p>
 
       {display.map((task) => (
-        <div className='taskCard' key={task.id}>
-          <div className='taskCheck'>
-            <Checkbox checked={task.done} onChange={() => checkClear(task.id)} />
-
-            {task.edit ? (
-              <input type="text" value={task.text} onChange={(event) => changeText(task.id, event.target.value)} />
-            ) : (
-              <Text done={task.done}>{task.text}</Text>
-            )}
-          </div>
-          <div className='taskButtons'>
-            {task.edit ? (
-              <>
-                <Button onClick={() => saveEdit(task.id)}>저장</Button>
-                <Button onClick={() => cancelEdit(task.id)}>취소</Button>
-              </>
-            ) : (
-              <>
-                <Button onClick={() => editWork(task.id)}>수정</Button>
-                <Button variant="delete" onClick={() => deleteWork(task.id)}>삭제</Button>
-              </>
-            )}
-          </div>
-        </div>
+        <TodoItem
+          key={task.id}
+          task={task}
+          onToggle={checkClear}
+          onDelete={deleteWork}
+          onUpdate={updateWork}
+        />
       ))}
     </div>
   );
