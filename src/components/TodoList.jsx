@@ -5,11 +5,6 @@ import TodoItem from './TodoItem.jsx';
 function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
   const [editingId, setEditingId] = useState(null);
 
-  const editingTodo = todos.find((todo) => todo.id === editingId);
-  const orderedTodos = editingTodo
-    ? [editingTodo, ...todos.filter((todo) => todo.id !== editingId)]
-    : todos;
-
   return (
     <div className={twMerge('flex flex-col self-stretch gap-[8px]')}>
       <h2
@@ -20,7 +15,7 @@ function TodoList({ title, todos, onToggleTodo, onEditTodo, onDeleteTodo }) {
         {title}
       </h2>
       <ul className={twMerge('flex flex-col gap-[8px] w-max m-0 p-0 list-none')}>
-        {orderedTodos.map((todo) => (
+        {todos.map((todo) => (
           <TodoItem
             key={todo.id}
             todo={todo}
