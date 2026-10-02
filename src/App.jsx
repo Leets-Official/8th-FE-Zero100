@@ -1,17 +1,22 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Input from './components/Input';
 import FilterButtons from './components/todo/FilterButtons';
 import TodoItem from './components/todo/TodoItem';
 import './App.css'
 
 function App() {
-  const [work, setWork] = useState([]);
-  const [addId, setAddId] = useState(1);
+  const [work, setWork] = useState(() => {
+    const saved = localStorage.getItem('tasks');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [displayWork, setDisplayWork] = useState('total');
 
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(work));
+  }, [work]);
+
   const addWork = (text) => {
-    setWork([...work, {id: addId, text, done: false}]);
-    setAddId(addId + 1);
+    setWork([...work, { id: crypto.randomUUID(), text, done: false }]);
   };
 
   const checkClear = (id) => {
