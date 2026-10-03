@@ -1,8 +1,10 @@
 import Button from '../components/common/Button.jsx';
 import Text from '../components/common/Text.jsx';
 import TodoList from '../components/todo/TodoList.jsx';
+import { useTodos } from '../hooks/useTodos.js';
 
-function CompletedPage({ todos, onToggleTodo, onUpdateTodo, onDeleteTodo, onBack }) {
+function CompletedPage({ onBack }) {
+  const { todos } = useTodos();
   const completedTodos = todos.filter((todo) => todo.completed);
 
   return (
@@ -20,13 +22,7 @@ function CompletedPage({ todos, onToggleTodo, onUpdateTodo, onDeleteTodo, onBack
         완료된 작업 목록
       </Text>
 
-      <TodoList
-        todos={completedTodos}
-        emptyMessage="아직 완료한 할 일이 없어요."
-        onToggleTodo={onToggleTodo}
-        onUpdateTodo={onUpdateTodo}
-        onDeleteTodo={onDeleteTodo}
-      />
+      <TodoList todos={completedTodos} emptyMessage="아직 완료한 할 일이 없어요." />
     </main>
   );
 }

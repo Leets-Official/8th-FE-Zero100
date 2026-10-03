@@ -1,7 +1,10 @@
+import { useTodos } from '../../hooks/useTodos.js';
 import Text from '../common/Text.jsx';
 import TodoItem from './TodoItem.jsx';
 
-function TodoList({ todos, emptyMessage, onToggleTodo, onUpdateTodo, onDeleteTodo }) {
+function TodoList({ todos, emptyMessage }) {
+  const { toggleTodo, updateTodo, deleteTodo } = useTodos();
+
   if (todos.length === 0) {
     return (
       <Text as="p" variant="empty" role="status">
@@ -16,9 +19,9 @@ function TodoList({ todos, emptyMessage, onToggleTodo, onUpdateTodo, onDeleteTod
         <TodoItem
           key={todo.id}
           todo={todo}
-          onToggle={() => onToggleTodo(todo.id)}
-          onUpdate={(title) => onUpdateTodo(todo.id, title)}
-          onDelete={() => onDeleteTodo(todo.id)}
+          onToggle={() => toggleTodo(todo.id)}
+          onUpdate={(title) => updateTodo(todo.id, title)}
+          onDelete={() => deleteTodo(todo.id)}
         />
       ))}
     </ul>
