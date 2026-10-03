@@ -41,7 +41,8 @@ button {
 }
 
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+a:focus-visible {
   outline: 3px solid rgb(89 69 232 / 24%);
   outline-offset: 2px;
 }
@@ -229,6 +230,9 @@ input:focus-visible {
 }
 
 .text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   min-height: 28px;
   padding: 2px 0;
   color: var(--color-accent);
