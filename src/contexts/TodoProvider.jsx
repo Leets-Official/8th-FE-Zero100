@@ -1,14 +1,9 @@
 import { useState } from 'react';
+import { usePersistentTodos } from '../hooks/usePersistentTodos.js';
 import { TodoContext } from './TodoContext.js';
 
-const initialTodos = [
-  { id: 'todo-1', title: '밥 먹기', completed: false },
-  { id: 'todo-2', title: '코드 공부하기', completed: true },
-  { id: 'todo-3', title: '잠자기', completed: false },
-];
-
 function TodoProvider({ children }) {
-  const [todos, setTodos] = useState(initialTodos);
+  const [todos, setTodos] = usePersistentTodos();
   const [activeFilter, setActiveFilter] = useState('all');
 
   function addTodo(title) {
