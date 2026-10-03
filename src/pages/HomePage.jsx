@@ -4,6 +4,7 @@ import FilterButtons from '../components/todo/FilterButtons';
 import TodoItem from '../components/todo/TodoItem';
 import TodoStats from '../components/todo/TodoStats';
 import PageHeader from '../components/PageHeader';
+import TabMenu from '../components/TabMenu';
 
 function HomePage(props) {
   const [tab, setTab] = useState('list');
@@ -16,13 +17,6 @@ function HomePage(props) {
 
   const remainingCount = props.tasks.filter((task) => task.done === false).length;
 
-  const tabMenu = (
-    <div>
-      <button onClick={() => setTab('list')}>할 일 목록</button>
-      <button onClick={() => setTab('stats')}>통계</button>
-    </div>
-  );
-
   return (
     <main className="mx-auto flex max-w-[536px] flex-col gap-6 p-2">
       <PageHeader title="TodoMatic" linkTo="/completed" linkText="완료 목록 &rarr;" />
@@ -30,7 +24,7 @@ function HomePage(props) {
       {tab === 'list' ? (
         <>
           <section className="flex flex-col gap-2">
-            {tabMenu}
+            <TabMenu current={tab} onChange={setTab} />
             <Input newWork={props.onAdd} />
             <FilterButtons filter={displayWork} onChange={setDisplayWork} />
           </section>
@@ -54,7 +48,7 @@ function HomePage(props) {
         </>
       ) : (
         <section className="flex flex-col gap-2">
-          {tabMenu}
+          <TabMenu current={tab} onChange={setTab} />
           <TodoStats tasks={props.tasks} />
         </section>
       )}
