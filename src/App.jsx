@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CompletedPage from './pages/CompletedPage';
-import './App.css'
+import './App.css';
 
 function App() {
   const [work, setWork] = useState(() => {
@@ -21,22 +21,20 @@ function App() {
   const checkClear = (id) => {
     const newWork = work.map((task) => {
       if (task.id === id) {
-        return {...task, done: !task.done};
+        return { ...task, done: !task.done };
       } else {
         return task;
       }
     });
     setWork(newWork);
-  }
+  };
 
   const deleteWork = (id) => {
     setWork(work.filter((task) => task.id !== id));
   };
 
   const updateWork = (id, newText) => {
-    setWork(work.map((task) =>
-      task.id === id ? { ...task, text: newText } : task
-    ));
+    setWork(work.map((task) => (task.id === id ? { ...task, text: newText } : task)));
   };
 
   return (
