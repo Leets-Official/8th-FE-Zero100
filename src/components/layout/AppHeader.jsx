@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { useTodos } from '../../hooks/useTodos.js';
 import Text from '../common/Text.jsx';
 
@@ -33,6 +33,12 @@ function AppHeader({ title = 'TodoMatic', subtitle, isCompletedPage = false }) {
           </Link>
         )}
       </header>
+      <nav className="page-tabs" aria-label="화면 선택">
+        <NavLink to="/" end>
+          할 일 목록
+        </NavLink>
+        <NavLink to="/statistics">통계</NavLink>
+      </nav>
     </>
   );
 }
