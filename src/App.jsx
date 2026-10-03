@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CompletedPage from './pages/CompletedPage';
-import './App.css';
 
 function App() {
   const [work, setWork] = useState(() => {
