@@ -23,17 +23,24 @@ function TodoItem(props) {
   };
 
   return (
-    <div className="taskCard">
-      <div className="taskCheck">
+    <div className="rounded-lg border border-[#eee] bg-white px-4 py-3.5">
+      <div className="flex items-center gap-2.5">
         <Checkbox checked={props.task.done} onChange={() => props.onToggle(props.task.id)} />
 
         {isEditing ? (
-          <input type="text" value={draft} onChange={(event) => setDraft(event.target.value)} />
+          <input
+            type="text"
+            className="h-11 flex-1 rounded-md border border-[#ccc] bg-white px-3.5 text-base text-[#111] focus:border-indigo-600 focus:outline-none"
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            autoFocus
+          />
         ) : (
           <Text done={props.task.done}>{props.task.text}</Text>
         )}
       </div>
-      <div className="taskButtons">
+
+      <div className="mt-2 flex gap-1.5 pl-[27px]">
         {isEditing ? (
           <>
             <Button onClick={saveEdit}>저장</Button>
