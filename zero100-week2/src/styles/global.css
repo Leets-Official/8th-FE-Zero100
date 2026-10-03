@@ -1,0 +1,124 @@
+/* PDF의 TodoMatic 예시: 흰 배경, 보라색 기본 버튼, 테두리 카드 */
+:root {
+  font-family: Arial, 'Malgun Gothic', sans-serif;
+  color: #171717;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --primary: #4f39e8;
+  --border: #dedee5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.text {
+  margin: 0;
+}
+
+.input {
+  min-width: 0;
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid #c9c9d1;
+  border-radius: 5px;
+  background: #fff;
+  color: inherit;
+}
+
+.input::placeholder {
+  color: #777780;
+}
+
+.input[aria-invalid='true'] {
+  border-color: #bd2146;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: #fff;
+  color: inherit;
+  line-height: 1.4;
+  transition: background-color 120ms ease;
+}
+
+.button:hover {
+  background: #f4f4f8;
+}
+
+.button--primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.button--primary:hover {
+  background: #3d28c8;
+  border-color: #3d28c8;
+}
+
+.button--danger {
+  color: #c52c50;
+  border-color: #e8c9d0;
+}
+
+.button--danger:hover {
+  background: #fff1f4;
+}
+
+:where(button, input):focus-visible {
+  outline: 3px solid #b7a9ff;
+  outline-offset: 3px;
+}
+
+.checkbox-field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.checkbox-field input {
+  width: 21px;
+  height: 21px;
+  margin: 2px 0 0;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.checkbox-field label {
+  font-size: 17px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.error {
+  color: #bd2146;
+  font-size: 14px;
+  margin-top: 9px;
+}
