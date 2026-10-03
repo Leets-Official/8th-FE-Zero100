@@ -283,6 +283,7 @@ a:focus-visible {
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  cursor: pointer;
 }
 
 .todo-card__title--completed {
@@ -422,6 +423,53 @@ a:focus-visible {
 .stats-progress progress::-moz-progress-bar {
   border-radius: 999px;
   background: var(--color-accent);
+}
+
+.modal {
+  width: min(calc(100% - 32px), 420px);
+  max-height: calc(100vh - 48px);
+  padding: 0;
+  overflow: auto;
+  border: none;
+  border-radius: 10px;
+  color: #22222a;
+  background: #ffffff;
+  box-shadow: 0 16px 60px rgb(0 0 0 / 18%);
+}
+
+.modal::backdrop {
+  background: rgb(0 0 0 / 50%);
+}
+
+.modal__content {
+  padding: 24px;
+}
+
+.modal__title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.modal__description {
+  margin-top: 12px;
+  color: #686872;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.modal__actions .button {
+  min-height: 36px;
+  padding: 0 16px;
 }
 
 @media (max-width: 480px) {

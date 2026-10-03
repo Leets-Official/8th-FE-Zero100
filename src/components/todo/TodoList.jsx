@@ -1,9 +1,11 @@
+import { useModal } from '../../hooks/useModal.js';
 import { useTodos } from '../../hooks/useTodos.js';
 import Text from '../common/Text.jsx';
 import TodoItem from './TodoItem.jsx';
 
 function TodoList({ todos, emptyMessage }) {
-  const { toggleTodo, updateTodo, deleteTodo } = useTodos();
+  const { toggleTodo, updateTodo } = useTodos();
+  const { openDeleteModal } = useModal();
 
   if (todos.length === 0) {
     return (
@@ -21,7 +23,7 @@ function TodoList({ todos, emptyMessage }) {
           todo={todo}
           onToggle={() => toggleTodo(todo.id)}
           onUpdate={(title) => updateTodo(todo.id, title)}
-          onDelete={() => deleteTodo(todo.id)}
+          onDelete={() => openDeleteModal(todo.id)}
         />
       ))}
     </ul>
