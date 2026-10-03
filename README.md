@@ -31,3 +31,30 @@ npm run format
 ```
 
 ESLint는 코드 오류와 미사용 코드를 확인하고, Prettier는 코드 형식을 맞춥니다.
+
+## 3주차 기능
+
+- 할 일 추가·완료·수정·삭제를 지원합니다. 수정 시 저장·취소를 선택할 수 있고 공백만 있는 이름은 저장할 수 없습니다.
+- 첫 접속은 빈 목록으로 시작합니다. 목록이 변경되면 `localStorage`의 `zero100.tasks`에 저장하며, 새로고침 후 이름과 완료 상태를 복원합니다.
+- `/`: 할 일 목록과 전체·진행 중·완료 필터
+- `/completed`: 완료된 할 일만 표시하는 페이지
+- `/statistics`: 전체·진행 중·완료 개수와 완료율 표시 (빈 목록의 완료율은 0%)
+- 삭제 버튼을 누르면 Figma 디자인을 참고한 확인 모달이 열립니다. 취소, Esc, 배경 클릭으로 닫을 수 있습니다.
+
+### 기능별 구조
+
+- `TodoProvider` / `useTodos`: 페이지가 공유하는 할 일과 필터 상태
+- `usePersistentTodos` / `todoStorage`: 초기 목록 복원과 `useEffect`를 통한 저장
+- `ModalProvider` / `useModal`: Context API로 삭제 모달 열기·닫기 관리
+- `Modal` / `DeleteTodoModal`: 공통 대화상자와 삭제 확인 화면
+- `TodoStats` / `todoStatistics`: 목록에서 통계를 계산해 표시
+- `AppHeader`: 페이지 링크와 현재 경로에 맞는 탭 표시
+
+### 실행
+
+```bash
+npm install
+npm run dev
+```
+
+프로덕션 서버에 배포할 때는 `/completed`, `/statistics`로 직접 접속해도 `index.html`을 반환하도록 SPA 경로 처리가 필요합니다.
