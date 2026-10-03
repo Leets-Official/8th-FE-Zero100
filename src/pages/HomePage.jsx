@@ -14,39 +14,51 @@ function HomePage(props) {
     return true;
   });
 
-  return (
-    <div className="app">
-      <PageHeader title="TodoMatic" linkTo="/completed" linkText="완료 목록 &rarr;" />
+  const remainingCount = props.tasks.filter((task) => task.done === false).length;
 
-      <div>
-        <button onClick={() => setTab('list')}>할 일 목록</button>
-        <button onClick={() => setTab('stats')}>통계</button>
-      </div>
+  const tabMenu = (
+    <div>
+      <button onClick={() => setTab('list')}>할 일 목록</button>
+      <button onClick={() => setTab('stats')}>통계</button>
+    </div>
+  );
+
+  return (
+    <main className="mx-auto flex max-w-[536px] flex-col gap-6 p-2">
+      <PageHeader title="TodoMatic" linkTo="/completed" linkText="완료 목록 &rarr;" />
 
       {tab === 'list' ? (
         <>
-          <Input newWork={props.onAdd} />
+          <section className="flex flex-col gap-2">
+            {tabMenu}
+            <Input newWork={props.onAdd} />
+            <FilterButtons filter={displayWork} onChange={setDisplayWork} />
+          </section>
 
-          <FilterButtons filter={displayWork} onChange={setDisplayWork} />
-
-          <p className="midText">
-            남은 할 일 {props.tasks.filter((task) => task.done === false).length}개
-          </p>
-
-          {display.map((task) => (
-            <TodoItem
-              key={task.id}
-              task={task}
-              onToggle={props.onToggle}
-              onDelete={props.onDelete}
-              onUpdate={props.onUpdate}
-            />
-          ))}
+          <section className="flex flex-col gap-2">
+            <h2 className="text-[17.6px] leading-[1.5] font-bold text-[#222]">
+              남은 할 일 {remainingCount}개
+            </h2>
+            <div className="flex flex-col gap-2">
+              {display.map((task) => (
+                <TodoItem
+                  key={task.id}
+                  task={task}
+                  onToggle={props.onToggle}
+                  onDelete={props.onDelete}
+                  onUpdate={props.onUpdate}
+                />
+              ))}
+            </div>
+          </section>
         </>
       ) : (
-        <TodoStats tasks={props.tasks} />
+        <section className="flex flex-col gap-2">
+          {tabMenu}
+          <TodoStats tasks={props.tasks} />
+        </section>
       )}
-    </div>
+    </main>
   );
 }
 

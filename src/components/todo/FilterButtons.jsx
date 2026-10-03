@@ -2,7 +2,7 @@ import Button from '../Button';
 
 function FilterButtons(props) {
   return (
-    <div className="displayRow">
+    <div className="flex gap-2">
       <Button
         variant={props.filter === 'total' ? 'primary' : 'default'}
         onClick={() => props.onChange('total')}
