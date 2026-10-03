@@ -47,7 +47,7 @@ function HomePage(props) {
           </section>
         </>
       ) : (
-        <section className="flex flex-col gap-2">
+        <section className="flex flex-col gap-4">
           <TabMenu current={tab} onChange={setTab} />
           <TodoStats tasks={props.tasks} />
         </section>
