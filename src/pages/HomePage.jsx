@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Input from '../components/Input';
 import FilterButtons from '../components/todo/FilterButtons';
 import TodoItem from '../components/todo/TodoItem';
 import TodoStats from '../components/todo/TodoStats';
+import PageHeader from '../components/PageHeader';
 
 function HomePage(props) {
   const [tab, setTab] = useState('list');
@@ -16,8 +16,7 @@ function HomePage(props) {
 
   return (
     <div className="app">
-      <h1 className="title">TodoMatic</h1>
-      <Link to="/completed">완료 목록 &rarr;</Link>
+      <PageHeader title="TodoMatic" linkTo="/completed" linkText="완료 목록 &rarr;" />
 
       <div>
         <button onClick={() => setTab('list')}>할 일 목록</button>

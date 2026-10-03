@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom';
 import TodoItem from '../components/todo/TodoItem';
+import PageHeader from '../components/PageHeader';
 
 function CompletedPage(props) {
   const completedTasks = props.tasks.filter((task) => task.done === true);
 
   return (
     <div className="app">
-      <h1 className="title">완료된 작업</h1>
-      <Link to="/">&larr; 진행 중 목록</Link>
+      <PageHeader title="완료된 작업" linkTo="/" linkText="&larr; 진행 중 목록" />
 
       <p className="midText">완료된 목록 {completedTasks.length}개</p>
 
