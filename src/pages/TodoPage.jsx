@@ -1,47 +1,41 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
+import Navigation from '../components/Navigation/Navigation';
 import Text from '../components/Text/Text';
 import TodoItem from '../components/TodoItem/TodoItem';
 
 import '../App.css';
 
 function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
+  const navigate = useNavigate();
+
   const [inputText, setInputText] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState('');
 
-  // Todo 추가
   const handleAddTodo = () => {
     const trimmedText = inputText.trim();
-
     if (!trimmedText) return;
 
     onAdd(trimmedText);
     setInputText('');
   };
 
-  // Enter로 Todo 추가
   const handleKeyDown = (e) => {
     if (e.nativeEvent.isComposing) return;
-
-    if (e.key === 'Enter') {
-      handleAddTodo();
-    }
+    if (e.key === 'Enter') handleAddTodo();
   };
 
-  // 수정 시작
   const handleStartEdit = (todo) => {
     setEditingId(todo.id);
     setEditingText(todo.text);
   };
 
-  // 수정 저장
   const handleSaveEdit = (id) => {
     const trimmedText = editingText.trim();
-
     if (!trimmedText) return;
 
     onEdit(id, trimmedText);
@@ -49,13 +43,11 @@ function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
     setEditingText('');
   };
 
-  // 수정 취소
   const handleCancelEdit = () => {
     setEditingId(null);
     setEditingText('');
   };
 
-  // 수정 중 Enter / Escape
   const handleEditKeyDown = (e, id) => {
     if (e.nativeEvent.isComposing) return;
 
@@ -66,15 +58,22 @@ function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
     }
   };
 
-  // 진행 중인 Todo만 가져오기
   const activeTodos = todos.filter((todo) => !todo.completed);
 
   return (
-    <div className="todo-app">
-      <div className="header-container">
-        <h1 className="logo-title">TodoMatic</h1>
+    <main className="todo-app">
+      <header className="page-header">
+        <div className="header-top">
+          <h1 className="logo-title">TodoMatic</h1>
 
-        <div className="input-section">
+          <Link to="/completed" className="link-completed">
+            완료 목록 →
+          </Link>
+        </div>
+
+        <Navigation active="todo" />
+
+        <section className="input-section">
           <Text as="h2">할 일을 입력하세요</Text>
 
           <div className="input-container">
@@ -89,43 +88,47 @@ function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
               추가
             </Button>
           </div>
-        </div>
+        </section>
 
-        <div className="button-container">
-          <Link to="/all">
-            <Button variant="secondary">전체보기</Button>
-          </Link>
+        <nav className="button-container" aria-label="할 일 필터">
+          <Button variant="secondary" onClick={() => navigate('/all')}>
+            전체보기
+          </Button>
 
-          <Button variant="default">진행 중</Button>
+          <Button variant="default" onClick={() => navigate('/')}>
+            진행 중
+          </Button>
+        </nav>
+      </header>
 
-          <Link to="/completed">
-            <Button variant="secondary">완료됨</Button>
-          </Link>
-        </div>
-      </div>
-
-      <div className="list-container">
-        <Text as="h2">남은 할 일 {activeTodos.length}개</Text>
+      <section className="list-container">
+        <Text as="h2" className="section-heading">
+          남은 할 일 {activeTodos.length}개
+        </Text>
 
         <div className="todo-list-frame">
-          {activeTodos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              isEditing={editingId === todo.id}
-              editingText={editingText}
-              onEditingTextChange={(e) => setEditingText(e.target.value)}
-              onToggle={onToggle}
-              onDelete={onDelete}
-              onStartEdit={handleStartEdit}
-              onSaveEdit={handleSaveEdit}
-              onCancelEdit={handleCancelEdit}
-              onEditKeyDown={handleEditKeyDown}
-            />
-          ))}
+          {activeTodos.length === 0 ? (
+            <p className="empty-state">진행 중인 할 일이 없어요.</p>
+          ) : (
+            activeTodos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                isEditing={editingId === todo.id}
+                editingText={editingText}
+                onEditingTextChange={(e) => setEditingText(e.target.value)}
+                onToggle={onToggle}
+                onDelete={onDelete}
+                onStartEdit={handleStartEdit}
+                onSaveEdit={handleSaveEdit}
+                onCancelEdit={handleCancelEdit}
+                onEditKeyDown={handleEditKeyDown}
+              />
+            ))
+          )}
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 

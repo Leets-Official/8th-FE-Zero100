@@ -1,25 +1,46 @@
 .todo-card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  background-color: #ffffff;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  background: #ffffff;
 }
 
 .todo-card-top {
   display: flex;
   align-items: center;
+  gap: 10px;
   width: 100%;
+  min-width: 0;
 }
 
 .edit-input-wrapper {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
 }
 
 .todo-card-buttons {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
   gap: 8px;
+  padding-left: 26px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+@media (max-width: 480px) {
+  .todo-card {
+    padding: 12px 10px;
+  }
 }
