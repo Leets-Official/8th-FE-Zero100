@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useModal } from '../../contexts/ModalContext';
 import Text from '../Text';
 import Button from '../Button';
 import Checkbox from '../Checkbox';
@@ -6,6 +7,8 @@ import Checkbox from '../Checkbox';
 function TodoItem(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [draft, setDraft] = useState(props.task.text);
+
+  const { openModal } = useModal();
 
   const startEdit = () => {
     setDraft(props.task.text);
@@ -49,7 +52,12 @@ function TodoItem(props) {
         ) : (
           <>
             <Button onClick={startEdit}>수정</Button>
-            <Button variant="delete" onClick={() => props.onDelete(props.task.id)}>
+            <Button
+              variant="delete"
+              onClick={() =>
+                openModal('할 일을 삭제하겠습니까?', () => props.onDelete(props.task.id))
+              }
+            >
               삭제
             </Button>
           </>
