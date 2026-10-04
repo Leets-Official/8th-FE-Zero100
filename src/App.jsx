@@ -21,6 +21,7 @@ function App() {
   const [filter, setFilter] = useState('all');
 
   const remainingCount = todos.filter((todo) => !todo.completed).length;
+  const completedCount = todos.length - remainingCount;
   const visibleTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed;
     if (filter === 'completed') return todo.completed;
@@ -87,7 +88,9 @@ function App() {
 
           <section aria-label="할 일 목록" className="flex flex-col gap-2">
             <h2 className="text-[17.6px] leading-[26.4px] font-bold text-[#222]">
-              남은 할 일 {remainingCount}개
+              {filter === 'completed'
+                ? `완료한 할 일 ${completedCount}개`
+                : `남은 할 일 ${remainingCount}개`}
             </h2>
             {visibleTodos.length > 0 ? (
               <ul className="flex flex-col gap-2">
