@@ -1,26 +1,36 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Button from './Button.jsx';
 import Checkbox from './Checkbox.jsx';
+import DeleteConfirmDialog from './DeleteConfirmDialog.jsx';
 import Input from './Input.jsx';
 
 function TodoItem({ text, completed, onToggle, onUpdate, onDelete }) {
+  const errorId = useId();
   const [draft, setDraft] = useState(text);
   const [editing, setEditing] = useState(false);
+  const [editError, setEditError] = useState(false);
+  const [confirmingDelete, setConfirmingDelete] = useState(false);
 
   function startEditing() {
     setDraft(text);
+    setEditError(false);
     setEditing(true);
   }
 
   function saveEditing() {
     const nextText = draft.trim();
-    if (!nextText) return;
+    if (!nextText) {
+      setEditError(true);
+      return;
+    }
     onUpdate(nextText);
+    setEditError(false);
     setEditing(false);
   }
 
   function cancelEditing() {
     setDraft(text);
+    setEditError(false);
     setEditing(false);
   }
 
@@ -36,12 +46,17 @@ function TodoItem({ text, completed, onToggle, onUpdate, onDelete }) {
           <Input
             variant="compact"
             value={draft}
-            onChange={(event) => setDraft(event.target.value)}
+            onChange={(event) => {
+              setDraft(event.target.value);
+              if (event.target.value.trim()) setEditError(false);
+            }}
             onKeyDown={(event) => {
               if (event.key === 'Enter') saveEditing();
               if (event.key === 'Escape') cancelEditing();
             }}
             aria-label="할 일 수정"
+            aria-invalid={editError}
+            aria-describedby={editError ? errorId : undefined}
           />
         ) : (
           <span
@@ -51,6 +66,11 @@ function TodoItem({ text, completed, onToggle, onUpdate, onDelete }) {
           </span>
         )}
       </div>
+      {editing && editError && (
+        <p id={errorId} role="alert" className="pl-[27px] text-sm text-red-600">
+          내용을 입력해주세요!
+        </p>
+      )}
       <div className="flex w-full gap-1.5 pl-[27px]">
         {editing ? (
           <>
@@ -66,12 +86,21 @@ function TodoItem({ text, completed, onToggle, onUpdate, onDelete }) {
             <Button variant="secondary" onClick={startEditing}>
               수정
             </Button>
-            <Button variant="danger" onClick={onDelete}>
+            <Button variant="danger" onClick={() => setConfirmingDelete(true)}>
               삭제
             </Button>
           </>
         )}
       </div>
+      {confirmingDelete && (
+        <DeleteConfirmDialog
+          onCancel={() => setConfirmingDelete(false)}
+          onConfirm={() => {
+            setConfirmingDelete(false);
+            onDelete();
+          }}
+        />
+      )}
     </li>
   );
 }
