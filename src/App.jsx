@@ -1,31 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
+import TodoPage from './pages/TodoPage';
+import CompletedPage from './pages/CompletedPage';
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
-import Input from './components/Input/Input';
-import Button from './components/Button/Button';
-import TodoItem from './components/TodoItem/TodoItem';
 import './App.css';
-
-/* const initialTodos = [
-  { id: 1, text: '밥 먹기', completed: false },
-  { id: 2, text: '리츠 출석하기', completed: true },
-  { id: 3, text: '잠자기', completed: false },
-]; */
-
-const filters = [
-  { value: 'all', label: '전체보기' },
-  { value: 'active', label: '진행 중' },
-  { value: 'completed', label: '완료됨' },
-];
-
-const emptyMessages = {
-  all: '등록된 할 일이 없습니다.',
-  active: '진행 중인 할 일이 없습니다.',
-  completed: '완료된 할 일이 없습니다.',
-};
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
-  const [inputValue, setInputValue] = useState('');
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
@@ -36,21 +17,7 @@ function App() {
     }
   }, [todos]);
 
-  const remainingCount = todos.filter((todo) => !todo.completed).length;
-  const completedCount = todos.filter((todo) => todo.completed).length;
-
-  const visibleTodos = todos.filter((todo) => {
-    if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
-    return true;
-  });
-
-  function handleAdd(event) {
-    event.preventDefault();
-
-    const text = inputValue.trim();
-    if (!text) return;
-
+  function handleAdd(text) {
     const newTodo = {
       id: crypto.randomUUID(),
       text,
@@ -58,7 +25,6 @@ function App() {
     };
 
     setTodos((prev) => [...prev, newTodo]);
-    setInputValue('');
   }
 
   function handleToggle(id) {
@@ -75,64 +41,38 @@ function App() {
     setTodos((prev) => prev.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
   }
 
-  return (
-    <main className="todo-app">
-      <h1 className="todo-app__title">TodoMatic</h1>
-      <form className="todo-form" onSubmit={handleAdd}>
-        <label className="todo-form__label" htmlFor="new-todo">
-          할 일을 입력하세요
-        </label>
+  const todoProps = {
+    todos,
+    onToggle: handleToggle,
+    onDelete: handleDelete,
+    onEdit: handleEdit,
+  };
 
-        <div className="todo-form__controls">
-          <Input
-            id="new-todo"
-            label="새 할 일"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="새 할 일 추가"
+  return (
+    <div className="flex min-h-dvh flex-col bg-[#ffffff] px-[24px] py-[48px]">
+      <main className="mx-auto my-auto w-full max-w-[520px]">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <TodoPage
+                {...todoProps}
+                filter={filter}
+                onFilterChange={setFilter}
+                onAdd={handleAdd}
+              />
+            }
           />
 
-          <Button type="submit">추가</Button>
-        </div>
-      </form>
+          <Route
+            path="/completed"
+            element={<CompletedPage {...todoProps} onShowActive={() => setFilter('active')} />}
+          />
 
-      <div className="todo-filter" role="group" aria-label="작업 조회 조건">
-        {filters.map((option) => (
-          <Button
-            key={option.value}
-            variant={filter === option.value ? 'primary' : 'secondary'}
-            pressed={filter === option.value}
-            onClick={() => setFilter(option.value)}
-          >
-            {option.label}
-          </Button>
-        ))}
-      </div>
-
-      <section className="todo-tasks" aria-labelledby="todo-count">
-        <h2 id="todo-count" className="todo-tasks__count">
-          {filter === 'completed'
-            ? `완료된 작업 ${completedCount}개`
-            : `남은 할 일 ${remainingCount}개`}
-        </h2>
-
-        {visibleTodos.length === 0 ? (
-          <p className="todo-tasks__empty">{emptyMessages[filter]}</p>
-        ) : (
-          <ul className="todo-list">
-            {visibleTodos.map((todo) => (
-              <TodoItem
-                key={todo.id}
-                todo={todo}
-                onToggle={handleToggle}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            ))}
-          </ul>
-        )}
-      </section>
-    </main>
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+    </div>
   );
 }
 
