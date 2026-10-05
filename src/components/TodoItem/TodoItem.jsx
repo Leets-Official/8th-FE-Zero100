@@ -2,6 +2,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import TodoText from '../TodoText/TodoText';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
+import Modal from '../Modal/Modal';
 import './TodoItem.css';
 import { useState } from 'react';
 
@@ -85,9 +86,19 @@ function TodoItem({ todo, onToggle, onDelete, onEdit }) {
               수정
             </Button>
 
-            <Button variant="danger" onClick={() => onDelete(todo.id)}>
-              삭제
-            </Button>
+            <Modal>
+              <Modal.Trigger>삭제</Modal.Trigger>
+
+              <Modal.Content>
+                <Modal.Title>할 일을 삭제하겠습니까?</Modal.Title>
+
+                <Modal.Actions>
+                  <Modal.Close>취소</Modal.Close>
+
+                  <Modal.Confirm onConfirm={() => onDelete(todo.id)}>삭제</Modal.Confirm>
+                </Modal.Actions>
+              </Modal.Content>
+            </Modal>
           </div>
         </>
       )}
