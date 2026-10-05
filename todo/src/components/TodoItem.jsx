@@ -2,8 +2,10 @@ import { useState } from 'react';
 import Checkbox from './common/Checkbox';
 import Input from './common/Input';
 import Button from './common/Button';
+import { useModal } from '../context/ModalContext';
 
 const TodoItem = ({ todo, onToggle, onDelete, onEdit }) => {
+  const { openModal } = useModal();
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
 
@@ -45,7 +47,15 @@ const TodoItem = ({ todo, onToggle, onDelete, onEdit }) => {
       <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)} label={todo.text} />
       <div className="todo-item__actions">
         <Button onClick={startEdit}>수정</Button>
-        <Button variant="danger" onClick={() => onDelete(todo.id)}>
+        <Button
+          variant="danger"
+          onClick={() =>
+            openModal({
+              message: '할 일을 삭제하겠습니까?',
+              onConfirm: () => onDelete(todo.id),
+            })
+          }
+        >
           삭제
         </Button>
       </div>
