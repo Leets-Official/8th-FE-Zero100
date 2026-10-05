@@ -69,7 +69,7 @@ function App() {
   return (
     <main className="todo-app">
       <h1 className="todo-app__title">TodoMatic</h1>
-
+      {/* <p className="text-[24px] font-bold text-[#4f46e5]">Tailwind 적용 확인</p> */}
       <form className="todo-form" onSubmit={handleAdd}>
         <label className="todo-form__label" htmlFor="new-todo">
           할 일을 입력하세요
