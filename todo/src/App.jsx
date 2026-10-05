@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Text from './components/common/Text';
 import TodoForm from './components/TodoForm';
 import FilterButtons from './components/FilterButtons';
 import TodoList from './components/TodoList';
 import './App.css';
 
-const INITIAL_TODOS = [
-  { id: 1, text: 'Eat', completed: true },
-  { id: 2, text: 'Sleep', completed: false },
-  { id: 3, text: 'Repeat', completed: false },
-];
-
 function App() {
-  const [todos, setTodos] = useState(INITIAL_TODOS);
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem('todos');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+
   const [filter, setFilter] = useState('all');
 
   // 추가
