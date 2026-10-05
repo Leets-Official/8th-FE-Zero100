@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import TodoHeader from '../components/TodoHeader/TodoHeader';
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import TodoItem from '../components/TodoItem/TodoItem';
@@ -28,16 +28,7 @@ function TodoPage({ todos, filter, onFilterChange, onAdd, onToggle, onDelete, on
 
   return (
     <>
-      <header className="mb-[16px] flex items-center justify-between gap-[16px]">
-        <h1 className="text-[36px] leading-[1.5] font-extrabold text-[#111111]">TodoMatic</h1>
-
-        <Link
-          to="/completed"
-          className="shrink-0 text-[14px] text-[#4f46e5] hover:underline focus-visible:outline-2 focus-visible:outline-[#4f46e5]"
-        >
-          완료 목록 →
-        </Link>
-      </header>
+      <TodoHeader />
 
       <form className="todo-form" onSubmit={handleSubmit}>
         <label className="todo-form__label" htmlFor="new-todo">

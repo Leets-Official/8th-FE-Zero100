@@ -7,12 +7,12 @@ function CompletedPage({ todos, onToggle, onDelete, onEdit, onShowActive }) {
   return (
     <>
       <header className="mb-[24px] flex items-center justify-between gap-[16px]">
-        <h1 className="text-[36px] leading-[1.5] font-extrabold text-[#111111]">완료된 작업</h1>
+        <h1 className="text-[40px] leading-[1.5] font-extrabold text-[#111111]">완료된 작업</h1>
 
         <Link
           to="/"
           onClick={onShowActive}
-          className="shrink-0 text-[14px] text-[#4f46e5] hover:underline focus-visible:outline-2 focus-visible:outline-[#4f46e5]"
+          className="shrink-0 text-[16px] text-[#4f46e5] hover:underline focus-visible:outline-2 focus-visible:outline-[#4f46e5]"
         >
           ← 진행 중 목록
         </Link>

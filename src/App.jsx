@@ -4,6 +4,7 @@ import TodoPage from './pages/TodoPage';
 import CompletedPage from './pages/CompletedPage';
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import './App.css';
+import StatsPage from './pages/StatsPage';
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
@@ -68,7 +69,7 @@ function App() {
             path="/completed"
             element={<CompletedPage {...todoProps} onShowActive={() => setFilter('active')} />}
           />
-
+          <Route path="/stats" element={<StatsPage todos={todos} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
