@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import Input from './components/Input/Input';
 import Button from './components/Button/Button';
 import TodoItem from './components/TodoItem/TodoItem';
 import './App.css';
 
-const initialTodos = [
+/* const initialTodos = [
   { id: 1, text: '밥 먹기', completed: false },
   { id: 2, text: '리츠 출석하기', completed: true },
   { id: 3, text: '잠자기', completed: false },
-];
+]; */
 
 const filters = [
   { value: 'all', label: '전체보기' },
@@ -23,9 +24,17 @@ const emptyMessages = {
 };
 
 function App() {
-  const [todos, setTodos] = useState(initialTodos);
+  const [todos, setTodos] = useState(loadTodos);
   const [inputValue, setInputValue] = useState('');
   const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(TODO_STORAGE_KEY, JSON.stringify(todos));
+    } catch (error) {
+      console.error('할 일 목록을 저장하지 못했습니다.', error);
+    }
+  }, [todos]);
 
   const remainingCount = todos.filter((todo) => !todo.completed).length;
   const completedCount = todos.filter((todo) => todo.completed).length;
@@ -69,7 +78,6 @@ function App() {
   return (
     <main className="todo-app">
       <h1 className="todo-app__title">TodoMatic</h1>
-      {/* <p className="text-[24px] font-bold text-[#4f46e5]">Tailwind 적용 확인</p> */}
       <form className="todo-form" onSubmit={handleAdd}>
         <label className="todo-form__label" htmlFor="new-todo">
           할 일을 입력하세요
