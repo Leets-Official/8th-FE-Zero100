@@ -9,12 +9,16 @@ const CompletedPage = () => {
 
   return (
     <main className="app">
-      <Link to="/">← 할 일 목록</Link>
-      <Text as="h1" variant="title">
-        완료 목록
-      </Text>
+      <div className="flex items-center justify-between">
+        <Text as="h1" variant="title">
+          완료된 작업
+        </Text>
+        <Link to="/" className="text-sm text-indigo-600">
+          ← 진행 중 목록
+        </Link>
+      </div>
       <Text as="h3" variant="count">
-        완료한 일 {completedTodos.length}개
+        완료된 목록 {completedTodos.length}개
       </Text>
       <TodoList
         todos={completedTodos}

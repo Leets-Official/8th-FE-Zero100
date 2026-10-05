@@ -14,7 +14,6 @@ const TodoPage = () => {
 
   const filteredTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
     return true;
   });
 
@@ -29,10 +28,14 @@ const TodoPage = () => {
 
   return (
     <main className="app">
-      <Link to="/completed">완료 목록 →</Link>
-      <Text as="h1" variant="title">
-        TodoMatic
-      </Text>
+      <div className="flex items-center justify-between">
+        <Text as="h1" variant="title">
+          TodoMatic
+        </Text>
+        <Link to="/completed" className="text-sm text-indigo-600">
+          완료 목록 →
+        </Link>
+      </div>
 
       <nav className="mb-4 flex gap-2 border-b border-gray-200">
         <button type="button" className={tabClass('list')} onClick={() => setTab('list')}>
@@ -45,9 +48,6 @@ const TodoPage = () => {
 
       {tab === 'list' ? (
         <>
-          <Text as="h2" variant="subtitle">
-            할 일을 입력하세요
-          </Text>
           <TodoForm onAdd={addTodo} />
           <FilterButtons filter={filter} onChangeFilter={setFilter} />
           <Text as="h3" variant="count">
