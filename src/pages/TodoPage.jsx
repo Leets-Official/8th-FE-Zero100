@@ -4,6 +4,8 @@ import Button from '../components/Button.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import PageLayout from '../components/PageLayout.jsx';
 import Statistics from '../components/Statistics.jsx';
+import TabNav from '../components/TabNav.jsx';
+import TodoForm from '../components/TodoForm.jsx';
 import TodoList from '../components/TodoList.jsx';
 
 const FILTER_ALL = 'all';
@@ -13,8 +15,10 @@ const FILTER_ACTIVE = 'active';
 const TAB_TODO = 'todo';
 const TAB_STATISTICS = 'statistics';
 
-const TAB_BASE_CLASS_NAME =
-  'box-border flex items-center justify-center h-[32.5px] m-0 p-0 border-0 border-b-2 border-solid border-transparent bg-transparent font-[family-name:var(--font-family-base)] font-semibold text-[14.08px] leading-[21.12px] tracking-[0px] text-[#888888] whitespace-nowrap cursor-pointer';
+const TABS = [
+  { value: TAB_TODO, label: '할 일 목록', className: 'w-[63px]' },
+  { value: TAB_STATISTICS, label: '통계', className: 'w-[30px]' },
+];
 
 function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo }) {
   const [inputValue, setInputValue] = useState('');
@@ -47,55 +51,16 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo }) {
             'font-[family-name:var(--font-family-base)] font-bold text-[14.4px] leading-[21.6px] tracking-[0px] text-center text-[#555555]',
         };
 
-  const getTabClassName = (tab, widthClassName) =>
-    twMerge(
-      TAB_BASE_CLASS_NAME,
-      widthClassName,
-      activeTab === tab && 'border-[color:var(--color-primary)] text-[color:var(--color-primary)]',
-    );
-
   return (
     <PageLayout>
       <PageHeader title="TodoMatic" navLabel="완료 목록 →" navTo="/completed" />
-      <nav
-        className={twMerge(
-          'flex flex-row items-start gap-[24px] w-[520px] h-[32.5px] border-0 border-b-[1.5px] border-solid border-[#e5e5e5]',
-        )}
-      >
-        <button
-          type="button"
-          className={getTabClassName(TAB_TODO, 'w-[63px]')}
-          onClick={() => setActiveTab(TAB_TODO)}
-        >
-          할 일 목록
-        </button>
-        <button
-          type="button"
-          className={getTabClassName(TAB_STATISTICS, 'w-[30px]')}
-          onClick={() => setActiveTab(TAB_STATISTICS)}
-        >
-          통계
-        </button>
-      </nav>
+      <TabNav tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
       {activeTab === TAB_STATISTICS ? (
         <Statistics todos={todos} />
       ) : (
         <>
           <div className={twMerge('flex flex-col self-stretch gap-[8px]')}>
-            <form className={twMerge('flex flex-row gap-[8px] w-max')} onSubmit={handleAddTodo}>
-              <input
-                className={twMerge(
-                  'box-border min-w-[440px] h-[44px] py-[10px] px-[14px] border-[1px] border-solid border-[#cccccc] rounded-[var(--radius-control)] bg-[#ffffff]',
-                )}
-                type="text"
-                placeholder="새 할 일 추가"
-                value={inputValue}
-                onChange={(event) => setInputValue(event.target.value)}
-              />
-              <Button type="submit" variant="primary" size="medium">
-                추가
-              </Button>
-            </form>
+            <TodoForm value={inputValue} onChange={setInputValue} onSubmit={handleAddTodo} />
             <div className={twMerge('flex flex-row gap-[8px] w-[520px] h-[44.8px]')}>
               <Button
                 size="medium"
