@@ -3,25 +3,14 @@ import { Route, Routes } from 'react-router';
 import DeleteModal from './components/DeleteModal.jsx';
 import CompletedTodoPage from './pages/CompletedTodoPage.jsx';
 import TodoPage from './pages/TodoPage.jsx';
-
-const STORAGE_KEY = 'tasks';
-
-// 저장된 값이 없거나 올바른 배열이 아니면 빈 목록으로 시작한다.
-function loadTodos() {
-  try {
-    const savedTodos = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return Array.isArray(savedTodos) ? savedTodos : [];
-  } catch {
-    return [];
-  }
-}
+import { loadTodos, saveTodos } from './utils/storage.js';
 
 // 두 페이지가 같은 todos를 보여줘야 하므로, 두 페이지의 공통 부모인 App에서 state를 관리한다.
 function App() {
   const [todos, setTodos] = useState(loadTodos);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    saveTodos(todos);
   }, [todos]);
 
   const handleAddTodo = (title) => {
