@@ -16,8 +16,8 @@ const TAB_TODO = 'todo';
 const TAB_STATISTICS = 'statistics';
 
 const TABS = [
-  { value: TAB_TODO, label: '할 일 목록', className: 'w-[63px]' },
-  { value: TAB_STATISTICS, label: '통계', className: 'w-[30px]' },
+  { value: TAB_TODO, label: '할 일 목록' },
+  { value: TAB_STATISTICS, label: '통계' },
 ];
 
 function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo }) {
