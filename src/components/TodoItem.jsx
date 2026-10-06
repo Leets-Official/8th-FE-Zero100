@@ -43,11 +43,8 @@ function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit })
         isEditing && 'gap-[6px] p-[12px] mb-[112px] last:mb-0',
       )}
     >
-      <ContentWrapper
-        className={twMerge('contents')}
-        onSubmit={isEditing ? handleSaveEdit : undefined}
-      >
-        <div className={twMerge('flex flex-row self-stretch items-center gap-[10px]')}>
+      <ContentWrapper className="contents" onSubmit={isEditing ? handleSaveEdit : undefined}>
+        <div className="flex flex-row self-stretch items-center gap-[10px]">
           <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)}>
             {!isEditing && (
               <span
@@ -62,9 +59,7 @@ function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit })
           </Checkbox>
           {isEditing && (
             <input
-              className={twMerge(
-                'box-border flex-[1_1_0] min-w-0 h-[36.8px] py-[6px] px-[8px] m-0 border-[1px] border-solid border-[color:var(--color-primary)] shadow-[0_0_0_0.25px_var(--color-primary)] rounded-[4px] bg-[#ffffff] font-[family-name:var(--font-family-base)] font-medium text-[16px] leading-[22.8px] tracking-[0px] text-[color:var(--color-text-primary)] outline-none',
-              )}
+              className="box-border flex-[1_1_0] min-w-0 h-[36.8px] py-[6px] px-[8px] m-0 border-[1px] border-solid border-[color:var(--color-primary)] shadow-[0_0_0_0.25px_var(--color-primary)] rounded-[4px] bg-[#ffffff] font-[family-name:var(--font-family-base)] font-medium text-[16px] leading-[22.8px] tracking-[0px] text-[color:var(--color-text-primary)] outline-none"
               type="text"
               value={editValue}
               onChange={(event) => setEditValue(event.target.value)}
@@ -72,11 +67,7 @@ function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit })
             />
           )}
         </div>
-        <div
-          className={twMerge(
-            'flex flex-row justify-start items-center gap-[8px] pl-[calc(var(--checkbox-size)_+_var(--checkbox-gap))]',
-          )}
-        >
+        <div className="flex flex-row justify-start items-center gap-[8px] pl-[calc(var(--checkbox-size)_+_var(--checkbox-gap))]">
           {isEditing ? (
             <>
               <Button

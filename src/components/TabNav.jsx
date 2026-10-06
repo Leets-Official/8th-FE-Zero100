@@ -7,9 +7,7 @@ const TAB_BASE_CLASS_NAME =
 function TabNav({ tabs, activeTab, onChangeTab }) {
   return (
     <nav
-      className={twMerge(
-        'flex flex-row items-start gap-[24px] w-[520px] h-[32.5px] border-0 border-b-[1.5px] border-solid border-[#e5e5e5]',
-      )}
+      className="flex flex-row items-start gap-[24px] w-[520px] h-[32.5px] border-0 border-b-[1.5px] border-solid border-[#e5e5e5]"
       role="tablist"
     >
       {tabs.map((tab) => {
