@@ -5,17 +5,19 @@ const menus = [
   { to: '/stats', label: '통계' },
 ];
 
-function TodoHeader() {
+function TodoHeader({ isCompletedPage = false }) {
   return (
     <header className="mb-[20px]">
       <div className="mb-[20px] flex items-center justify-between gap-[16px]">
-        <h1 className="text-[40px] leading-[1.5] font-extrabold text-[#111111]">TodoMatic</h1>
+        <h1 className="text-[40px] leading-[1.5] font-extrabold text-[#111111]">
+          {isCompletedPage ? '완료된 작업' : 'TodoMatic'}
+        </h1>
 
         <Link
-          to="/completed"
+          to={isCompletedPage ? '/' : '/completed'}
           className="shrink-0 text-[16px] text-[#4f46e5] hover:underline focus-visible:outline-2 focus-visible:outline-[#4f46e5]"
         >
-          완료 목록 →
+          {isCompletedPage ? '← 할 일 목록' : '완료 목록 →'}
         </Link>
       </div>
 

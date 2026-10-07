@@ -1,5 +1,3 @@
-import TodoHeader from '../components/TodoHeader/TodoHeader';
-
 function StatsPage({ todos }) {
   const totalCount = todos.length;
   const completedCount = todos.filter((todo) => todo.completed).length;
@@ -15,8 +13,6 @@ function StatsPage({ todos }) {
 
   return (
     <>
-      <TodoHeader />
-
       <section aria-labelledby="stats-title">
         <h2 id="stats-title" className="text-[20px] font-bold text-[#222222]">
           할 일 통계

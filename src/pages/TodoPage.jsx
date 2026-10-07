@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import TodoHeader from '../components/TodoHeader/TodoHeader';
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import TodoItem from '../components/TodoItem/TodoItem';
@@ -28,8 +27,6 @@ function TodoPage({ todos, filter, onFilterChange, onAdd, onToggle, onDelete, on
 
   return (
     <>
-      <TodoHeader />
-
       <form className="todo-form" onSubmit={handleSubmit}>
         <label className="todo-form__label" htmlFor="new-todo">
           할 일을 입력하세요

@@ -5,6 +5,7 @@ import CompletedPage from './pages/CompletedPage';
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import './App.css';
 import StatsPage from './pages/StatsPage';
+import Layout from './components/Layout/Layout';
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
@@ -50,27 +51,22 @@ function App() {
   };
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#ffffff] px-[24px] py-[48px]">
-      <main className="mx-auto my-auto w-full max-w-[520px]">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <TodoPage
-                {...todoProps}
-                filter={filter}
-                onFilterChange={setFilter}
-                onAdd={handleAdd}
-              />
-            }
-          />
+    <Routes>
+      <Route element={<Layout />}>
+        <Route
+          index
+          element={
+            <TodoPage {...todoProps} filter={filter} onFilterChange={setFilter} onAdd={handleAdd} />
+          }
+        />
 
-          <Route path="/completed" element={<CompletedPage {...todoProps} />} />
-          <Route path="/stats" element={<StatsPage todos={todos} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </main>
-    </div>
+        <Route path="completed" element={<CompletedPage {...todoProps} />} />
+
+        <Route path="stats" element={<StatsPage todos={todos} />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
   );
 }
 
