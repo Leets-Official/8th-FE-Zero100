@@ -8,6 +8,10 @@ function ModalProvider({ children }) {
   const { todos, deleteTodo } = useTodos();
   const pendingTodo = todos.find((todo) => todo.id === pendingDeleteId);
 
+  function openDeleteModal(todoId) {
+    setPendingDeleteId(todoId);
+  }
+
   function closeModal() {
     setPendingDeleteId(null);
   }
@@ -18,7 +22,7 @@ function ModalProvider({ children }) {
   }
 
   return (
-    <ModalContext.Provider value={{ openDeleteModal: setPendingDeleteId, closeModal }}>
+    <ModalContext.Provider value={{ openDeleteModal, closeModal }}>
       {children}
       {pendingTodo && (
         <DeleteTodoModal todo={pendingTodo} onCancel={closeModal} onConfirm={confirmDelete} />
