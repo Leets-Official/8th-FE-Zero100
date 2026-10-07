@@ -1,7 +1,7 @@
 import { Link } from 'react-router';
 import TodoItem from '../components/TodoItem/TodoItem';
 
-function CompletedPage({ todos, onToggle, onDelete, onEdit, onShowActive }) {
+function CompletedPage({ todos, onToggle, onDelete, onEdit }) {
   const completedTodos = todos.filter((todo) => todo.completed);
 
   return (
@@ -11,10 +11,9 @@ function CompletedPage({ todos, onToggle, onDelete, onEdit, onShowActive }) {
 
         <Link
           to="/"
-          onClick={onShowActive}
           className="shrink-0 text-[16px] text-[#4f46e5] hover:underline focus-visible:outline-2 focus-visible:outline-[#4f46e5]"
         >
-          ← 진행 중 목록
+          ← 할 일 목록
         </Link>
       </header>
 

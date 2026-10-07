@@ -65,10 +65,7 @@ function App() {
             }
           />
 
-          <Route
-            path="/completed"
-            element={<CompletedPage {...todoProps} onShowActive={() => setFilter('active')} />}
-          />
+          <Route path="/completed" element={<CompletedPage {...todoProps} />} />
           <Route path="/stats" element={<StatsPage todos={todos} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
