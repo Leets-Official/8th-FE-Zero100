@@ -1,9 +1,7 @@
-function StatsPage({ todos }) {
-  const totalCount = todos.length;
-  const completedCount = todos.filter((todo) => todo.completed).length;
-  const activeCount = totalCount - completedCount;
+import { getTodoStats } from '../utils/getTodoStats';
 
-  const completionRate = totalCount === 0 ? 0 : Math.round((completedCount / totalCount) * 100);
+function StatsPage({ todos }) {
+  const { totalCount, completedCount, activeCount, completionRate } = getTodoStats(todos);
 
   const stats = [
     { label: '전체', count: totalCount },

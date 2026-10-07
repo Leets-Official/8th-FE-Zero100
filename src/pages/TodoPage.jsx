@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '../components/Button/Button';
 import Input from '../components/Input/Input';
 import TodoItem from '../components/TodoItem/TodoItem';
+import { getTodoStats } from '../utils/getTodoStats';
 
 const filters = [
   { value: 'all', label: '전체보기' },
@@ -11,7 +12,7 @@ const filters = [
 function TodoPage({ todos, filter, onFilterChange, onAdd, onToggle, onDelete, onEdit }) {
   const [inputValue, setInputValue] = useState('');
 
-  const remainingCount = todos.filter((todo) => !todo.completed).length;
+  const { activeCount: remainingCount } = getTodoStats(todos);
 
   const visibleTodos = todos.filter((todo) => filter === 'all' || !todo.completed);
 
