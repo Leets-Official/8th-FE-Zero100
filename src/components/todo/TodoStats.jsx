@@ -9,6 +9,18 @@ function TodoStats({ todos }) {
       <Text as="h2" variant="section-label" id="statistics-heading">
         할 일 통계
       </Text>
+      <div className="stats-progress">
+        <div className="stats-progress__label">
+          <div>
+            <h3>완료율</h3>
+            <p className="stats-progress__description">
+              전체 {total}개 중 {completed}개를 완료했어요.
+            </p>
+          </div>
+          <strong>{completionRate}%</strong>
+        </div>
+        <progress value={completionRate} max="100" aria-label="할 일 완료율" />
+      </div>
       <dl className="stats-counts">
         <div>
           <dt>전체</dt>
@@ -32,13 +44,6 @@ function TodoStats({ todos }) {
           </dd>
         </div>
       </dl>
-      <div className="stats-progress">
-        <div className="stats-progress__label">
-          <span>완료율</span>
-          <strong>{completionRate}%</strong>
-        </div>
-        <progress value={completionRate} max="100" aria-label="할 일 완료율" />
-      </div>
     </section>
   );
 }
