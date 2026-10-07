@@ -1,12 +1,20 @@
 export const TODO_STORAGE_KEY = 'zero100.tasks';
 
 export function loadTodos() {
+  let rawTodos;
+
   try {
-    const savedTodos = JSON.parse(localStorage.getItem(TODO_STORAGE_KEY) ?? '[]');
-    if (!Array.isArray(savedTodos)) return [];
+    rawTodos = localStorage.getItem(TODO_STORAGE_KEY);
+  } catch {
+    return { todos: [], error: 'read' };
+  }
+
+  try {
+    const savedTodos = JSON.parse(rawTodos ?? '[]');
+    if (!Array.isArray(savedTodos)) return { todos: [], error: 'invalid-data' };
 
     const usedIds = new Set();
-    return savedTodos
+    const todos = savedTodos
       .filter((todo) => {
         if (
           !todo ||
@@ -23,8 +31,10 @@ export function loadTodos() {
         return true;
       })
       .map(({ id, title, completed }) => ({ id, title: title.trim(), completed }));
+
+    return { todos, error: null };
   } catch {
-    return [];
+    return { todos: [], error: 'invalid-data' };
   }
 }
 

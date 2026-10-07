@@ -3,7 +3,7 @@ import { usePersistentTodos } from '../hooks/usePersistentTodos.js';
 import { TodoContext } from './TodoContext.js';
 
 function TodoProvider({ children }) {
-  const [todos, setTodos] = usePersistentTodos();
+  const { todos, setTodos, storageStatus, storageError } = usePersistentTodos();
   const [activeFilter, setActiveFilter] = useState('all');
 
   function addTodo(title) {
@@ -45,6 +45,8 @@ function TodoProvider({ children }) {
         toggleTodo,
         updateTodo,
         deleteTodo,
+        storageStatus,
+        storageError,
       }}
     >
       {children}

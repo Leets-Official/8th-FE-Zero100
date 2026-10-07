@@ -347,6 +347,21 @@ a:focus-visible {
   color: var(--color-accent);
 }
 
+.storage-status {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  color: #686872;
+  background: #faf9fd;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.storage-status--error {
+  color: #a73345;
+  background: #fff1f3;
+}
+
 .stats-counts {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

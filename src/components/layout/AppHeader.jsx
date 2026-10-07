@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router';
 import { useTodos } from '../../hooks/useTodos.js';
 import Text from '../common/Text.jsx';
+import TodoStorageStatus from '../todo/TodoStorageStatus.jsx';
 
 function AppHeader({ title = 'TodoMatic', subtitle, isCompletedPage = false }) {
   const { todos } = useTodos();
@@ -39,6 +40,7 @@ function AppHeader({ title = 'TodoMatic', subtitle, isCompletedPage = false }) {
         </NavLink>
         <NavLink to="/statistics">통계</NavLink>
       </nav>
+      <TodoStorageStatus />
     </>
   );
 }
