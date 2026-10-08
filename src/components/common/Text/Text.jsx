@@ -22,7 +22,7 @@ function Text({
       className={cn(
         'tracking-tight wrap-anywhere text-ink',
         VARIANT_CLASS[variant],
-        isStrikethrough && 'text-placeholder line-through',
+        isStrikethrough && 'text-ink-done line-through',
         className,
       )}
       {...rest}

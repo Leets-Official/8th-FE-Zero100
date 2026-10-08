@@ -77,16 +77,17 @@ function TodoItem({ todo }) {
       <div className="flex gap-2 pl-[30px]">
         {isEditing ? (
           <>
-            <Button onClick={saveEditing} disabled={!trimmedEditingText}>
+            <Button size="item" onClick={saveEditing} disabled={!trimmedEditingText}>
               저장
             </Button>
-            <Button variant="secondary" onClick={cancelEditing}>
+            <Button variant="secondary" size="item" onClick={cancelEditing}>
               취소
             </Button>
           </>
         ) : (
           <>
             <Button
+              size="item"
               ref={focusEditButtonAfterEditing}
               variant="secondary"
               onClick={startEditing}
@@ -95,6 +96,7 @@ function TodoItem({ todo }) {
               수정
             </Button>
             <Button
+              size="item"
               variant="danger"
               onClick={() => openDeleteModal(todo)}
               aria-label={`"${todo.text}" 삭제하기`}

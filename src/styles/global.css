@@ -17,10 +17,13 @@
   --color-ink: #111111;
   --color-ink-sub: #222222;
   --color-ink-muted: #777777;
+  --color-ink-faint: #888888;
+  --color-ink-done: #999999;
   --color-placeholder: #9ca3af;
 
   --color-line: #dddddd;
-  --color-line-card: #e5e7eb;
+  --color-line-card: #eeeeee;
+  --color-line-tab: #e5e7eb;
   --color-surface-hover: #f9fafb;
 }
 

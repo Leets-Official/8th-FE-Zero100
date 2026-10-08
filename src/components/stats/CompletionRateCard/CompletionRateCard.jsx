@@ -20,7 +20,7 @@ function CompletionRateCard({ totalCount, completedCount, completionRate }) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={completionRate}
-        className="h-2.5 overflow-hidden rounded-full bg-primary-track"
+        className="h-[9px] overflow-hidden rounded-full bg-primary-track"
       >
         <div
           className="h-full rounded-full bg-primary transition-[width] duration-300"

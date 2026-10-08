@@ -10,7 +10,9 @@ const VARIANT_CLASS = {
 };
 
 const SIZE_CLASS = {
-  md: 'h-11 min-w-15 px-[18px] text-base',
+  md: 'h-11 min-w-15 px-[22px] text-sm',
+  // 할 일 카드 안의 수정/삭제/저장/취소 버튼
+  item: 'h-11 min-w-15 px-5 text-base',
   sm: 'h-9 min-w-14 px-3.5 text-sm',
 };
 
