@@ -1,26 +1,19 @@
 import Text from '../../common/Text/Text';
 import TodoItem from '../TodoItem/TodoItem';
-import styles from './TodoList.module.css';
 
-function TodoList({ todos, emptyMessage, onToggleTodo, onDeleteTodo, onEditTodo }) {
+function TodoList({ todos, emptyMessage }) {
   if (todos.length === 0) {
     return (
-      <Text variant="caption" className={styles.empty}>
+      <Text variant="caption" className="py-8 text-center">
         {emptyMessage}
       </Text>
     );
   }
 
   return (
-    <ul className={styles.list}>
+    <ul className="flex flex-col gap-2">
       {todos.map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onToggleTodo={onToggleTodo}
-          onDeleteTodo={onDeleteTodo}
-          onEditTodo={onEditTodo}
-        />
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>
   );

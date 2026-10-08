@@ -3,10 +3,13 @@ import Button from '../../common/Button/Button';
 import Checkbox from '../../common/Checkbox/Checkbox';
 import Input from '../../common/Input/Input';
 import Text from '../../common/Text/Text';
+import { useDeleteModal } from '../../../hooks/useDeleteModal';
+import { useTodos } from '../../../hooks/useTodos';
 import { isEnterKey } from '../../../utils/isEnterKey';
-import styles from './TodoItem.module.css';
 
-function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
+function TodoItem({ todo }) {
+  const { toggleTodo, editTodo } = useTodos();
+  const { openDeleteModal } = useDeleteModal();
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(todo.text);
   const trimmedEditingText = editingText.trim();
@@ -31,7 +34,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
   const saveEditing = () => {
     if (!trimmedEditingText) return;
 
-    onEditTodo(todo.id, trimmedEditingText);
+    editTodo(todo.id, trimmedEditingText);
     finishEditing();
   };
 
@@ -52,8 +55,8 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
   };
 
   return (
-    <li className={styles.card}>
-      <div className={styles.content}>
+    <li className="flex flex-col gap-3 rounded-lg border border-line-card bg-white p-4">
+      <div className="flex min-h-11 items-center">
         {isEditing ? (
           <Input
             value={editingText}
@@ -63,7 +66,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
             autoFocus
           />
         ) : (
-          <Checkbox checked={todo.isCompleted} onChange={() => onToggleTodo(todo.id)}>
+          <Checkbox checked={todo.isCompleted} onChange={() => toggleTodo(todo.id)}>
             <Text as="span" isStrikethrough={todo.isCompleted}>
               {todo.text}
             </Text>
@@ -71,19 +74,20 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
         )}
       </div>
 
-      <div className={styles.actions}>
+      <div className="flex gap-2 pl-[30px]">
         {isEditing ? (
           <>
-            <Button onClick={saveEditing} disabled={!trimmedEditingText}>
+            <Button size="item" onClick={saveEditing} disabled={!trimmedEditingText}>
               저장
             </Button>
-            <Button variant="secondary" onClick={cancelEditing}>
+            <Button variant="secondary" size="item" onClick={cancelEditing}>
               취소
             </Button>
           </>
         ) : (
           <>
             <Button
+              size="item"
               ref={focusEditButtonAfterEditing}
               variant="secondary"
               onClick={startEditing}
@@ -92,8 +96,9 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
               수정
             </Button>
             <Button
+              size="item"
               variant="danger"
-              onClick={() => onDeleteTodo(todo.id)}
+              onClick={() => openDeleteModal(todo)}
               aria-label={`"${todo.text}" 삭제하기`}
             >
               삭제
