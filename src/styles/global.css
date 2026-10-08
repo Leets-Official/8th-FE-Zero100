@@ -1,34 +1,35 @@
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@import 'tailwindcss';
 
-:root {
+/* 디자인 토큰: 색상/폰트를 한 곳에서 관리하고 bg-primary, text-danger처럼 이름으로 사용한다. */
+@theme {
+  --font-sans: 'Noto Sans KR', sans-serif;
+
   --color-primary: #4f46e5;
   --color-primary-hover: #4338ca;
+  --color-primary-soft: #f7f6ff;
+  --color-primary-line: #dedbff;
+  --color-primary-track: #e9e7ff;
+
   --color-danger: #dc2626;
-  --color-danger-border: #fca5a5;
-  --color-danger-bg-hover: #fef2f2;
-  --color-text: #111111;
-  --color-text-sub: #222222;
-  --color-text-muted: #9ca3af;
-  --color-border: #dddddd;
-  --color-border-card: #e5e7eb;
-  --color-bg: #ffffff;
-  --color-bg-hover: #f9fafb;
+  --color-danger-line: #fca5a5;
+  --color-danger-soft: #fef2f2;
+
+  --color-ink: #111111;
+  --color-ink-sub: #222222;
+  --color-ink-muted: #777777;
+  --color-placeholder: #9ca3af;
+
+  --color-line: #dddddd;
+  --color-line-card: #e5e7eb;
+  --color-surface-hover: #f9fafb;
 }
 
-body {
-  min-height: 100vh;
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  font-family: 'Noto Sans KR', sans-serif;
-}
+@layer base {
+  body {
+    @apply min-h-screen bg-white font-sans text-ink;
+  }
 
-button,
-input {
-  font: inherit;
+  button:not(:disabled) {
+    cursor: pointer;
+  }
 }
