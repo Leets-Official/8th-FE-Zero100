@@ -6,7 +6,6 @@ import TodoList from './components/todo/TodoList/TodoList';
 import { INITIAL_TODOS } from './constants/initialTodos';
 import { EMPTY_MESSAGE_BY_FILTER, TODO_FILTER } from './constants/todoFilter';
 import { filterTodos } from './utils/filterTodos';
-import styles from './App.module.css';
 
 function App() {
   const [todos, setTodos] = useState(INITIAL_TODOS);
@@ -36,8 +35,8 @@ function App() {
   };
 
   return (
-    <main className={styles.app}>
-      <header className={styles.header}>
+    <main className="mx-auto w-full max-w-[552px] px-4 py-15">
+      <header className="mb-6 flex flex-col gap-4">
         <Text as="h1" variant="title">
           TodoMatic
         </Text>
@@ -45,7 +44,7 @@ function App() {
         <TodoFilter currentFilter={currentFilter} onChangeFilter={setCurrentFilter} />
       </header>
 
-      <section className={styles.listSection} aria-labelledby="remaining-count">
+      <section className="flex flex-col gap-2" aria-labelledby="remaining-count">
         <Text as="h2" variant="heading" id="remaining-count" aria-live="polite">
           남은 할 일 {remainingCount}개
         </Text>

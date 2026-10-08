@@ -4,7 +4,6 @@ import Checkbox from '../../common/Checkbox/Checkbox';
 import Input from '../../common/Input/Input';
 import Text from '../../common/Text/Text';
 import { isEnterKey } from '../../../utils/isEnterKey';
-import styles from './TodoItem.module.css';
 
 function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -52,8 +51,8 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
   };
 
   return (
-    <li className={styles.card}>
-      <div className={styles.content}>
+    <li className="flex flex-col gap-3 rounded-lg border border-line-card bg-white p-4">
+      <div className="flex min-h-11 items-center">
         {isEditing ? (
           <Input
             value={editingText}
@@ -71,7 +70,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
         )}
       </div>
 
-      <div className={styles.actions}>
+      <div className="flex gap-2 pl-[30px]">
         {isEditing ? (
           <>
             <Button onClick={saveEditing} disabled={!trimmedEditingText}>

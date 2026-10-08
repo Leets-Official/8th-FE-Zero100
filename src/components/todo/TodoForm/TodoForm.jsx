@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import Text from '../../common/Text/Text';
-import styles from './TodoForm.module.css';
 
 const INPUT_ID = 'new-todo-input';
 
@@ -19,11 +18,11 @@ function TodoForm({ onAddTodo }) {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-2.5" onSubmit={handleSubmit}>
       <Text as="label" variant="heading" htmlFor={INPUT_ID}>
         할 일을 입력하세요
       </Text>
-      <div className={styles.inputRow}>
+      <div className="flex items-center gap-2">
         <Input
           id={INPUT_ID}
           value={inputText}
