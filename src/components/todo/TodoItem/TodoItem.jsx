@@ -3,11 +3,13 @@ import Button from '../../common/Button/Button';
 import Checkbox from '../../common/Checkbox/Checkbox';
 import Input from '../../common/Input/Input';
 import Text from '../../common/Text/Text';
+import { useDeleteModal } from '../../../hooks/useDeleteModal';
 import { useTodos } from '../../../hooks/useTodos';
 import { isEnterKey } from '../../../utils/isEnterKey';
 
 function TodoItem({ todo }) {
-  const { toggleTodo, deleteTodo, editTodo } = useTodos();
+  const { toggleTodo, editTodo } = useTodos();
+  const { openDeleteModal } = useDeleteModal();
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(todo.text);
   const trimmedEditingText = editingText.trim();
@@ -94,7 +96,7 @@ function TodoItem({ todo }) {
             </Button>
             <Button
               variant="danger"
-              onClick={() => deleteTodo(todo.id)}
+              onClick={() => openDeleteModal(todo)}
               aria-label={`"${todo.text}" 삭제하기`}
             >
               삭제

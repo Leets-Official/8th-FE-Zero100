@@ -9,14 +9,27 @@ const VARIANT_CLASS = {
     'border-danger-line bg-white text-danger enabled:hover:border-[#f87171] enabled:hover:bg-danger-soft',
 };
 
-function Button({ children, variant = 'primary', type = 'button', className = '', ...rest }) {
+const SIZE_CLASS = {
+  md: 'h-11 min-w-15 px-[18px] text-base',
+  sm: 'h-9 min-w-14 px-3.5 text-sm',
+};
+
+function Button({
+  children,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  className = '',
+  ...rest
+}) {
   return (
     <button
       type={type}
       className={cn(
-        'inline-flex h-11 min-w-15 items-center justify-center rounded-md border px-[18px] text-base font-semibold tracking-tight whitespace-nowrap transition-colors',
+        'inline-flex items-center justify-center rounded-md border font-semibold tracking-tight whitespace-nowrap transition-colors',
         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         'disabled:cursor-not-allowed disabled:opacity-50',
+        SIZE_CLASS[size],
         VARIANT_CLASS[variant],
         className,
       )}
