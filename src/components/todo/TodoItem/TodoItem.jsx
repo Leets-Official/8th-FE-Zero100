@@ -3,9 +3,11 @@ import Button from '../../common/Button/Button';
 import Checkbox from '../../common/Checkbox/Checkbox';
 import Input from '../../common/Input/Input';
 import Text from '../../common/Text/Text';
+import { useTodos } from '../../../hooks/useTodos';
 import { isEnterKey } from '../../../utils/isEnterKey';
 
-function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
+function TodoItem({ todo }) {
+  const { toggleTodo, deleteTodo, editTodo } = useTodos();
   const [isEditing, setIsEditing] = useState(false);
   const [editingText, setEditingText] = useState(todo.text);
   const trimmedEditingText = editingText.trim();
@@ -30,7 +32,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
   const saveEditing = () => {
     if (!trimmedEditingText) return;
 
-    onEditTodo(todo.id, trimmedEditingText);
+    editTodo(todo.id, trimmedEditingText);
     finishEditing();
   };
 
@@ -62,7 +64,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
             autoFocus
           />
         ) : (
-          <Checkbox checked={todo.isCompleted} onChange={() => onToggleTodo(todo.id)}>
+          <Checkbox checked={todo.isCompleted} onChange={() => toggleTodo(todo.id)}>
             <Text as="span" isStrikethrough={todo.isCompleted}>
               {todo.text}
             </Text>
@@ -92,7 +94,7 @@ function TodoItem({ todo, onToggleTodo, onDeleteTodo, onEditTodo }) {
             </Button>
             <Button
               variant="danger"
-              onClick={() => onDeleteTodo(todo.id)}
+              onClick={() => deleteTodo(todo.id)}
               aria-label={`"${todo.text}" 삭제하기`}
             >
               삭제
