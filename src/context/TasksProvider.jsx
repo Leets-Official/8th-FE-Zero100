@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TasksContext } from './TasksContext';
-import { loadTasks, STORAGE_KEY } from '../utils/taskStorage';
+import { loadTasks, saveTasks } from '../utils/taskStorage';
 
 export default function TasksProvider({ children }) {
   // 초기 렌더에서 저장된 값을 읽어, 빈 배열이 기존 데이터를 먼저 덮어쓰지 않도록 합니다.
@@ -11,14 +11,9 @@ export default function TasksProvider({ children }) {
 
   useEffect(() => {
     if (!persistEnabled) return;
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
-      setStorageError('');
-    } catch {
-      setStorageError(
-        '브라우저에 저장하지 못했어요. 현재 화면에서는 사용할 수 있지만 새로고침하면 변경 내용이 사라질 수 있습니다.',
-      );
-    }
+
+    const error = saveTasks(tasks);
+    setStorageError(error);
   }, [tasks, persistEnabled]);
 
   function addTask(text) {

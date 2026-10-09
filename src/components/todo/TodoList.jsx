@@ -8,20 +8,20 @@ const emptyMessages = {
   completed: '아직 완료한 할 일이 없어요.',
 };
 
-export default function TodoList({ filter }) {
-  const { tasks, toggleTask, editTask, deleteTask } = useTasks();
-  const visibleTasks = tasks.filter(
-    (task) => filter === 'all' || (filter === 'completed' ? task.completed : !task.completed),
-  );
-  if (visibleTasks.length === 0)
+export default function TodoList({ tasks, filter }) {
+  const { toggleTask, editTask, deleteTask } = useTasks();
+
+  if (tasks.length === 0) {
     return (
       <Text className="empty-message" role="status">
         {emptyMessages[filter]}
       </Text>
     );
+  }
+
   return (
     <ul className="todo-list" aria-label="할 일 목록">
-      {visibleTasks.map((task) => (
+      {tasks.map((task) => (
         <TodoItem
           key={task.id}
           todo={task}
