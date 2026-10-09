@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import DeleteModal from './components/DeleteModal.jsx';
 import CompletedTodoPage from './pages/CompletedTodoPage.jsx';
+import DashboardPage from './pages/dashboard/DashboardPage.jsx';
 import TodoPage from './pages/TodoPage.jsx';
 import { loadTodos, saveTodos } from './utils/storage.js';
 
@@ -57,6 +58,7 @@ function App() {
             />
           }
         />
+        <Route path="/dashboard" element={<DashboardPage />} />
       </Routes>
 
       <DeleteModal onConfirm={handleDeleteTodo} />
