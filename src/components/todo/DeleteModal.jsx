@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { useModal } from '../contexts/ModalContext.js';
+import { useModal } from '../../contexts/todo/ModalContext.js';
 import Button from './Button.jsx';
 
 const MODAL_BUTTON_CLASS_NAME =

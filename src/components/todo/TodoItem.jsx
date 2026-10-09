@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
-import { useModal } from '../contexts/ModalContext.js';
+import { useModal } from '../../contexts/todo/ModalContext.js';
 import Button from './Button.jsx';
 import Checkbox from './Checkbox.jsx';
 
@@ -32,8 +32,7 @@ function TodoItem({ todo, isEditing, onStartEdit, onEndEdit, onToggle, onEdit })
     onEndEdit();
   };
 
-  // 수정 모드에서는 입력창과 저장/취소 버튼을 하나의 form으로 묶어 저장을 onSubmit으로 처리한다.
-  // contents 클래스로 wrapper 자체는 레이아웃에 영향을 주지 않는다.
+
   const ContentWrapper = isEditing ? 'form' : 'div';
 
   return (

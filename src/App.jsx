@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
-import DeleteModal from './components/DeleteModal.jsx';
-import CompletedTodoPage from './pages/CompletedTodoPage.jsx';
+import DeleteModal from './components/todo/DeleteModal.jsx';
 import DashboardPage from './pages/dashboard/DashboardPage.jsx';
-import TodoPage from './pages/TodoPage.jsx';
-import { loadTodos, saveTodos } from './utils/storage.js';
+import CompletedTodoPage from './pages/todo/CompletedTodoPage.jsx';
+import TodoPage from './pages/todo/TodoPage.jsx';
+import { loadTodos, saveTodos } from './utils/todo/storage.js';
 
 // 두 페이지가 같은 todos를 보여줘야 하므로, 두 페이지의 공통 부모인 App에서 state를 관리한다.
 function App() {

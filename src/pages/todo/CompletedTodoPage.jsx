@@ -1,6 +1,6 @@
-import PageHeader from '../components/PageHeader.jsx';
-import PageLayout from '../components/PageLayout.jsx';
-import TodoList from '../components/TodoList.jsx';
+import PageHeader from '../../components/todo/PageHeader.jsx';
+import PageLayout from '../../components/todo/PageLayout.jsx';
+import TodoList from '../../components/todo/TodoList.jsx';
 
 function CompletedTodoPage({ todos, onToggleTodo, onEditTodo }) {
   const completedTodos = todos.filter((todo) => todo.completed);
