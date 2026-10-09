@@ -1,0 +1,27 @@
+.app {
+  width: min(100% - 40px, 680px);
+  margin: 64px auto;
+}
+
+.app-title {
+  font-size: 42px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  margin-bottom: 30px;
+}
+
+.todo-count {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 480px) {
+  .app {
+    width: calc(100% - 32px);
+    margin: 32px auto;
+  }
+  .app-title {
+    font-size: 36px;
+  }
+}

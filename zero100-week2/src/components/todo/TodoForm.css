@@ -1,0 +1,11 @@
+.form-label {
+  display: block;
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}

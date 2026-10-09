@@ -28,9 +28,11 @@ PowerShell에서는 npm 대신 npm.cmd를 사용하면 스크립트 실행 정�
 - context/TasksContext.js: 공유 Context
 - context/TasksProvider.jsx: 상태, 변경 함수, 저장 Effect, 통계
 - hooks/useTasks.js: Context 접근 Hook
-- utils/taskStorage.js: 저장 데이터 읽기와 검증
+- utils/taskStorage.js: 저장 데이터 읽기·검증·저장
 - components/Layout.jsx: 헤더, 탭, 완료 목록 링크, Outlet
-- pages/TasksPage.jsx: 상태별 페이지
+- pages/TasksPage.jsx: 전체·진행 중 목록
+- pages/CompletedPage.jsx: 완료 목록
+- utils/taskFilters.js: 상태별 필터 규칙
 - components/commons: 공통 UI
 - components/todo: 입력, 목록, 개별 항목, 통계
 
