@@ -1,0 +1,121 @@
+.preview-scroll {
+  min-height: 100vh;
+  overflow-x: auto;
+  background: #a9adb2;
+}
+
+/* 회색 캔버스 */
+.preview-canvas {
+  display: grid;
+  width: max-content;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 48px 400px 48px 48px;
+  grid-template-columns: 630px 440px 80px 240px;
+  grid-template-rows: auto auto;
+  column-gap: 64px;
+  row-gap: 48px;
+  align-items: start;
+  background: #a9adb2;
+  font-family: var(--common-font, 'Noto Sans KR', sans-serif);
+}
+
+.preview-column {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.preview-column--left,
+.preview-column--middle {
+  min-width: 0;
+}
+
+/* 섹션 + 제목 */
+.preview-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  min-width: 0;
+}
+
+.preview-section--fit {
+  align-items: flex-start;
+}
+
+.preview-section h3 {
+  margin: 0;
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+/* Sidebar: 오른쪽, 위아래 두 행 전체 차지 */
+.preview-sidebar {
+  grid-column: 4;
+  grid-row: 1 / span 2;
+}
+
+.preview-sidebar__wrap {
+  position: relative;
+}
+
+/* Todolist 이동 주석 (화살표 + 텍스트) */
+.preview-annotation {
+  position: absolute;
+  top: 127px;
+  left: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 16px;
+  color: #000;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.preview-annotation::before {
+  content: '';
+  width: 120px;
+  height: 1px;
+  background: #000;
+}
+
+/* 하단: Button + Header/Footer */
+.preview-bottom {
+  display: flex;
+  grid-column: 1 / 4;
+  grid-row: 2;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.preview-bottom__right {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.preview-button-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Modal은 backdrop 없이 카드만 보여주기 */
+.preview-column--middle .common-modal {
+  width: 440px;
+}
+
+@media (max-width: 768px) {
+  .preview-canvas {
+    padding: 24px 240px 24px 24px;
+  }
+}

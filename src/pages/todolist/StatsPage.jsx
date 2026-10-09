@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import Card from '../components/Card/Card';
-import Navigation from '../components/Navigation/Navigation';
-import Text from '../components/Text/Text';
+import Card from '../../components/Card/Card';
+import Navigation from '../../components/Navigation/Navigation';
+import Text from '../../components/Text/Text';
+import { ROUTES } from '../../constants/routes';
 
-import '../App.css';
+import '../../App.css';
 
 function StatsPage({ todos }) {
   const totalCount = todos.length;
@@ -25,7 +26,7 @@ function StatsPage({ todos }) {
         <div className="header-top">
           <h1 className="logo-title">TodoMatic</h1>
 
-          <Link to="/completed" className="link-completed">
+          <Link to={ROUTES.TODO_COMPLETED} className="link-completed">
             완료 목록 →
           </Link>
         </div>
@@ -39,7 +40,7 @@ function StatsPage({ todos }) {
             할 일 통계
           </Text>
 
-          <p className="stats-subtitle">할 일을 얼마나 완료했는지 한눈에 확인하세요.</p>
+          <p className="stats-subtitle">전체 할 일의 진행 현황을 한눈에 확인해 보세요.</p>
         </div>
 
         <article className="stats-highlight">

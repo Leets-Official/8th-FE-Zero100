@@ -1,0 +1,466 @@
+/* ========================================
+   공통 디자인 토큰
+======================================== */
+:root {
+  --common-font: 'Noto Sans KR', sans-serif;
+  --common-border: #e5e7eb;
+  --common-bg: #f9fafb;
+  --common-white: #ffffff;
+  --common-black: #000000;
+  --common-text: #364153;
+  --common-text-sub: #4a5565;
+  --common-muted: #6a7282;
+  --common-placeholder: rgba(10, 10, 10, 0.5);
+  --common-input-text: #0a0a0a;
+  --common-error: #fb2c36;
+  --common-icon: #171717;
+  --common-active-bg: #f3f4f6;
+  --common-radius: 10px;
+}
+
+/* ========================================
+   공통 기본 설정 및 포커스
+======================================== */
+.common-component {
+  box-sizing: border-box;
+  font-family: var(--common-font);
+}
+
+.common-button:focus-visible,
+.common-header__action:focus-visible,
+.common-sidebar__item:focus-visible {
+  outline: 2px solid var(--common-muted);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Button
+======================================== */
+.common-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 0.935px solid transparent;
+  border-radius: var(--common-radius);
+  font-family: var(--common-font);
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+
+.common-button--primary {
+  border-color: var(--common-black);
+  background: var(--common-black);
+  color: var(--common-white);
+}
+
+.common-button--secondary {
+  border-color: var(--common-border);
+  background: var(--common-white);
+  color: var(--common-text);
+}
+
+.common-button--medium {
+  padding: 10px 24px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.common-button--secondary.common-button--medium {
+  padding-right: 25px;
+  padding-left: 25px;
+}
+
+.common-button--small {
+  padding: 10px 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.common-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   공통 Field - TextInput / TextArea
+======================================== */
+.common-field {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.common-field__label {
+  color: var(--common-text);
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.common-field__helper {
+  align-self: stretch;
+  color: var(--common-muted);
+  font-family: var(--common-font);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.common-field__error {
+  align-self: stretch;
+  color: var(--common-error);
+  font-family: var(--common-font);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* ========================================
+   TextInput
+======================================== */
+.common-input {
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  align-items: center;
+
+  border: 0.935px solid var(--common-border);
+  border-radius: var(--common-radius);
+  background: var(--common-bg);
+
+  color: var(--common-input-text);
+  font-family: var(--common-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  outline: none;
+}
+
+.common-input::placeholder {
+  color: var(--common-placeholder);
+  opacity: 1;
+}
+
+.common-input:focus {
+  border-color: var(--common-muted);
+}
+
+.common-input[aria-invalid='true'] {
+  border-color: var(--common-error);
+}
+
+.common-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Figma 기준 최소 너비가 필요한 입력창 */
+.common-input--wide {
+  min-width: 630px;
+}
+
+/* ========================================
+   TextArea
+======================================== */
+.common-field.common-field--textarea {
+  width: 630px;
+  max-width: 100%;
+  align-items: flex-start;
+  gap: 5.987px;
+}
+
+.common-textarea {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 120px;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  align-items: flex-start;
+  align-self: stretch;
+
+  border: 0.935px solid var(--common-border);
+  border-radius: var(--common-radius);
+  background: var(--common-bg);
+
+  color: var(--common-input-text);
+  font-family: var(--common-font);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  outline: none;
+  resize: vertical;
+}
+
+.common-textarea::placeholder {
+  color: var(--common-placeholder);
+  opacity: 1;
+}
+
+.common-textarea:focus {
+  border-color: var(--common-muted);
+}
+
+.common-textarea[aria-invalid='true'] {
+  border-color: var(--common-error);
+}
+
+.common-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   Header
+======================================== */
+.common-header {
+  display: flex;
+  width: 100%;
+  height: 60px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+
+  border-bottom: 0.935px solid var(--common-border);
+  background: var(--common-white);
+}
+
+.common-header__title {
+  margin: 0;
+  color: var(--common-black);
+  font-family: var(--common-font);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.common-header__action {
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--common-text-sub);
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.common-header__action:hover {
+  color: var(--common-black);
+}
+
+/* ========================================
+   Footer
+======================================== */
+.common-footer {
+  display: flex;
+  width: 100%;
+  min-height: 60px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 24px;
+  justify-content: flex-end;
+  align-items: center;
+
+  border-top: 0.935px solid var(--common-border);
+  background: var(--common-white);
+  color: var(--common-text-sub);
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* ========================================
+   Modal
+======================================== */
+.common-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.common-modal {
+  display: flex;
+  width: min(100%, 440px);
+  max-height: 100%;
+  box-sizing: border-box;
+  padding: 32.929px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 31.995px;
+  overflow-y: auto;
+
+  border: 0.935px solid var(--common-border);
+  border-radius: var(--common-radius);
+  background: var(--common-white);
+}
+
+.common-modal__message {
+  align-self: stretch;
+  margin: 0;
+  color: var(--common-black);
+  font-family: var(--common-font);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: center;
+}
+
+.common-modal__actions {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ========================================
+   Toast
+======================================== */
+.common-toast {
+  display: flex;
+  width: 320px;
+  max-width: 100%;
+  min-height: 53px;
+  box-sizing: border-box;
+  padding: 16px 14px;
+  align-items: center;
+  gap: 10px;
+
+  border: 0.935px solid #ededed;
+  border-radius: 8px;
+  background: var(--common-white);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.1);
+
+  color: var(--common-icon);
+  font-family: var(--common-font);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 19.5px;
+}
+
+.common-toast__message {
+  min-width: 0;
+}
+
+/* ========================================
+   Sidebar
+======================================== */
+.common-sidebar {
+  display: flex;
+  width: 239.062px;
+  min-height: 818px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: stretch;
+
+  border-right: 0.935px solid var(--common-border);
+  background: var(--common-white);
+}
+
+.common-sidebar__item {
+  display: flex;
+  width: 100%;
+  min-height: 43.984px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 10px 24px;
+  align-items: center;
+
+  border: none;
+  background: var(--common-white);
+  color: var(--common-black);
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.common-sidebar__item:hover,
+.common-sidebar__item--active {
+  background: var(--common-active-bg);
+}
+
+/* ========================================
+   Icon
+======================================== */
+.common-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  color: var(--common-icon);
+}
+
+.common-icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ========================================
+   반응형
+======================================== */
+@media (max-width: 768px) {
+  .common-field.common-field--textarea {
+    width: 100%;
+  }
+
+  .common-input--wide {
+    min-width: 0;
+  }
+
+  .common-header {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+
+  .common-sidebar {
+    width: 200px;
+  }
+
+  .common-modal {
+    padding: 24px;
+    gap: 24px;
+  }
+}

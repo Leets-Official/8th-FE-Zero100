@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 
-import Text from '../components/Text/Text';
-import TodoList from '../components/TodoList/TodoList';
+import Text from '../../components/Text/Text';
+import TodoList from '../../components/TodoList/TodoList';
+import { ROUTES } from '../../constants/routes';
 
-import '../App.css';
+import '../../App.css';
 
 function CompletedPage({ todos, onToggle, onDelete, onEdit }) {
   const completedTodos = todos.filter((todo) => todo.completed);
@@ -14,7 +15,7 @@ function CompletedPage({ todos, onToggle, onDelete, onEdit }) {
         <div className="header-top">
           <h1 className="logo-title">완료된 작업</h1>
 
-          <Link to="/" className="link-completed">
+          <Link to={ROUTES.TODO} className="link-completed">
             ← 진행 중 목록
           </Link>
         </div>
