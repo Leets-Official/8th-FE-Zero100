@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 import DeleteModal from './components/DeleteModal.jsx';
 import CompletedTodoPage from './pages/CompletedTodoPage.jsx';
 import TodoPage from './pages/TodoPage.jsx';
@@ -35,8 +35,9 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<Navigate to="/todolist" replace />} />
         <Route
-          path="/"
+          path="/todolist"
           element={
             <TodoPage
               todos={todos}
@@ -47,7 +48,7 @@ function App() {
           }
         />
         <Route
-          path="/completed"
+          path="/todolist/completed"
           element={
             <CompletedTodoPage
               todos={todos}

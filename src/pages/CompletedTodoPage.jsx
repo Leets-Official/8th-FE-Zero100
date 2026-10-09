@@ -7,7 +7,7 @@ function CompletedTodoPage({ todos, onToggleTodo, onEditTodo }) {
 
   return (
     <PageLayout>
-      <PageHeader title="완료된 작업" navLabel="← 진행 중 목록" navTo="/" />
+      <PageHeader title="완료된 작업" navLabel="← 진행 중 목록" navTo="/todolist" />
       <TodoList
         title={`완료된 목록 ${completedTodos.length}개`}
         todos={completedTodos}

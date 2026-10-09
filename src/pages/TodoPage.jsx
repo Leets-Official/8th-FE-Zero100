@@ -52,7 +52,7 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo }) {
 
   return (
     <PageLayout>
-      <PageHeader title="TodoMatic" navLabel="완료 목록 →" navTo="/completed" />
+      <PageHeader title="TodoMatic" navLabel="완료 목록 →" navTo="/todolist/completed" />
       <TabNav tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
       {activeTab === TAB_STATISTICS ? (
         <Statistics todos={todos} />
