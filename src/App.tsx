@@ -1,208 +1,107 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Header from './components/Header';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+import Dashboard from './pages/Dashboard';
+import TodoList from './pages/TodoList';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Completed from './pages/Completed';
-import { Button } from './components/Button';
-import { Input } from './components/Input';
-import { TodoItem, type Todo } from './components/TodoItem';
+import Inquiries from './pages/Inquiries';
+import InquiryCreate from './pages/InquiryCreate';
+import InquiryDetail from './pages/InquiryDetail';
+import MyPage from './pages/MyPage';
 
-type FilterType = 'all' | 'active' | 'completed';
+import Sidebar from './components/Sidebar';
 
-function TodoPage() {
-  const [todos, setTodos] = useState<Todo[]>(() => {
-    const savedTodos = localStorage.getItem('tasks');
-
-    if (!savedTodos) {
-      return [];
-    }
-
-    return JSON.parse(savedTodos);
-  });
-
-  const [input, setInput] = useState('');
-  const [filter, setFilter] = useState<FilterType>('all');
-
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(todos));
-  }, [todos]);
-
-  const addTodo = () => {
-    if (!input.trim()) return;
-
-    setTodos([
-      ...todos,
-      {
-        id: Date.now(),
-        text: input.trim(),
-        completed: false,
-      },
-    ]);
-
-    setInput('');
-  };
-
-  const toggleTodo = (id: number) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, completed: !todo.completed }
-          : todo
-      )
-    );
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
-  };
-
-  const editTodo = (id: number, text: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id
-          ? { ...todo, text }
-          : todo
-      )
-    );
-  };
-
-  const activeCount = todos.filter((todo) => !todo.completed).length;
-
-  const totalCount = todos.length;
-
-  const completedCount = todos.filter(
-    (todo) => todo.completed
-  ).length;
-
-const completionRate =
-  totalCount === 0
-    ? 0
-    : Math.round((completedCount / totalCount) * 100);
-
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === 'active') {
-      return !todo.completed;
-    }
-
-    if (filter === 'completed') {
-      return todo.completed;
-    }
-
-    return true;
-  });
-
+function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      style={{
-        maxWidth: '600px',
-        margin: '40px auto',
-        padding: '0 20px',
-        fontFamily: 'sans-serif',
-      }}
-    >
-      <h2>Zero100 Todo List</h2>
+    <div className="min-h-screen md:flex">
+      <Sidebar />
 
-      <div
-        style={{
-          display: 'flex',
-          gap: '8px',
-          marginBottom: '16px',
-        }}
-      >
-        <Input
-          value={input}
-          onChange={setInput}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              addTodo();
-            }
-          }}
-        />
-
-        <Button onClick={addTodo}>추가</Button>
+      <div className="min-w-0 flex-1">
+        <Header />
+        <main>{children}</main>
       </div>
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            gap: '4px',
-          }}
-        >
-          <Button onClick={() => setFilter('all')}>
-            전체
-          </Button>
-
-          <Button onClick={() => setFilter('active')}>
-            진행 중
-          </Button>
-
-          <Button onClick={() => setFilter('completed')}>
-            완료
-          </Button>
-        </div>
-
-        <span
-          style={{
-            fontSize: '14px',
-            color: '#666',
-          }}
-        >
-          남은 할 일: {activeCount}개
-        </span>
-      </div>
-
-     <div
-  style={{
-    marginBottom: '16px',
-    padding: '12px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-  }}
->
-  <div>전체: {totalCount}개</div>
-  <div>진행 중: {activeCount}개</div>
-  <div>완료: {completedCount}개</div>
-  <div>완료율: {completionRate}%</div>
-</div>
-
-<div style={{ marginBottom: '16px' }}>
-  <Link to="/completed">
-    완료 목록 보기
-  </Link>
-</div>
-
-      <ul
-        style={{
-          listStyle: 'none',
-          padding: 0,
-        }}
-      >
-        {filteredTodos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={toggleTodo}
-            onDelete={deleteTodo}
-            onEdit={editTodo}
-          />
-        ))}
-      </ul>
     </div>
   );
 }
-
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TodoPage />} />
+        {/* 첫 화면은 대시보드로 이동 */}
+        <Route
+          path="/"
+          element={<Navigate to="/dashboard" replace />}
+        />
+
+        {/* 대시보드 */}
+        <Route
+          path="/dashboard"
+          element={
+            <Layout>
+              <Dashboard />
+            </Layout>
+          }
+        />
+
+        {/* 기존 TodoList */}
+        <Route path="/todolist" element={<TodoList />} />
+
+        {/* 로그인 */}
+        <Route path="/login" element={<Login />} />
+
+        {/* 회원가입 */}
+        <Route path="/signup" element={<Signup />} />
+
+        {/* 문의 목록 */}
+        <Route
+          path="/inquiries"
+          element={
+            <Layout>
+              <Inquiries />
+            </Layout>
+          }
+        />
+
+        {/* 문의 등록 */}
+        <Route
+          path="/inquiries/new"
+          element={
+            <Layout>
+              <InquiryCreate />
+            </Layout>
+          }
+        />
+
+        {/* 문의 상세 */}
+        <Route
+          path="/inquiries/:id"
+          element={
+            <Layout>
+              <InquiryDetail />
+            </Layout>
+          }
+        />
+
+        {/* 마이페이지 */}
+        <Route
+          path="/mypage"
+          element={
+            <Layout>
+              <MyPage />
+            </Layout>
+          }
+        />
+
+        {/* 완료된 할 일 */}
         <Route path="/completed" element={<Completed />} />
+
+        {/* 등록되지 않은 주소 */}
+        <Route
+          path="*"
+          element={<Navigate to="/dashboard" replace />}
+        />
       </Routes>
     </BrowserRouter>
   );
