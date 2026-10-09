@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import Button from '../components/Button.jsx';
-import PageHeader from '../components/PageHeader.jsx';
-import PageLayout from '../components/PageLayout.jsx';
-import Statistics from '../components/Statistics.jsx';
-import TabNav from '../components/TabNav.jsx';
-import TodoForm from '../components/TodoForm.jsx';
-import TodoList from '../components/TodoList.jsx';
+import Button from '../../components/todo/Button.jsx';
+import PageHeader from '../../components/todo/PageHeader.jsx';
+import PageLayout from '../../components/todo/PageLayout.jsx';
+import Statistics from '../../components/todo/Statistics.jsx';
+import TabNav from '../../components/todo/TabNav.jsx';
+import TodoForm from '../../components/todo/TodoForm.jsx';
+import TodoList from '../../components/todo/TodoList.jsx';
 
 const FILTER_ALL = 'all';
 const FILTER_ACTIVE = 'active';
@@ -52,7 +52,7 @@ function TodoPage({ todos, onAddTodo, onToggleTodo, onEditTodo }) {
 
   return (
     <PageLayout>
-      <PageHeader title="TodoMatic" navLabel="완료 목록 →" navTo="/completed" />
+      <PageHeader title="TodoMatic" navLabel="완료 목록 →" navTo="/todolist/completed" />
       <TabNav tabs={TABS} activeTab={activeTab} onChangeTab={setActiveTab} />
       {activeTab === TAB_STATISTICS ? (
         <Statistics todos={todos} />
