@@ -1,0 +1,34 @@
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.navigation-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0 10px;
+  color: #767676;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14.4px;
+  font-weight: 600;
+  line-height: 21.6px;
+  text-decoration: none;
+}
+
+.navigation-item.active {
+  color: #4f46e5;
+}
+
+.navigation-item.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background-color: #4f46e5;
+  content: '';
+}

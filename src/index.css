@@ -1,15 +1,35 @@
-* {
-  box-sizing: border-box;
+@import 'tailwindcss';
+
+:root {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #111111;
+  background: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
 }
 
 body {
+  min-width: 320px;
+  min-height: 100vh;
   margin: 0;
-  font-family: 'Noto Sans KR', sans-serif;
-  background-color: #ffffff;
-  color: #111111;
 }
 
 button,
 input {
-  font-family: inherit;
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
 }

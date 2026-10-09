@@ -1,0 +1,15 @@
+.todo-list-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.empty-state {
+  padding: 28px 16px;
+  border: 1px solid #eeeeee;
+  border-radius: 8px;
+  color: #767676;
+  font-size: 14px;
+  text-align: center;
+}

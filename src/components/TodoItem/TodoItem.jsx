@@ -1,6 +1,7 @@
 import Button from '../Button/Button';
 import Checkbox from '../Checkbox/Checkbox';
 import Input from '../Input/Input';
+import Modal from '../Modal/Modal';
 import './TodoItem.css';
 
 function TodoItem({
@@ -19,15 +20,20 @@ function TodoItem({
     <div className="todo-card">
       <div className="todo-card-top">
         {isEditing ? (
-          <div className="edit-input-wrapper">
-            <Input
-              value={editingText}
-              onChange={onEditingTextChange}
-              onKeyDown={(e) => onEditKeyDown(e, todo.id)}
-              aria-label="할 일 수정"
-              placeholder="수정할 할 일을 입력하세요"
-            />
-          </div>
+          <>
+            <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)} />
+
+            <div className="edit-input-wrapper">
+              <Input
+                value={editingText}
+                onChange={onEditingTextChange}
+                onKeyDown={(event) => onEditKeyDown(event, todo.id)}
+                aria-label="할 일 수정"
+                placeholder="수정할 할 일을 입력하세요"
+                autoFocus
+              />
+            </div>
+          </>
         ) : (
           <Checkbox checked={todo.completed} onChange={() => onToggle(todo.id)} label={todo.text} />
         )}
@@ -36,7 +42,7 @@ function TodoItem({
       <div className="todo-card-buttons">
         {isEditing ? (
           <>
-            <Button variant="default" onClick={() => onSaveEdit(todo.id)}>
+            <Button variant="secondary" onClick={() => onSaveEdit(todo.id)}>
               저장
             </Button>
 
@@ -50,9 +56,41 @@ function TodoItem({
               수정
             </Button>
 
-            <Button variant="danger" onClick={() => onDelete(todo.id)}>
-              삭제
-            </Button>
+            <Modal>
+              <Modal.Trigger>
+                <Button variant="danger">삭제</Button>
+              </Modal.Trigger>
+
+              <Modal.Backdrop />
+
+              <Modal.Content>
+                <h2>할 일을 삭제하시겠습니까?</h2>
+
+                <div className="modal-actions">
+                  <Modal.Close>
+                    {(closeModal) => (
+                      <Button variant="secondary" onClick={closeModal}>
+                        취소
+                      </Button>
+                    )}
+                  </Modal.Close>
+
+                  <Modal.Close>
+                    {(closeModal) => (
+                      <Button
+                        variant="danger"
+                        onClick={() => {
+                          onDelete(todo.id);
+                          closeModal();
+                        }}
+                      >
+                        삭제
+                      </Button>
+                    )}
+                  </Modal.Close>
+                </div>
+              </Modal.Content>
+            </Modal>
           </>
         )}
       </div>

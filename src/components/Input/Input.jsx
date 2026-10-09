@@ -7,6 +7,7 @@ function Input({
   onKeyDown,
   className = '',
   'aria-label': ariaLabel,
+  ...rest
 }) {
   return (
     <input
@@ -17,6 +18,7 @@ function Input({
       onKeyDown={onKeyDown}
       placeholder={placeholder}
       aria-label={ariaLabel || placeholder}
+      {...rest}
     />
   );
 }

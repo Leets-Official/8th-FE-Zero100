@@ -1,24 +1,26 @@
 .text-input {
-  width: 100%;
+  display: block;
   flex: 1;
+  width: 100%;
+  min-width: 0;
   height: 44px;
   padding: 10px 14px;
-
-  background-color: #ffffff;
   border: 1px solid #cccccc;
   border-radius: 6px;
-
+  outline: none;
+  background: #ffffff;
+  color: #111111;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 16px;
-  color: #111111;
-
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   box-sizing: border-box;
-  outline: none;
-  transition: border-color 0.15s ease-in-out;
+  transition: border-color 0.15s ease;
 }
 
 .text-input::placeholder {
-  color: #9ca3af;
+  color: rgba(17, 17, 17, 0.5);
 }
 
 .text-input:focus {
