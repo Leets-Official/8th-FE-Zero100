@@ -1,7 +1,7 @@
-import styles from './Text.module.css';
-
 function Text(props) {
-    return <span className={props.done ? styles.done : styles.normal}>{props.children}</span>;
+  const stateStyle = props.done ? 'text-[#999] line-through' : 'text-[#111]';
+
+  return <span className={`text-base leading-[1.425] ${stateStyle}`}>{props.children}</span>;
 }
 
 export default Text;
