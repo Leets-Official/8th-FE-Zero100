@@ -3,11 +3,20 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import CompletedPage from './pages/CompletedPage';
 
-function App() {
-  const [work, setWork] = useState(() => {
+const loadTasks = () => {
+  try {
     const saved = localStorage.getItem('tasks');
-    return saved ? JSON.parse(saved) : [];
-  });
+    if (!saved) return [];
+
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+};
+
+function App() {
+  const [work, setWork] = useState(loadTasks);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(work));
