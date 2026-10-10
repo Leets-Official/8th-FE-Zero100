@@ -23,26 +23,19 @@ function App() {
   }, [work]);
 
   const addWork = (text) => {
-    setWork([...work, { id: crypto.randomUUID(), text, done: false }]);
+    setWork((prev) => [...prev, { id: crypto.randomUUID(), text, done: false }]);
   };
 
   const checkClear = (id) => {
-    const newWork = work.map((task) => {
-      if (task.id === id) {
-        return { ...task, done: !task.done };
-      } else {
-        return task;
-      }
-    });
-    setWork(newWork);
+    setWork((prev) => prev.map((task) => (task.id === id ? { ...task, done: !task.done } : task)));
   };
 
   const deleteWork = (id) => {
-    setWork(work.filter((task) => task.id !== id));
+    setWork((prev) => prev.filter((task) => task.id !== id));
   };
 
   const updateWork = (id, newText) => {
-    setWork(work.map((task) => (task.id === id ? { ...task, text: newText } : task)));
+    setWork((prev) => prev.map((task) => (task.id === id ? { ...task, text: newText } : task)));
   };
 
   return (
