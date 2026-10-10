@@ -10,7 +10,8 @@ function Button(props) {
   return (
     <button
       type="button"
-      className={`cursor-pointer rounded-md border px-[22px] py-2.5 text-base leading-[1.35] font-medium ${variantStyles[variant]}`}
+      disabled={props.disabled}
+      className={`cursor-pointer rounded-md border px-[22px] py-2.5 text-base leading-[1.35] font-medium disabled:cursor-not-allowed disabled:opacity-40 ${variantStyles[variant]}`}
       onClick={props.onClick}
     >
       {props.children}

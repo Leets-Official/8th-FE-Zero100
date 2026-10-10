@@ -46,7 +46,7 @@ function TodoItem(props) {
       <div className="mt-2 flex gap-1.5 pl-[27px]">
         {isEditing ? (
           <>
-            <Button onClick={saveEdit}>저장</Button>
+            <Button onClick={saveEdit} disabled={draft.trim() === ''}>저장</Button>
             <Button onClick={cancelEdit}>취소</Button>
           </>
         ) : (
