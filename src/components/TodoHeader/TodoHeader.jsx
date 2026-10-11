@@ -1,8 +1,8 @@
 import { Link, NavLink } from 'react-router';
 
 const menus = [
-  { to: '/', label: '할 일 목록' },
-  { to: '/stats', label: '통계' },
+  { to: '/todolist', label: '할 일 목록' },
+  { to: '/todolist/stats', label: '통계' },
 ];
 
 function TodoHeader({ isCompletedPage = false }) {
@@ -14,7 +14,7 @@ function TodoHeader({ isCompletedPage = false }) {
         </h1>
 
         <Link
-          to={isCompletedPage ? '/' : '/completed'}
+          to={isCompletedPage ? '/todolist' : '/todolist/completed'}
           className="shrink-0 text-[16px] text-[#4f46e5] hover:underline focus-visible:outline-2 focus-visible:outline-[#4f46e5]"
         >
           {isCompletedPage ? '← 할 일 목록' : '완료 목록 →'}

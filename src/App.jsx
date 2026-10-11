@@ -6,6 +6,7 @@ import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import './App.css';
 import StatsPage from './pages/StatsPage';
 import Layout from './components/Layout/Layout';
+import DashboardPage from './pages/DashboardPage';
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
@@ -52,7 +53,10 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+
+      <Route path="/todolist" element={<Layout />}>
         <Route
           index
           element={
@@ -63,9 +67,9 @@ function App() {
         <Route path="completed" element={<CompletedPage {...todoProps} />} />
 
         <Route path="stats" element={<StatsPage todos={todos} />} />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
+
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
