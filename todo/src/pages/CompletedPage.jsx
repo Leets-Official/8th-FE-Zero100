@@ -4,8 +4,7 @@ import TodoList from '../components/TodoList';
 import { useTodos } from '../context/TodoContext';
 
 const CompletedPage = () => {
-  const { todos, toggleTodo, deleteTodo, editTodo } = useTodos();
-  const completedTodos = todos.filter((todo) => todo.completed);
+  const { completedTodos, toggleTodo, deleteTodo, editTodo } = useTodos();
 
   return (
     <main className="app">

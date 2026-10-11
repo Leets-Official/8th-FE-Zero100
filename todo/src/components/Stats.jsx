@@ -1,11 +1,11 @@
 import { useTodos } from '../context/TodoContext';
 
 const Stats = () => {
-  const { todos } = useTodos();
+  const { todos, activeTodos, completedTodos } = useTodos();
 
   const total = todos.length;
-  const completed = todos.filter((todo) => todo.completed).length;
-  const active = total - completed;
+  const completed = completedTodos.length;
+  const active = activeTodos.length;
   const rate = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   const items = [

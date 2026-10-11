@@ -8,16 +8,12 @@ import Stats from '../components/Stats';
 import { useTodos } from '../context/TodoContext';
 
 const TodoPage = () => {
-  const { todos, addTodo, toggleTodo, deleteTodo, editTodo } = useTodos();
+  const { todos, activeTodos, addTodo, toggleTodo, deleteTodo, editTodo } = useTodos();
   const [filter, setFilter] = useState('all');
   const [tab, setTab] = useState('list');
 
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === 'active') return !todo.completed;
-    return true;
-  });
-
-  const remainingCount = todos.filter((todo) => !todo.completed).length;
+  const filteredTodos = filter === 'active' ? activeTodos : todos;
+  const remainingCount = activeTodos.length;
 
   const tabClass = (name) =>
     `px-3 py-2 text-sm border-b-2 ${
