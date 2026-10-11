@@ -1,4 +1,5 @@
 import Button from '../../components/dashboard/Button';
+import TextInput from '../../components/dashboard/TextInput';
 
 function DashboardPage() {
   return (
@@ -8,6 +9,10 @@ function DashboardPage() {
         <Button>Primary Button</Button>
         <Button variant="variant">Secondary Button</Button>
         <Button variant="small">Small Button</Button>
+      </section>
+
+      <section className="w-[630px]">
+        <TextInput placeholder="텍스트를 입력하세요" />
       </section>
     </div>
   );
