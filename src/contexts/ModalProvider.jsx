@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ModalContext } from './ModalContext';
-import ConfirmModal from '../components/ConfirmModal';
+import ConfirmModal from '../components/todo/ConfirmModal';
 
 function ModalProvider(props) {
   const [modal, setModal] = useState(null);

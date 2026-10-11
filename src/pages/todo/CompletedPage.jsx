@@ -1,5 +1,5 @@
-import TodoItem from '../components/todo/TodoItem';
-import PageHeader from '../components/PageHeader';
+import TodoItem from '../../components/todo/TodoItem';
+import PageHeader from '../../components/todo/PageHeader';
 
 function CompletedPage(props) {
   const completedTasks = props.tasks.filter((task) => task.done === true);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import CompletedPage from './pages/CompletedPage';
+import HomePage from './pages/todo/HomePage';
+import CompletedPage from './pages/todo/CompletedPage';
 
 const loadTasks = () => {
   try {

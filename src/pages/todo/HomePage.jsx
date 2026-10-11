@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import Input from '../components/Input';
-import FilterButtons from '../components/todo/FilterButtons';
-import TodoItem from '../components/todo/TodoItem';
-import TodoStats from '../components/todo/TodoStats';
-import PageHeader from '../components/PageHeader';
-import TabMenu from '../components/TabMenu';
+import Input from '../../components/todo/Input';
+import FilterButtons from '../../components/todo/FilterButtons';
+import TodoItem from '../../components/todo/TodoItem';
+import TodoStats from '../../components/todo/TodoStats';
+import PageHeader from '../../components/todo/PageHeader';
+import TabMenu from '../../components/todo/TabMenu';
 
 function HomePage(props) {
   const [tab, setTab] = useState('list');
