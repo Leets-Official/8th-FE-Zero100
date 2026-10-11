@@ -6,7 +6,7 @@ function CompletedPage(props) {
 
   return (
     <main className="mx-auto flex max-w-[536px] flex-col gap-6 p-2">
-      <PageHeader title="완료된 작업" linkTo="/" linkText="&larr; 진행 중 목록" />
+      <PageHeader title="완료된 작업" linkTo="/todolist" linkText="&larr; 진행 중 목록" />
 
       <section className="flex flex-col gap-2">
         <h2 className="text-[17.6px] leading-[1.5] font-bold text-[#222]">

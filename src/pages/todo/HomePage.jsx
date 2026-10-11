@@ -19,7 +19,7 @@ function HomePage(props) {
 
   return (
     <main className="mx-auto flex max-w-[536px] flex-col gap-6 p-2">
-      <PageHeader title="TodoMatic" linkTo="/completed" linkText="완료 목록 &rarr;" />
+      <PageHeader title="TodoMatic" linkTo="/todolist/completed" linkText="완료 목록 &rarr;" />
 
       {tab === 'list' ? (
         <>

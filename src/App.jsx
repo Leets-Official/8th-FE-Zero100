@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import DashboardPage from './pages/dashboard/DashboardPage';
 import HomePage from './pages/todo/HomePage';
 import CompletedPage from './pages/todo/CompletedPage';
 
@@ -41,7 +43,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path="/"
+        path="/todolist"
         element={
           <HomePage
             tasks={work}
@@ -53,7 +55,7 @@ function App() {
         }
       />
       <Route
-        path="/completed"
+        path="/todolist/completed"
         element={
           <CompletedPage
             tasks={work}
@@ -63,6 +65,10 @@ function App() {
           />
         }
       />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<DashboardPage />} />
+      </Route>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
