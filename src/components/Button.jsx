@@ -1,14 +1,22 @@
-import styles from './Button.module.css';
+const variantStyles = {
+  primary: 'border-indigo-600 bg-indigo-600 text-white',
+  default: 'border-[#ddd] bg-white text-[#555]',
+  delete: 'border-red-300 bg-white text-red-600',
+};
 
 function Button(props) {
-    let buttonClass = styles.button;
-    if (props.variant === 'primary') {
-        buttonClass = `${styles.button} ${styles.primary}`;
-    } else if (props.variant === 'delete') {
-        buttonClass = `${styles.button} ${styles.delete}`
-    }
+  const variant = props.variant ?? 'default';
 
-    return <button className={buttonClass} onClick={props.onClick}>{props.children}</button>;
+  return (
+    <button
+      type="button"
+      disabled={props.disabled}
+      className={`cursor-pointer rounded-md border px-[22px] py-2.5 text-base leading-[1.35] font-medium disabled:cursor-not-allowed disabled:opacity-40 ${variantStyles[variant]}`}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
 }
 
 export default Button;
