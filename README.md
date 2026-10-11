@@ -1,75 +1,47 @@
-# React + TypeScript + Vite
+# Zero100 3주차 TodoMatic
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite, Context API, React Router 7, Tailwind CSS 4, ESLint 9, Prettier를 사용한 Todo 앱입니다.
 
-Currently, two official plugins are available:
+## 실행
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Node.js 22.12 이상, package.json이 있는 폴더에서 실행합니다.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm ci
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+PowerShell에서는 npm 대신 npm.cmd를 사용하면 스크립트 실행 정책 문제를 피할 수 있습니다.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 요구사항
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- 수정 → 입력창, 저장 / 취소 표시. 빈 이름 저장 방지
+- tasks 변경 시 localStorage에 저장, 새로고침 후 이름과 완료 상태 복구
+- 첫 접속 시 빈 목록
+- /: 전체 목록, /active: 진행 중 목록, /completed: 완료 목록, /stats: 통계
+- 전체/진행 중/완료 개수와 완료율 즉시 반영, 0개일 때 0%
+- Context API로 목록과 통계 상태 공유
+- Tailwind CSS v4 실제 적용, ESLint/Prettier 설정
 
-```
+## 구조
+
+- context/TasksContext.js: 공유 Context
+- context/TasksProvider.jsx: 상태, 변경 함수, 저장 Effect, 통계
+- hooks/useTasks.js: Context 접근 Hook
+- utils/taskStorage.js: 저장 데이터 읽기·검증·저장
+- components/Layout.jsx: 헤더, 탭, 완료 목록 링크, Outlet
+- pages/TasksPage.jsx: 전체·진행 중 목록
+- pages/CompletedPage.jsx: 완료 목록
+- utils/taskFilters.js: 상태별 필터 규칙
+- components/commons: 공통 UI
+- components/todo: 입력, 목록, 개별 항목, 통계
+
+## 실습 및 아티클
+
+- [실습·설정 안내](docs/PRACTICE_GUIDE.md)
+- [일반 텍스트 아티클 초안](docs/ARTICLE_DRAFT.txt)
+- [검증 결과](docs/VERIFICATION.md)
+
+완료율은 정수 반올림으로 표시합니다. localStorage 저장은 브라우저와 origin별로 구분되고 기기 간 동기화되지 않습니다. 손상된 저장 데이터 및 저장 실패는 화면에서 안내합니다. Provider는 라우트 바깥에 있어 이동 중 상태를 유지합니다.
+
+2026-10-05에 제공된 두 장의 디자인 이미지를 참고해 할 일 목록·통계 화면을 수정했습니다. GitHub Pages 배포 설정은 포함하지 않았습니다. BrowserRouter를 배포하려면 호스팅 서버의 SPA fallback 설정이 필요합니다.
