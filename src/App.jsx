@@ -6,6 +6,7 @@ import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import './App.css';
 import StatsPage from './pages/StatsPage';
 import Layout from './components/Layout/Layout';
+import DashboardLayout from './components/dashboard/DashboardLayout';
 import DashboardPage from './pages/DashboardPage';
 
 function App() {
@@ -54,7 +55,20 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
+
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<DashboardPage />} />
+
+        <Route
+          path="inquiries"
+          element={<h2 className="text-[24px] font-bold text-[#222222]">문의</h2>}
+        />
+
+        <Route
+          path="mypage"
+          element={<h2 className="text-[24px] font-bold text-[#222222]">마이페이지</h2>}
+        />
+      </Route>
 
       <Route path="/todolist" element={<Layout />}>
         <Route

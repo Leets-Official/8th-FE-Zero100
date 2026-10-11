@@ -15,12 +15,14 @@ function DashboardPage() {
   }
 
   return (
-    <main className="min-h-dvh bg-[#ffffff] px-[24px] py-[40px]">
+    <section aria-labelledby="dashboard-title">
       <div className="mx-auto flex max-w-[630px] flex-col gap-[32px]">
-        <h1 className="text-[24px] font-bold text-[#222222]">공통 컴포넌트</h1>
+        <h2 id="dashboard-title" className="text-[24px] font-bold text-[#222222]">
+          공통 컴포넌트
+        </h2>
 
         <section className="flex flex-col gap-[16px]">
-          <h2 className="text-[20px] font-bold text-[#222222]">Text Input</h2>
+          <h3 className="text-[20px] font-bold text-[#222222]">Text Input</h3>
 
           <Input
             label="텍스트 입력"
@@ -32,7 +34,7 @@ function DashboardPage() {
         </section>
 
         <section className="flex flex-col gap-[24px]">
-          <h2 className="text-[20px] font-bold text-[#222222]">Text area</h2>
+          <h3 className="text-[20px] font-bold text-[#222222]">Text area</h3>
 
           <Input
             label="Text Input"
@@ -57,16 +59,18 @@ function DashboardPage() {
         </section>
 
         <section className="flex flex-col gap-[16px]">
-          <h2 className="text-[20px] font-bold text-[#222222]">Button</h2>
+          <h3 className="text-[20px] font-bold text-[#222222]">Button</h3>
 
           <div className="flex flex-wrap items-center gap-[16px]">
             <Button>Primary Button</Button>
+
             <Button variant="secondary">Secondary Button</Button>
+
             <Button size="small">Small Button</Button>
           </div>
         </section>
       </div>
-    </main>
+    </section>
   );
 }
 
