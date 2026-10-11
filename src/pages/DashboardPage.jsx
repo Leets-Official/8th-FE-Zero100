@@ -1,17 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../components/dashboard/Button';
 import Input from '../components/dashboard/Input';
+import Modal from '../components/dashboard/Modal';
+import Toast from '../components/dashboard/Toast';
 
 function DashboardPage() {
   const [text, setText] = useState('');
   const [guideText, setGuideText] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    if (!toast) return;
+
+    const timer = setTimeout(() => {
+      setToast(null);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   function handleEmailBlur(event) {
     const { value, validity } = event.target;
 
     setEmailError(value && !validity.valid ? '올바른 이메일 형식을 입력하세요' : '');
+  }
+
+  function handleConfirm() {
+    setIsModalOpen(false);
+    setToast({ message: '문의가 삭제되었습니다.' });
   }
 
   return (
@@ -69,7 +88,23 @@ function DashboardPage() {
             <Button size="small">Small Button</Button>
           </div>
         </section>
+
+        <section className="flex flex-col items-start gap-[16px]">
+          <h3 className="text-[20px] font-bold text-[#222222]">Modal</h3>
+
+          <Button onClick={() => setIsModalOpen(true)}>삭제 모달 열기</Button>
+        </section>
       </div>
+
+      {isModalOpen && (
+        <Modal
+          title="문의를 삭제하시겠습니까?"
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleConfirm}
+        />
+      )}
+
+      <Toast message={toast?.message} />
     </section>
   );
 }
