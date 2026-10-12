@@ -24,7 +24,7 @@ function Modal({ message, cancelLabel = '취소', confirmLabel = '확인', onCan
         role="dialog"
         aria-modal="true"
         aria-labelledby={messageId}
-        className="flex w-full max-w-110 flex-col gap-8 rounded-[10px] border border-dash-line bg-white p-[33px]"
+        className="flex w-full max-w-[385px] flex-col gap-8 rounded-[10px] border border-dash-line bg-white p-[33px]"
       >
         <h2 id={messageId} className="text-center text-lg leading-7 font-normal text-dash-black">
           {message}

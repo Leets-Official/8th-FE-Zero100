@@ -9,7 +9,6 @@ import Toast from '../Toast/Toast';
 const SIDEBAR_ITEMS = [
   { to: ROUTES.DASHBOARD, label: '대시보드 홈', end: true },
   { to: ROUTES.DASHBOARD_INQUIRIES, label: '문의' },
-  { to: ROUTES.TODO, label: 'Todolist' },
   { to: ROUTES.DASHBOARD_MYPAGE, label: '마이페이지' },
 ];
 
