@@ -21,14 +21,10 @@ function TodoItem({ todo }) {
     setIsEditing(true);
   };
 
+  // 저장하지 않고 닫아도 입력하던 글자는 다음 startEditing에서 원래 글자로 다시 채워진다.
   const finishEditing = () => {
     shouldFocusEditButtonRef.current = true;
     setIsEditing(false);
-  };
-
-  const cancelEditing = () => {
-    setEditingText(todo.text);
-    finishEditing();
   };
 
   const saveEditing = () => {
@@ -51,7 +47,7 @@ function TodoItem({ todo }) {
       event.preventDefault();
       saveEditing();
     }
-    if (event.key === 'Escape') cancelEditing();
+    if (event.key === 'Escape') finishEditing();
   };
 
   return (
@@ -80,7 +76,7 @@ function TodoItem({ todo }) {
             <Button size="item" onClick={saveEditing} disabled={!trimmedEditingText}>
               저장
             </Button>
-            <Button variant="secondary" size="item" onClick={cancelEditing}>
+            <Button variant="secondary" size="item" onClick={finishEditing}>
               취소
             </Button>
           </>
