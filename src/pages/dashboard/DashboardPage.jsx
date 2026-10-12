@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Button from '../../components/dashboard/Button';
 import TextInput from '../../components/dashboard/TextInput';
 import Textarea from '../../components/dashboard/Textarea';
+import CheckIcon from '../../components/dashboard/CheckIcon';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -37,6 +38,10 @@ function DashboardPage() {
           onChange={(event) => setEmail(event.target.value)}
           error={emailError}
         />
+      </section>
+
+      <section className="flex items-center gap-3">
+        <CheckIcon />
       </section>
     </div>
   );
