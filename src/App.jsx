@@ -9,7 +9,9 @@ function App() {
     <Routes>
       <Route path={ROUTES.dashboard} element={<DashboardPage />} />
       <Route path={ROUTES.components} element={<ComponentsPage />} />
-      <Route path={ROUTES.home} element={<TodoApp />} />
+      <Route path="/todolist/*" element={<TodoApp />} />
+      <Route path="/stats" element={<Navigate to={ROUTES.stats} replace />} />
+      <Route path="/completed" element={<Navigate to={ROUTES.completed} replace />} />
       <Route path="*" element={<Navigate to={ROUTES.dashboard} replace />} />
     </Routes>
   );
