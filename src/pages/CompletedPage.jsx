@@ -12,7 +12,7 @@ function CompletedPage() {
 
   return (
     <PageLayout>
-      <PageHeader title="완료된 작업" linkTo={ROUTES.HOME} linkLabel="진행 중 목록" arrow="left" />
+      <PageHeader title="완료된 작업" linkTo={ROUTES.TODO} linkLabel="진행 중 목록" arrow="left" />
 
       <section className="flex flex-col gap-2" aria-labelledby="completed-count">
         <Text as="h2" variant="heading" id="completed-count" aria-live="polite">
