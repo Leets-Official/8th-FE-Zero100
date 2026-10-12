@@ -25,6 +25,20 @@
   --color-line-card: #eeeeee;
   --color-line-tab: #e5e7eb;
   --color-surface-hover: #f9fafb;
+
+  /* 대시보드(ZERO100 Admin) 디자인 토큰 */
+  --color-dash-black: #000000;
+  --color-dash-text: #364153;
+  --color-dash-text-sub: #4a5565;
+  --color-dash-muted: #6a7282;
+  --color-dash-placeholder: rgba(10, 10, 10, 0.5);
+  --color-dash-input-text: #0a0a0a;
+  --color-dash-icon: #171717;
+  --color-dash-error: #fb2c36;
+  --color-dash-line: #e5e7eb;
+  --color-dash-toast-line: #ededed;
+  --color-dash-bg: #f9fafb;
+  --color-dash-active: #f3f4f6;
 }
 
 @layer base {
