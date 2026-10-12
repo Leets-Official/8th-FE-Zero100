@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router';
 import Button from '../../components/dashboard/Button/Button';
+import CheckCircleIcon from '../../components/dashboard/CheckCircleIcon/CheckCircleIcon';
 import Modal from '../../components/dashboard/Modal/Modal';
-import TextArea from '../../components/dashboard/TextArea/TextArea';
 import TextInput from '../../components/dashboard/TextInput/TextInput';
 import { isEmail } from '../../utils/isEmail';
 
@@ -15,14 +15,18 @@ function ComponentSection({ title, children }) {
   );
 }
 
-/** 대시보드 홈: 이번 주에 만든 공통 컴포넌트를 실제로 눌러보고 확인하는 화면 */
+/**
+ * 대시보드 홈: Figma "공통 컴포넌트" 시트와 같은 구성으로 공통 컴포넌트를 보여준다.
+ * Header, Sidebar, Footer는 DashboardLayout에서 실제 화면 틀로 사용하고 있다.
+ */
 function DashboardHomePage() {
   const { showToast } = useOutletContext();
   const [email, setEmail] = useState('');
   // 모달을 연 버튼을 기억해 두었다가, 모달이 닫히면 그 버튼으로 포커스를 돌려준다.
   const [modalTrigger, setModalTrigger] = useState(null);
 
-  const emailError = email && !isEmail(email) ? '올바른 이메일 형식을 입력하세요' : '';
+  // 시안처럼 처음에는 에러 상태로 보여주고, 올바른 이메일을 입력하면 에러가 사라진다.
+  const emailError = isEmail(email) ? '' : '올바른 이메일 형식을 입력하세요';
 
   const openModal = () => setModalTrigger(document.activeElement);
 
@@ -41,19 +45,14 @@ function DashboardHomePage() {
       <h1 className="text-[28px] font-bold text-dash-black">공통 컴포넌트</h1>
 
       <ComponentSection title="Text Input">
-        <TextInput aria-label="텍스트 입력 예시" />
+        <TextInput aria-label="텍스트 입력" />
       </ComponentSection>
 
-      <ComponentSection title="Text Input (라벨, 안내/에러 문구)">
-        <TextInput
-          type="password"
-          label="비밀번호"
-          helperText="8자 이상, 영문/숫자/특수문자 포함"
-          placeholder="비밀번호를 입력하세요"
-        />
+      <ComponentSection title="Text area">
+        <TextInput label="Text Input" helperText="8자 이상, 영문/숫자/특수문자 포함" />
         <TextInput
           type="email"
-          label="이메일"
+          label="Email Input"
           placeholder="이메일을 입력하세요"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
@@ -61,23 +60,28 @@ function DashboardHomePage() {
         />
       </ComponentSection>
 
-      <ComponentSection title="Text Area">
-        <TextArea label="문의 내용" placeholder="문의 내용을 입력하세요" />
-      </ComponentSection>
-
       <ComponentSection title="Button">
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col items-start gap-3">
           <Button>Primary Button</Button>
           <Button variant="secondary">Secondary Button</Button>
           <Button size="small">Small Button</Button>
-          <Button disabled>Disabled</Button>
         </div>
       </ComponentSection>
 
-      <ComponentSection title="Modal / Toast">
+      <ComponentSection title="Modal">
         <div>
           <Button onClick={openModal}>삭제 모달 열기</Button>
         </div>
+      </ComponentSection>
+
+      <ComponentSection title="Toast">
+        <div>
+          <Button onClick={() => showToast('문의가 삭제되었습니다.')}>토스트 띄우기</Button>
+        </div>
+      </ComponentSection>
+
+      <ComponentSection title="Icon">
+        <CheckCircleIcon className="text-dash-icon" />
       </ComponentSection>
 
       {modalTrigger && (
