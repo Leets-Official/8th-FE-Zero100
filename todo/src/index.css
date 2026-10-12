@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 :root {
   --primary: #4338ca;
   --primary-dark: #3730a3;

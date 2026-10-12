@@ -3,7 +3,6 @@ import Button from './common/Button';
 const FILTERS = [
   { key: 'all', label: '전체보기' },
   { key: 'active', label: '진행 중' },
-  { key: 'completed', label: '완료됨' },
 ];
 
 const FilterButtons = ({ filter, onChangeFilter }) => {
