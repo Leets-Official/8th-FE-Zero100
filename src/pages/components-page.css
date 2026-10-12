@@ -1,0 +1,368 @@
+.component-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: #f7f7f7;
+  color: #111;
+  font-family: Arial, 'Noto Sans KR', sans-serif;
+}
+
+.component-page__board {
+  position: relative;
+  width: min(100%, 1356px);
+  min-height: 802px;
+  margin: 0 auto;
+  background: #aaadb2;
+}
+
+.component-heading h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.component-heading p {
+  margin: -2px 0 0;
+  color: #8034e9;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.component-heading p span {
+  font-size: 16px;
+}
+
+.component-page__inputs {
+  position: absolute;
+  top: 8px;
+  left: 2%;
+  width: 26.2%;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+}
+
+.admin-field label {
+  font-size: 9px;
+  color: #30343c;
+}
+
+.admin-field input,
+.admin-field textarea {
+  display: block;
+  width: 100%;
+  min-height: 27px;
+  padding: 6px 9px;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  background: #fff;
+  color: #111;
+  font:
+    10px Arial,
+    'Noto Sans KR',
+    sans-serif;
+  resize: vertical;
+}
+
+.admin-field input::placeholder,
+.admin-field textarea::placeholder {
+  color: #8d8d8d;
+}
+
+.admin-field input:focus-visible,
+.admin-field textarea:focus-visible,
+.admin-button:focus-visible,
+.admin-sidebar a:focus-visible {
+  outline: 2px solid #8034e9;
+  outline-offset: 2px;
+}
+
+.admin-field__error {
+  color: #f43f3f;
+  font-size: 8px;
+}
+
+.component-page__inputs > .admin-field {
+  margin-top: 17px;
+}
+
+.component-page__textarea {
+  margin-top: 24px;
+}
+
+.component-page__textarea .admin-field {
+  margin-top: 23px;
+}
+
+.component-page__textarea textarea {
+  height: 27px;
+}
+
+.component-page__error {
+  margin-top: -4px;
+}
+
+.component-page__error .admin-field {
+  margin-top: 16px;
+}
+
+.component-page__buttons {
+  margin-top: 13px;
+}
+
+.component-page__button-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 19px;
+  margin-top: 21px;
+}
+
+.admin-button {
+  min-height: 26px;
+  padding: 4px 13px;
+  border: 1px solid #050505;
+  border-radius: 6px;
+  background: #050505;
+  color: #fff;
+  cursor: pointer;
+  font-size: 9px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.admin-button--secondary {
+  border-color: #e4e7eb;
+  background: #fff;
+  color: #242931;
+}
+
+.admin-button--small {
+  min-height: 23px;
+  padding-inline: 11px;
+  font-size: 8px;
+}
+
+.component-page__modal-block {
+  position: absolute;
+  top: 8px;
+  left: 37.3%;
+  width: 218px;
+}
+
+.admin-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 218px;
+  height: 95px;
+  margin-top: 19px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.admin-modal p {
+  margin: 0;
+  font-size: 10px;
+}
+
+.admin-modal__actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.admin-modal__actions .admin-button {
+  min-height: 24px;
+  padding-inline: 13px;
+}
+
+.component-page__toast-block {
+  position: absolute;
+  top: 190px;
+  left: 37.3%;
+}
+
+.admin-toast {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 181px;
+  min-height: 31px;
+  margin-top: 21px;
+  padding: 6px 9px;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 12%);
+  font-size: 8px;
+}
+
+.admin-check-icon {
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  font-size: 7px;
+  line-height: 1;
+}
+
+.component-page__header-block,
+.component-page__footer-block {
+  position: absolute;
+  left: 15.7%;
+  width: 59.3%;
+}
+
+.component-page__header-block {
+  top: 289px;
+}
+
+.component-page__footer-block {
+  top: 388px;
+}
+
+.admin-header,
+.admin-footer {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  margin-top: 16px;
+  padding: 0 14px;
+  background: #fff;
+  font-size: 10px;
+}
+
+.admin-header {
+  justify-content: space-between;
+}
+
+.admin-header strong {
+  font-size: 12px;
+}
+
+.admin-header span,
+.admin-footer {
+  color: #525d6c;
+  font-size: 8px;
+}
+
+.admin-footer {
+  justify-content: flex-end;
+}
+
+.component-page__icon-block {
+  position: absolute;
+  top: 8px;
+  left: 59.3%;
+}
+
+.component-page__icon-block .admin-check-icon {
+  margin: 12px 0 0 4px;
+}
+
+.component-page__sidebar-block {
+  position: absolute;
+  top: 139px;
+  right: 3.5%;
+  width: 135px;
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 135px;
+  height: 462px;
+  margin-top: 17px;
+  padding-top: 8px;
+  background: #fff;
+  font-size: 8px;
+}
+
+.admin-sidebar a,
+.admin-sidebar span {
+  display: flex;
+  min-height: 24px;
+  align-items: center;
+  padding: 0 13px;
+  color: #111;
+  text-decoration: none;
+}
+
+.admin-sidebar a:hover {
+  background: #f0f1f3;
+}
+
+.admin-sidebar__current {
+  background: #f1f1f1;
+}
+
+@media (max-width: 850px) {
+  .component-page {
+    padding: 16px;
+  }
+
+  .component-page__board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+    min-height: 0;
+    padding: 24px;
+  }
+
+  .component-page__inputs,
+  .component-page__modal-block,
+  .component-page__toast-block,
+  .component-page__header-block,
+  .component-page__footer-block,
+  .component-page__icon-block,
+  .component-page__sidebar-block {
+    position: static;
+    width: auto;
+  }
+
+  .component-page__inputs {
+    grid-row: span 4;
+  }
+
+  .component-page__header-block,
+  .component-page__footer-block {
+    grid-column: 1 / -1;
+  }
+
+  .component-page__sidebar-block {
+    grid-column: 1 / -1;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    height: auto;
+    min-height: 170px;
+  }
+}
+
+@media (max-width: 560px) {
+  .component-page__board {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .component-page__inputs,
+  .component-page__modal-block,
+  .component-page__toast-block,
+  .component-page__header-block,
+  .component-page__footer-block,
+  .component-page__icon-block,
+  .component-page__sidebar-block {
+    width: 100%;
+  }
+}
