@@ -4,12 +4,13 @@ import TextInput from '../../components/dashboard/TextInput';
 import Textarea from '../../components/dashboard/Textarea';
 import CheckIcon from '../../components/dashboard/CheckIcon';
 import { useDashboardModal } from '../../contexts/DashboardModalContext';
+import { useDashboardToast } from '../../contexts/DashboardToastContext';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function DashboardPage() {
   const { openModal } = useDashboardModal();
-  const [modalResult, setModalResult] = useState('');
+  const { showToast } = useDashboardToast();
   const [email, setEmail] = useState('');
   const emailError =
     email !== '' && !EMAIL_PATTERN.test(email) ? '올바른 이메일 형식을 입력하세요' : '';
@@ -50,12 +51,11 @@ function DashboardPage() {
       <section className="flex items-center gap-3">
         <Button
           onClick={() =>
-            openModal('문의를 삭제하시겠습니까?', () => setModalResult('확인을 눌렀습니다'))
+            openModal('문의를 삭제하시겠습니까?', () => showToast('문의가 삭제되었습니다.'))
           }
         >
           모달 열기
         </Button>
-        <p>{modalResult}</p>
       </section>
     </div>
   );
