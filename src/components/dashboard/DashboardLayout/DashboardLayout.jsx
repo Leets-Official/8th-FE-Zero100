@@ -9,6 +9,8 @@ import Toast from '../Toast/Toast';
 const SIDEBAR_ITEMS = [
   { to: ROUTES.DASHBOARD, label: '대시보드 홈', end: true },
   { to: ROUTES.DASHBOARD_INQUIRIES, label: '문의' },
+  // Figma 대시보드 메인 화면 기준: 기존 Todo 화면으로 이동하는 메뉴
+  { to: ROUTES.TODO, label: 'Todolist' },
   { to: ROUTES.DASHBOARD_MYPAGE, label: '마이페이지' },
 ];
 
