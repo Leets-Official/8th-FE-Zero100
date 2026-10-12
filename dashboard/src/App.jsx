@@ -1,22 +1,12 @@
-import Button from './components/Button';
-import TextInput from './components/TextInput';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="flex w-[630px] flex-col items-start gap-6 p-10">
-      <TextInput placeholder="텍스트를 입력하세요" />
-      <TextInput
-        label="Text Input"
-        placeholder="텍스트를 입력하세요"
-        helperText="8자 이상, 영문/숫자/특수문자 포함"
-      />
-      <TextInput
-        label="Email Input"
-        type="email"
-        placeholder="이메일을 입력하세요"
-        errorText="올바른 이메일 형식을 입력하세요"
-      />
-      <Button>Primary Button</Button>
+    <div className="flex min-h-screen flex-col bg-[#F9FAFB]">
+      <Header onLogout={() => alert('로그아웃')} />
+      <main className="flex-1" />
+      <Footer />
     </div>
   );
 }
