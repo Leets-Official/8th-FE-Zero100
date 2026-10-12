@@ -6,13 +6,14 @@ import TodoList from '../components/todo/TodoList/TodoList';
 import { EMPTY_MESSAGE_BY_FILTER, TODO_FILTER } from '../constants/todoFilter';
 import { useTodos } from '../hooks/useTodos';
 import { filterTodos } from '../utils/filterTodos';
+import { getTodoStats } from '../utils/getTodoStats';
 
 function TodoListPage() {
   const { todos, addTodo } = useTodos();
   const [currentFilter, setCurrentFilter] = useState(TODO_FILTER.ALL);
 
   const visibleTodos = filterTodos(todos, currentFilter);
-  const remainingCount = todos.filter((todo) => !todo.isCompleted).length;
+  const { activeCount: remainingCount } = getTodoStats(todos);
 
   return (
     <>
