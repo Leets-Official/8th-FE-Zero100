@@ -67,6 +67,7 @@ function App() {
       />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<DashboardPage />} />
+        <Route path="*" element={<p className="p-8">준비 중인 페이지입니다.</p>} />
       </Route>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
