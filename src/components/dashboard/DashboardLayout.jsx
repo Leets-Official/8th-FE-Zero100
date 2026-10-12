@@ -7,20 +7,22 @@ import DashboardToastProvider from '../../contexts/DashboardToastProvider';
 
 function DashboardLayout() {
   return (
-    <DashboardModalProvider>
-      <DashboardToastProvider>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <div className="flex flex-1">
-            <Sidebar />
-            <main className="flex-1">
-              <Outlet />
-            </main>
+    <div className="font-noto">
+      <DashboardModalProvider>
+        <DashboardToastProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
+            <div className="flex flex-1">
+              <Sidebar />
+              <main className="flex-1">
+                <Outlet />
+              </main>
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </DashboardToastProvider>
-    </DashboardModalProvider>
+        </DashboardToastProvider>
+      </DashboardModalProvider>
+    </div>
   );
 }
 
