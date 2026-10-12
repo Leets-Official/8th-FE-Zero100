@@ -29,7 +29,6 @@ function DeleteModalProvider({ children }) {
 
       {deleteTarget && (
         <Modal title="할 일을 삭제하겠습니까?" onClose={closeDeleteModal}>
-          <p className="mt-1.5 text-sm text-ink-muted">"{deleteTarget.todo.text}"</p>
           <div className="mt-5 flex justify-end gap-2">
             {/* 실수로 Enter를 눌러도 지워지지 않도록 취소 버튼에 먼저 포커스를 둔다. */}
             <Button variant="secondary" size="sm" onClick={closeDeleteModal} autoFocus>
