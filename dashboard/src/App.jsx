@@ -1,11 +1,15 @@
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Sidebar from './components/Sidebar';
 
 function App() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB]">
-      <Header onLogout={() => alert('로그아웃')} />
-      <main className="flex-1" />
+      <Header />
+      <div className="flex flex-1">
+        <Sidebar />
+        <main className="flex-1 p-8" />
+      </div>
       <Footer />
     </div>
   );
