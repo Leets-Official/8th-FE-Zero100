@@ -1,4 +1,11 @@
-import styles from './Text.module.css';
+import { cn } from '../../../utils/cn';
+
+const VARIANT_CLASS = {
+  title: 'text-[40px] leading-tight font-extrabold',
+  heading: 'text-xl font-medium text-ink-sub',
+  body: 'text-base font-medium',
+  caption: 'text-sm text-placeholder',
+};
 
 function Text({
   as = 'p',
@@ -9,17 +16,17 @@ function Text({
   ...rest
 }) {
   const Component = as;
-  const textClassName = [
-    styles.text,
-    styles[variant],
-    isStrikethrough && styles.strikethrough,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
 
   return (
-    <Component className={textClassName} {...rest}>
+    <Component
+      className={cn(
+        'tracking-tight wrap-anywhere text-ink',
+        VARIANT_CLASS[variant],
+        isStrikethrough && 'text-ink-done line-through',
+        className,
+      )}
+      {...rest}
+    >
       {children}
     </Component>
   );
