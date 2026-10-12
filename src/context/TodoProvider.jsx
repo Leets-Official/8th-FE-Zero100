@@ -26,7 +26,11 @@ function TodoProvider({ children }) {
   const [todos, setTodos] = useState(loadTodos);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+    } catch (error) {
+      console.error('할 일을 저장하지 못했습니다.', error);
+    }
   }, [todos]);
 
   function addTodo(text) {
