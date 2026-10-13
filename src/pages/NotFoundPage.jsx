@@ -1,12 +1,15 @@
 import { Link } from 'react-router';
+import EmptyState from '../components/commons/EmptyState';
 
 export default function NotFoundPage() {
   return (
-    <section className="py-12 text-center">
-      <h2 className="mb-3 text-xl font-bold">페이지를 찾을 수 없어요.</h2>
-      <Link className="text-violet-700 underline" to="/">
-        진행 중인 할 일로 돌아가기
-      </Link>
+    <section className="not-found">
+      <h1>404</h1>
+      <EmptyState title="페이지를 찾을 수 없어요" description="주소가 올바른지 확인해 주세요.">
+        <Link to="/" className="button button--primary">
+          대시보드로 이동
+        </Link>
+      </EmptyState>
     </section>
   );
 }
