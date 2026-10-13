@@ -4,4 +4,5 @@ dist/
 .env.*
 !.env.example
 *.log
+*.zip
 .DS_Store
