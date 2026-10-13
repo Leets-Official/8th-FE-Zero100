@@ -127,6 +127,20 @@ async function handleRequest(config) {
     if (!inquiry)
       throw new DemoApiError('문의를 찾을 수 없습니다. 이미 삭제되었을 수 있습니다.', 404);
     if (method === 'GET') return inquiry;
+    if (method === 'PATCH') {
+      if (inquiry.userId !== account.id)
+        throw new DemoApiError('직접 작성한 문의만 수정할 수 있습니다.', 403);
+      validate(validateInquiry(body));
+      Object.assign(inquiry, {
+        name: body.name.trim(),
+        email: body.email.trim(),
+        title: body.title.trim(),
+        content: body.content.trim(),
+        updatedAt: new Date().toISOString(),
+      });
+      commit();
+      return inquiry;
+    }
     if (method === 'DELETE') {
       if (inquiry.userId !== account.id)
         throw new DemoApiError('직접 작성한 문의만 삭제할 수 있습니다.', 403);

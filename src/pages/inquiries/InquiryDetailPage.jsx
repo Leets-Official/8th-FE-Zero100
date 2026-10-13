@@ -1,10 +1,11 @@
 import { useCallback, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
+import { Link, useNavigate, useParams, useLocation } from 'react-router';
 import { deleteInquiry, getInquiry } from '../../api/admin';
 import { errorMessage } from '../../api/adminClient';
 import { useAdminResource } from '../../hooks/useAdminResource';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
+import { inquiryListLocation } from '../../utils/inquiryList';
 import { formatDate } from '../../utils/date';
 import AsyncPanel from '../../components/common/AsyncPanel';
 import Button from '../../components/common/Button';
@@ -13,6 +14,8 @@ import ConfirmDialog from '../../components/common/ConfirmDialog';
 export default function InquiryDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const listLocation = inquiryListLocation(location.state);
   const { user } = useAuth();
   const notify = useToast();
   const load = useCallback((options) => getInquiry(id, options), [id]);
@@ -30,7 +33,7 @@ export default function InquiryDetailPage() {
       await deleteInquiry(id);
       setOpen(false);
       notify('문의가 삭제되었습니다.');
-      navigate('/inquiries', { replace: true });
+      navigate(listLocation, { replace: true });
     } catch (requestError) {
       setError(errorMessage(requestError));
     } finally {
@@ -43,10 +46,19 @@ export default function InquiryDetailPage() {
     <div className="detail-page">
       <div className="page-toolbar">
         <h1 className="admin-page-title">문의 상세</h1>
-        <div className="flex items-center gap-3">
-          <Link className="admin-button admin-button--secondary" to="/inquiries">
+        <div className="detail-actions">
+          <Link className="admin-button admin-button--secondary" to={listLocation}>
             목록으로
           </Link>
+          {inquiry?.userId === user.id && (
+            <Link
+              className="admin-button admin-button--secondary"
+              to={`/inquiries/${encodeURIComponent(id)}/edit`}
+              state={{ listLocation }}
+            >
+              수정
+            </Link>
+          )}
           {inquiry?.userId === user.id && (
             <Button
               variant="secondary"
@@ -66,6 +78,12 @@ export default function InquiryDetailPage() {
             <header>
               <time dateTime={inquiry.createdAt}>{formatDate(inquiry.createdAt, true)}</time>
               <h2>{inquiry.title}</h2>
+              {inquiry.updatedAt && (
+                <p className="inquiry-updated">
+                  최근 수정{' '}
+                  <time dateTime={inquiry.updatedAt}>{formatDate(inquiry.updatedAt, true)}</time>
+                </p>
+              )}
             </header>
             <dl className="inquiry-author">
               <div>

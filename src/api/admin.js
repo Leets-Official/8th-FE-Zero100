@@ -39,6 +39,9 @@ export async function getInquiry(id, options) {
 export async function createInquiry(values) {
   return (await adminClient.post('/inquiries', values)).data;
 }
+export async function updateInquiry(id, values) {
+  return (await adminClient.patch(`/inquiries/${encodeURIComponent(id)}`, values)).data;
+}
 export async function deleteInquiry(id) {
   await adminClient.delete(`/inquiries/${encodeURIComponent(id)}`);
 }

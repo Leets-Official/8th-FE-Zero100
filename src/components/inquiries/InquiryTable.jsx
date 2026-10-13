@@ -1,11 +1,16 @@
 import { Link } from 'react-router';
 import { formatDate } from '../../utils/date';
 
-export default function InquiryTable({ inquiries }) {
+export default function InquiryTable({
+  inquiries,
+  offset = 0,
+  listLocation = '/inquiries',
+  emptyMessage = '등록된 문의가 없습니다.',
+}) {
   if (!inquiries.length)
     return (
       <div className="admin-empty" role="status">
-        등록된 문의가 없습니다.
+        {emptyMessage}
       </div>
     );
   return (
@@ -22,9 +27,11 @@ export default function InquiryTable({ inquiries }) {
         <tbody>
           {inquiries.map((inquiry, index) => (
             <tr key={inquiry.id}>
-              <td>{index + 1}</td>
+              <td>{offset + index + 1}</td>
               <td>
-                <Link to={`/inquiries/${encodeURIComponent(inquiry.id)}`}>{inquiry.title}</Link>
+                <Link state={{ listLocation }} to={`/inquiries/${encodeURIComponent(inquiry.id)}`}>
+                  {inquiry.title}
+                </Link>
               </td>
               <td>
                 <time dateTime={inquiry.createdAt}>{formatDate(inquiry.createdAt, true)}</time>

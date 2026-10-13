@@ -11,6 +11,7 @@ import MyPage from './pages/admin/MyPage';
 import AdminNotFoundPage from './pages/admin/AdminNotFoundPage';
 import InquiryListPage from './pages/inquiries/InquiryListPage';
 import InquiryCreatePage from './pages/inquiries/InquiryCreatePage';
+import InquiryEditPage from './pages/inquiries/InquiryEditPage';
 import InquiryDetailPage from './pages/inquiries/InquiryDetailPage';
 
 export default function App() {
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="inquiries" element={<InquiryListPage />} />
           <Route path="inquiries/new" element={<InquiryCreatePage />} />
           <Route path="inquiries/:id" element={<InquiryDetailPage key={location.pathname} />} />
+          <Route path="inquiries/:id/edit" element={<InquiryEditPage key={location.pathname} />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="*" element={<AdminNotFoundPage />} />
         </Route>
