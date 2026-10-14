@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useModal } from '../../contexts/ModalContext';
-import Text from '../Text';
-import Button from '../Button';
-import Checkbox from '../Checkbox';
+import Text from './Text';
+import Button from './Button';
+import Checkbox from './Checkbox';
 
 function TodoItem(props) {
   const [isEditing, setIsEditing] = useState(false);

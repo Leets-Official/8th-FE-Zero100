@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import CompletedPage from './pages/CompletedPage';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import DashboardPage from './pages/dashboard/DashboardPage';
+import HomePage from './pages/todo/HomePage';
+import CompletedPage from './pages/todo/CompletedPage';
 
 const loadTasks = () => {
   try {
@@ -41,7 +43,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path="/"
+        path="/todolist"
         element={
           <HomePage
             tasks={work}
@@ -53,7 +55,7 @@ function App() {
         }
       />
       <Route
-        path="/completed"
+        path="/todolist/completed"
         element={
           <CompletedPage
             tasks={work}
@@ -63,6 +65,11 @@ function App() {
           />
         }
       />
+      <Route path="/dashboard" element={<DashboardLayout />}>
+        <Route index element={<DashboardPage />} />
+        <Route path="*" element={<p className="p-8">준비 중인 페이지입니다.</p>} />
+      </Route>
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
