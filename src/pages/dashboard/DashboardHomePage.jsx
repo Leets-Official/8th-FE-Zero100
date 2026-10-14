@@ -22,11 +22,19 @@ function ComponentSection({ title, children }) {
 function DashboardHomePage() {
   const { showToast } = useOutletContext();
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   // 모달을 연 버튼을 기억해 두었다가, 모달이 닫히면 그 버튼으로 포커스를 돌려준다.
   const [modalTrigger, setModalTrigger] = useState(null);
 
-  // 시안처럼 처음에는 에러 상태로 보여주고, 올바른 이메일을 입력하면 에러가 사라진다.
-  const emailError = isEmail(email) ? '' : '올바른 이메일 형식을 입력하세요';
+  // 입력 중에는 에러를 지우고, 입력창에서 벗어났을 때 이메일 형식을 검사한다.
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+    setEmailError('');
+  };
+
+  const handleEmailBlur = () => {
+    setEmailError(email && !isEmail(email) ? '올바른 이메일 형식을 입력하세요' : '');
+  };
 
   const openModal = () => setModalTrigger(document.activeElement);
 
@@ -55,7 +63,8 @@ function DashboardHomePage() {
           label="Email Input"
           placeholder="이메일을 입력하세요"
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={handleEmailChange}
+          onBlur={handleEmailBlur}
           error={emailError}
         />
       </ComponentSection>
