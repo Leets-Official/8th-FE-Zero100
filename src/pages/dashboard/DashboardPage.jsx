@@ -20,8 +20,8 @@ function DashboardPage() {
       <h1>공통 컴포넌트 예시 페이지</h1>
       <section className="flex items-center gap-3">
         <Button>Primary Button</Button>
-        <Button variant="variant">Secondary Button</Button>
-        <Button variant="small">Small Button</Button>
+        <Button variant="secondary">Secondary Button</Button>
+        <Button size="small">Small Button</Button>
       </section>
 
       <section className="w-[630px]">

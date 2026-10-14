@@ -16,7 +16,7 @@ function Modal(props) {
           {props.message}
         </p>
         <div className="flex justify-center gap-3">
-          <Button variant="variant" onClick={props.onCancel}>
+          <Button variant="secondary" onClick={props.onCancel}>
             취소
           </Button>
           <Button onClick={props.onConfirm}>확인</Button>
