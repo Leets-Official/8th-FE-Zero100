@@ -6,7 +6,7 @@ import { ROUTES } from '../constants/routes';
 function NotFoundPage() {
   return (
     <PageLayout>
-      <PageHeader title="TodoMatic" linkTo={ROUTES.HOME} linkLabel="할 일 목록으로" arrow="left" />
+      <PageHeader title="TodoMatic" linkTo={ROUTES.TODO} linkLabel="할 일 목록으로" arrow="left" />
       <Text variant="caption" className="py-8 text-center">
         페이지를 찾을 수 없어요.
       </Text>

@@ -12,7 +12,7 @@ function TodoTabsLayout() {
   return (
     <PageLayout>
       <div className="flex flex-col gap-4">
-        <PageHeader title="TodoMatic" linkTo={ROUTES.COMPLETED} linkLabel="완료 목록" />
+        <PageHeader title="TodoMatic" linkTo={ROUTES.TODO_COMPLETED} linkLabel="완료 목록" />
         <TodoTabs />
       </div>
       <Outlet />
