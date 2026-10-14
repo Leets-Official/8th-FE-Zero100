@@ -6,6 +6,9 @@ import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import './App.css';
 import StatsPage from './pages/StatsPage';
 import Layout from './components/Layout/Layout';
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import DashboardPage from './pages/DashboardPage';
+import { ROUTES } from './constants/routes';
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
@@ -52,7 +55,23 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<Layout />}>
+      <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+
+      <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
+        <Route index element={<DashboardPage />} />
+
+        <Route
+          path={ROUTES.INQUIRIES}
+          element={<h2 className="text-[24px] font-bold text-[#222222]">문의</h2>}
+        />
+
+        <Route
+          path={ROUTES.MYPAGE}
+          element={<h2 className="text-[24px] font-bold text-[#222222]">마이페이지</h2>}
+        />
+      </Route>
+
+      <Route path={ROUTES.TODO} element={<Layout />}>
         <Route
           index
           element={
@@ -60,12 +79,12 @@ function App() {
           }
         />
 
-        <Route path="completed" element={<CompletedPage {...todoProps} />} />
+        <Route path={ROUTES.TODO_COMPLETED} element={<CompletedPage {...todoProps} />} />
 
-        <Route path="stats" element={<StatsPage todos={todos} />} />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path={ROUTES.TODO_STATS} element={<StatsPage todos={todos} />} />
       </Route>
+
+      <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     </Routes>
   );
 }
