@@ -1,84 +1,108 @@
-// src/App.tsx
-import { useState } from 'react';
-import { Button } from './components/Button';
-import { Input } from './components/Input';
-import { TodoItem, Todo } from './components/TodoItem';
+import Header from './components/Header';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-type FilterType = 'all' | 'active' | 'completed';
+import Dashboard from './pages/Dashboard';
+import TodoList from './pages/TodoList';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Completed from './pages/Completed';
+import Inquiries from './pages/Inquiries';
+import InquiryCreate from './pages/InquiryCreate';
+import InquiryDetail from './pages/InquiryDetail';
+import MyPage from './pages/MyPage';
 
-export default function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [input, setInput] = useState('');
-  const [filter, setFilter] = useState<FilterType>('all');
+import Sidebar from './components/Sidebar';
 
-  const addTodo = () => {
-    if (!input.trim()) return;
-    setTodos([...todos, { id: Date.now(), text: input.trim(), completed: false }]);
-    setInput('');
-  };
-
-  const toggleTodo = (id: number) => {
-    setTodos(todos.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter((t) => t.id !== id));
-  };
-
-  // 1. 남은 할 일 개수 (미완료 항목만 필터링해서 개수 세기)
-  const activeCount = todos.filter((t) => !t.completed).length;
-
-  // 2. 현재 선택된 필터(전체/진행 중/완료)에 맞춰 보여줄 목록 계산
-  const filteredTodos = todos.filter((todo) => {
-    if (filter === 'active') return !todo.completed;
-    if (filter === 'completed') return todo.completed;
-    return true;
-  });
-
+function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ maxWidth: '360px', margin: '40px auto', fontFamily: 'sans-serif' }}>
-      <h2>Zero100 Todo List</h2>
+    <div className="min-h-screen md:flex">
+      <Sidebar />
 
-      {/* 입력창 & 추가 버튼 */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-        <Input
-          value={input}
-          onChange={setInput}
-          onKeyDown={(e) => e.key === 'Enter' && addTodo()}
-        />
-        <Button onClick={addTodo}>추가</Button>
+      <div className="min-w-0 flex-1">
+        <Header />
+        <main>{children}</main>
       </div>
-
-      {/* 필터 버튼 & 남은 개수 표시 */}
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '16px',
-        }}
-      >
-        <div style={{ display: 'flex', gap: '4px' }}>
-          <Button onClick={() => setFilter('all')}>전체</Button>
-          <Button onClick={() => setFilter('active')}>진행 중</Button>
-          <Button onClick={() => setFilter('completed')}>완료</Button>
-        </div>
-        <span style={{ fontSize: '14px', color: '#666' }}>
-          남은 할 일: {activeCount}개
-        </span>
-      </div>
-
-      {/* 분리된 TodoItem 컴포넌트 사용 */}
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {filteredTodos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            onToggle={toggleTodo}
-            onDelete={deleteTodo}
-          />
-        ))}
-      </ul>
     </div>
+  );
+}
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* 첫 화면은 대시보드로 이동 */}
+        <Route
+          path="/"
+          element={<Navigate to="/dashboard" replace />}
+        />
+
+        {/* 대시보드 */}
+        <Route
+          path="/dashboard"
+          element={
+            <Layout>
+              <Dashboard />
+            </Layout>
+          }
+        />
+
+        {/* 기존 TodoList */}
+        <Route path="/todolist" element={<TodoList />} />
+
+        {/* 로그인 */}
+        <Route path="/login" element={<Login />} />
+
+        {/* 회원가입 */}
+        <Route path="/signup" element={<Signup />} />
+
+        {/* 문의 목록 */}
+        <Route
+          path="/inquiries"
+          element={
+            <Layout>
+              <Inquiries />
+            </Layout>
+          }
+        />
+
+        {/* 문의 등록 */}
+        <Route
+          path="/inquiries/new"
+          element={
+            <Layout>
+              <InquiryCreate />
+            </Layout>
+          }
+        />
+
+        {/* 문의 상세 */}
+        <Route
+          path="/inquiries/:id"
+          element={
+            <Layout>
+              <InquiryDetail />
+            </Layout>
+          }
+        />
+
+        {/* 마이페이지 */}
+        <Route
+          path="/mypage"
+          element={
+            <Layout>
+              <MyPage />
+            </Layout>
+          }
+        />
+
+        {/* 완료된 할 일 */}
+        <Route path="/completed" element={<Completed />} />
+
+        {/* 등록되지 않은 주소 */}
+        <Route
+          path="*"
+          element={<Navigate to="/dashboard" replace />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
