@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+
+import { ROUTES } from '../../constants/routes';
 import './Navigation.css';
 
 const TABS = [
-  { id: 'todo', to: '/', label: '할 일 목록' },
-  { id: 'stats', to: '/stats', label: '통계' },
+  { id: 'todo', to: ROUTES.TODO, label: '할 일 목록' },
+  { id: 'stats', to: ROUTES.TODO_STATS, label: '통계' },
 ];
 
 function Navigation({ active = 'todo' }) {
