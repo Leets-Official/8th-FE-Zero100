@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Button from '../components/Button/Button';
-import Input from '../components/Input/Input';
-import Navigation from '../components/Navigation/Navigation';
-import Text from '../components/Text/Text';
-import TodoList from '../components/TodoList/TodoList';
+import Button from '../../components/Button/Button';
+import Input from '../../components/Input/Input';
+import Navigation from '../../components/Navigation/Navigation';
+import Text from '../../components/Text/Text';
+import TodoList from '../../components/TodoList/TodoList';
+import { ROUTES } from '../../constants/routes';
 
-import '../App.css';
+import '../../App.css';
 
 function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
   const [inputText, setInputText] = useState('');
@@ -33,7 +34,7 @@ function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
         <div className="header-top">
           <h1 className="logo-title">TodoMatic</h1>
 
-          <Link to="/completed" className="link-completed">
+          <Link to={ROUTES.TODO_COMPLETED} className="link-completed">
             완료 목록 →
           </Link>
         </div>
@@ -58,11 +59,11 @@ function TodoPage({ todos, onAdd, onToggle, onDelete, onEdit }) {
         </section>
 
         <nav className="button-container" aria-label="할 일 필터">
-          <Link to="/all" className="button button-secondary">
+          <Link to={ROUTES.TODO_ALL} className="button button-secondary">
             전체보기
           </Link>
 
-          <Link to="/" className="button button-default" aria-current="page">
+          <Link to={ROUTES.TODO} className="button button-default" aria-current="page">
             진행 중
           </Link>
         </nav>

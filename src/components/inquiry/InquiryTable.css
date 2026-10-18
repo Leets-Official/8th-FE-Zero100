@@ -1,0 +1,88 @@
+/* 표 바깥 카드 (좁은 화면에서는 가로 스크롤) */
+.inquiry-table-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: auto;
+
+  border: 0.935px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.inquiry-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* 열 너비: 번호 80px / 제목 나머지 / 작성일 191.998px */
+.inquiry-table__col-number {
+  width: 80px;
+}
+
+.inquiry-table__col-date {
+  width: 191.998px;
+}
+
+/* 헤더 셀 */
+.inquiry-table__head-cell {
+  box-sizing: border-box;
+  padding: 9.989px 15.99px 14.462px 15.99px;
+
+  border-bottom: 0.935px solid #e5e7eb;
+
+  color: #364153;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: left;
+}
+
+/* 본문 셀 */
+.inquiry-table__cell {
+  box-sizing: border-box;
+  padding: 14.462px 15.99px;
+
+  border-bottom: 0.935px solid #f3f4f6;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+}
+
+.inquiry-table tbody tr:last-child .inquiry-table__cell {
+  border-bottom: none;
+}
+
+.inquiry-table__cell--title {
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inquiry-table__cell--date {
+  color: #4a5565;
+}
+
+/* 제목 링크: 평소에는 일반 글자처럼, 마우스를 올리면 밑줄 */
+.inquiry-table__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.inquiry-table__link:hover {
+  text-decoration: underline;
+}
+
+.inquiry-table__link:focus-visible {
+  outline: 2px solid var(--common-muted);
+  outline-offset: 2px;
+}

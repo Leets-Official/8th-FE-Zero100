@@ -1,10 +1,19 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import TodoPage from './pages/TodoPage';
-import AllPage from './pages/AllPage';
-import CompletedPage from './pages/CompletedPage';
-import StatsPage from './pages/StatsPage';
+import { ROUTES } from './constants/routes';
+import DashboardPage from './pages/dashboard/DashboardPage';
+import InquiryCreatePage from './pages/inquiry/InquiryCreatePage';
+import InquiryDetailPage from './pages/inquiry/InquiryDetailPage';
+import InquiryPage from './pages/inquiry/InquiryPage';
+import LoginPage from './pages/login/LoginPage';
+import MyPage from './pages/mypage/MyPage';
+import ComponentPreview from './pages/preview/ComponentPreview';
+import SignupPage from './pages/signup/SignupPage';
+import AllPage from './pages/todolist/AllPage';
+import CompletedPage from './pages/todolist/CompletedPage';
+import StatsPage from './pages/todolist/StatsPage';
+import TodoPage from './pages/todolist/TodoPage';
 
 function App() {
   const [todos, setTodos] = useState(() => {
@@ -61,10 +70,24 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TodoPage {...pageProps} />} />
-        <Route path="/all" element={<AllPage {...pageProps} />} />
-        <Route path="/completed" element={<CompletedPage {...pageProps} />} />
-        <Route path="/stats" element={<StatsPage {...pageProps} />} />
+        <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.INQUIRY} element={<InquiryPage />} />
+        <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
+        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
+        <Route path={ROUTES.MYPAGE} element={<MyPage />} />
+
+        <Route path={ROUTES.TODO} element={<TodoPage {...pageProps} />} />
+        <Route path={ROUTES.TODO_ALL} element={<AllPage {...pageProps} />} />
+        <Route path={ROUTES.TODO_COMPLETED} element={<CompletedPage {...pageProps} />} />
+        <Route path={ROUTES.TODO_STATS} element={<StatsPage {...pageProps} />} />
+
+        <Route path={ROUTES.COMPONENT_PREVIEW} element={<ComponentPreview />} />
+
+        <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
       </Routes>
     </BrowserRouter>
   );

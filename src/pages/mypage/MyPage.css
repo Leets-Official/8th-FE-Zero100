@@ -1,0 +1,22 @@
+/* Figma: 내용 폭 672px, 가운데 정렬 */
+.mypage {
+  display: flex;
+  width: 100%;
+  max-width: 672px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.mypage__title {
+  margin: 0;
+  padding-bottom: 3.864px;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
