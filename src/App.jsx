@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import Layout from './components/Layout/Layout';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import AuthLayout from './components/auth/AuthLayout';
+import LoginPage from './pages/LoginPage';
 
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import { ROUTES } from './constants/routes';
@@ -63,10 +64,7 @@ function App() {
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
 
       <Route element={<AuthLayout />}>
-        <Route
-          path={ROUTES.LOGIN}
-          element={<h1 className="text-center text-[24px] font-bold text-[#000000]">로그인</h1>}
-        />
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
 
         <Route
           path={ROUTES.SIGNUP}
