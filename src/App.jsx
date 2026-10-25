@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
+
 import TodoPage from './pages/TodoPage';
 import CompletedPage from './pages/CompletedPage';
-import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
-import './App.css';
 import StatsPage from './pages/StatsPage';
+import DashboardPage from './pages/DashboardPage';
+
 import Layout from './components/Layout/Layout';
 import DashboardLayout from './components/dashboard/DashboardLayout';
-import DashboardPage from './pages/DashboardPage';
+import AuthLayout from './components/auth/AuthLayout';
+
+import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import { ROUTES } from './constants/routes';
+
+import './App.css';
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
@@ -56,6 +61,18 @@ function App() {
   return (
     <Routes>
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+
+      <Route element={<AuthLayout />}>
+        <Route
+          path={ROUTES.LOGIN}
+          element={<h1 className="text-center text-[24px] font-bold text-[#000000]">로그인</h1>}
+        />
+
+        <Route
+          path={ROUTES.SIGNUP}
+          element={<h1 className="text-center text-[24px] font-bold text-[#000000]">회원가입</h1>}
+        />
+      </Route>
 
       <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
         <Route index element={<DashboardPage />} />
