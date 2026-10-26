@@ -9,9 +9,9 @@ function Textarea(props) {
 
   return (
     <div className="flex w-full flex-col gap-1.5">
-      { label && (
+      {label && (
         <label htmlFor={id} className="text-sm leading-5 font-medium text-gray-700">
-            {label}
+          {label}
         </label>
       )}
       <TextInput
