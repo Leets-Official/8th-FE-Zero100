@@ -7,6 +7,7 @@ import HomePage from './pages/todo/HomePage';
 import CompletedPage from './pages/todo/CompletedPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
+import { ROUTES } from './constants/routes';
 
 const loadTasks = () => {
   try {
@@ -46,7 +47,7 @@ function App() {
   return (
     <Routes>
       <Route
-        path="/todolist"
+        path={ROUTES.TODOLIST}
         element={
           <HomePage
             tasks={work}
@@ -58,7 +59,7 @@ function App() {
         }
       />
       <Route
-        path="/todolist/completed"
+        path={ROUTES.TODOLIST_COMPLETED}
         element={
           <CompletedPage
             tasks={work}
@@ -68,14 +69,14 @@ function App() {
           />
         }
       />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+      <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+      <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
         <Route index element={<DashboardHomePage />} />
-        <Route path="components" element={<ComponentsPage />} />
+        <Route path={ROUTES.DASHBOARD_COMPONENTS} element={<ComponentsPage />} />
         <Route path="*" element={<p className="p-8">준비 중인 페이지입니다.</p>} />
       </Route>
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     </Routes>
   );
 }

@@ -4,6 +4,7 @@ import AuthLayout from '../../components/auth/AuthLayout';
 import Button from '../../components/dashboard/Button';
 import Textarea from '../../components/dashboard/Textarea';
 import { validateEmail, validateName, validatePassword } from '../../utils/validators';
+import { ROUTES } from '../../constants/routes';
 
 const validators = {
   email: validateEmail,
@@ -70,7 +71,7 @@ function SignupPage() {
 
       <p className="text-center text-sm leading-5 text-gray-600">
         이미 계정이 있으신가요?{' '}
-        <Link to="/login" className="text-black underline">
+        <Link to={ROUTES.LOGIN} className="text-black underline">
           로그인
         </Link>
       </p>

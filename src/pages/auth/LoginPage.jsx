@@ -3,6 +3,7 @@ import AuthLayout from '../../components/auth/AuthLayout';
 import KakaoIcon from '../../components/auth/KakaoIcon';
 import Button from '../../components/dashboard/Button';
 import Textarea from '../../components/dashboard/Textarea';
+import { ROUTES } from '../../constants/routes';
 
 function LoginPage() {
   function handleSubmit(event) {
@@ -37,7 +38,7 @@ function LoginPage() {
 
       <p className="text-center text-sm leading-5 text-gray-600">
         계정이 없으신가요?{' '}
-        <Link to="/signup" className="text-black underline">
+        <Link to={ROUTES.SIGNUP} className="text-black underline">
           회원가입
         </Link>
       </p>
