@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router';
 import DashboardLayout from './components/dashboard/DashboardLayout/DashboardLayout';
 import TodoTabsLayout from './components/layout/TodoTabsLayout/TodoTabsLayout';
 import { ROUTES } from './constants/routes';
+import LoginPage from './pages/auth/LoginPage';
 import CompletedPage from './pages/CompletedPage';
 import ComingSoonPage from './pages/dashboard/ComingSoonPage';
 import DashboardHomePage from './pages/dashboard/DashboardHomePage';
@@ -11,6 +12,8 @@ import TodoListPage from './pages/TodoListPage';
 
 export const router = createBrowserRouter([
   { path: '/', element: <Navigate to={ROUTES.DASHBOARD} replace /> },
+  // 로그인/회원가입은 대시보드 틀(Header/Sidebar) 없이 카드만 보여준다.
+  { path: ROUTES.LOGIN, element: <LoginPage /> },
   {
     // 대시보드: Header/Sidebar/Footer는 DashboardLayout이 그리고, 가운데 내용만 바뀐다.
     path: ROUTES.DASHBOARD,
