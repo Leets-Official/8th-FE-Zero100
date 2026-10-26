@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router';
 import DeleteModal from './components/todo/DeleteModal.jsx';
 import DashboardPage from './pages/dashboard/DashboardPage.jsx';
 import LoginPage from './pages/dashboard/LoginPage.jsx';
+import SignupPage from './pages/dashboard/SignupPage.jsx';
 import CompletedTodoPage from './pages/todo/CompletedTodoPage.jsx';
 import TodoPage from './pages/todo/TodoPage.jsx';
 import { loadTodos, saveTodos } from './utils/todo/storage.js';
@@ -61,6 +62,7 @@ function App() {
         />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
 
       <DeleteModal onConfirm={handleDeleteTodo} />

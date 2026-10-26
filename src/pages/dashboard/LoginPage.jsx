@@ -1,22 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
 import kakaoSymbol from '../../assets/kakao-symbol.svg';
 import AuthCard from '../../components/dashboard/AuthCard.jsx';
 import Button from '../../components/dashboard/Button.jsx';
 import TextInput from '../../components/dashboard/TextInput.jsx';
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { validateEmail } from '../../utils/dashboard/validation.js';
 
 const KAKAO_BUTTON_CLASS_NAME =
   'w-full h-[48px] gap-[8px] border-[1px] border-solid border-[#fee500] rounded-[8px] bg-[#fee500] font-[family-name:Pretendard,var(--font-family-base)] font-bold text-[16px] leading-[1.45] tracking-[-0.064px] text-[#381e1f]';
-
-function validateEmail(email) {
-  const trimmedEmail = email.trim();
-
-  if (!trimmedEmail) return '이메일을 입력하세요';
-  if (!EMAIL_PATTERN.test(trimmedEmail)) return '올바른 이메일 형식을 입력하세요';
-  return '';
-}
 
 function validatePassword(password) {
   return password ? '' : '비밀번호를 입력하세요';
@@ -57,61 +47,58 @@ function LoginPage() {
   };
 
   return (
-    <main className="box-border flex flex-row items-center justify-center w-full min-h-screen p-[16px] bg-[#f9fafb]">
-      <AuthCard title="로그인" className="gap-[26px]">
-        {/* Figma의 Form 높이(179.61px)를 유지하고, 오류 메시지가 표시되면 그만큼 늘어나도록 min-height로 지정 */}
-        <form
-          className="flex flex-col gap-[16px] min-h-[179.61px]"
-          noValidate
-          onSubmit={handleSubmit}
-        >
-          <TextInput
-            type="email"
-            name="email"
-            label="이메일"
-            hideLabel
-            placeholder="이메일을 입력하세요"
-            autoComplete="email"
-            value={email}
-            onChange={handleEmailChange}
-            error={errors.email}
-          />
-          <TextInput
-            type="password"
-            name="password"
-            label="비밀번호"
-            hideLabel
-            placeholder="비밀번호를 입력하세요"
-            autoComplete="current-password"
-            value={password}
-            onChange={handlePasswordChange}
-            error={errors.password}
-          />
-          <Button type="submit" className="w-full">
-            로그인
-          </Button>
-        </form>
-
-        <div className="relative flex flex-row justify-center before:absolute before:inset-x-0 before:top-[9.54px] before:border-0 before:border-t-[0.93px] before:border-solid before:border-[#e5e7eb] before:content-['']">
-          <span className="relative px-[8px] bg-[#ffffff] font-[family-name:var(--font-family-base)] font-normal text-[14px] leading-[20px] tracking-[0px] text-[#6a7282]">
-            또는
-          </span>
-        </div>
-
-        {/* 카카오 OAuth 연동 전이므로 UI만 구현 */}
-        <Button type="button" className={KAKAO_BUTTON_CLASS_NAME}>
-          <img src={kakaoSymbol} alt="" className="w-[18.505px] h-[17px]" />
-          카카오 로그인
+    <AuthCard
+      title="로그인"
+      linkGuideText="계정이 없으신가요?"
+      linkLabel="회원가입"
+      linkTo="/signup"
+      className="gap-[26px]"
+    >
+      {/* Figma의 Form 높이(179.61px)를 유지하고, 오류 메시지가 표시되면 그만큼 늘어나도록 min-height로 지정 */}
+      <form
+        className="flex flex-col gap-[16px] min-h-[179.61px]"
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <TextInput
+          type="email"
+          name="email"
+          label="이메일"
+          hideLabel
+          placeholder="이메일을 입력하세요"
+          autoComplete="email"
+          value={email}
+          onChange={handleEmailChange}
+          error={errors.email}
+        />
+        <TextInput
+          type="password"
+          name="password"
+          label="비밀번호"
+          hideLabel
+          placeholder="비밀번호를 입력하세요"
+          autoComplete="current-password"
+          value={password}
+          onChange={handlePasswordChange}
+          error={errors.password}
+        />
+        <Button type="submit" className="w-full">
+          로그인
         </Button>
+      </form>
 
-        <p className="m-0 font-[family-name:var(--font-family-base)] font-normal text-[14px] leading-[20px] tracking-[0px] text-center text-[#4a5565]">
-          계정이 없으신가요?{' '}
-          <Link to="/signup" className="text-[#000000] underline">
-            회원가입
-          </Link>
-        </p>
-      </AuthCard>
-    </main>
+      <div className="relative flex flex-row justify-center before:absolute before:inset-x-0 before:top-[9.54px] before:border-0 before:border-t-[0.93px] before:border-solid before:border-[#e5e7eb] before:content-['']">
+        <span className="relative px-[8px] bg-[#ffffff] font-[family-name:var(--font-family-base)] font-normal text-[14px] leading-[20px] tracking-[0px] text-[#6a7282]">
+          또는
+        </span>
+      </div>
+
+      {/* 카카오 OAuth 연동 전이므로 UI만 구현 */}
+      <Button type="button" className={KAKAO_BUTTON_CLASS_NAME}>
+        <img src={kakaoSymbol} alt="" className="w-[18.505px] h-[17px]" />
+        카카오 로그인
+      </Button>
+    </AuthCard>
   );
 }
 
