@@ -29,9 +29,9 @@ function DashboardLayout() {
         actionLabel="로그아웃"
         onAction={() => showToast('로그아웃 기능은 다음 주차에 연결할 예정이에요.')}
       />
-      <div className="flex flex-1">
+      <div className="flex flex-1 flex-col md:flex-row">
         <Sidebar items={SIDEBAR_ITEMS} />
-        <main className="min-w-0 flex-1 p-6 md:px-10 md:py-8">
+        <main className="min-w-0 flex-1 p-6 md:p-8">
           <Outlet context={{ showToast }} />
         </main>
       </div>
