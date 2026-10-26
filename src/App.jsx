@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
+import DashboardLayout from './components/dashboard/DashboardLayout.jsx';
 import DeleteModal from './components/todo/DeleteModal.jsx';
 import DashboardPage from './pages/dashboard/DashboardPage.jsx';
 import LoginPage from './pages/dashboard/LoginPage.jsx';
@@ -60,7 +61,9 @@ function App() {
             />
           }
         />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
       </Routes>
