@@ -6,7 +6,7 @@ function AuthCard({ title, children, footer }) {
   return (
     <main className="flex min-h-dvh items-center justify-center bg-dash-bg px-4 py-10">
       <section className="flex w-full max-w-md flex-col gap-6 rounded-[10px] border border-dash-line bg-white px-6 py-8 sm:px-8">
-        <h1 className="text-center text-2xl leading-8 font-bold text-dash-black">{title}</h1>
+        <h1 className="mb-2 text-center text-2xl leading-8 font-bold text-dash-black">{title}</h1>
         {children}
         {footer && <p className="text-center text-sm leading-5 text-dash-text-sub">{footer}</p>}
       </section>
