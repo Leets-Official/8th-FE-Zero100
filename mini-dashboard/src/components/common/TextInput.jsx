@@ -7,6 +7,7 @@ const TextInput = forwardRef(function TextInput(
     label,
     helperText,
     error,
+    hideLabel = false,
     required = false,
     className = '',
     'aria-describedby': describedBy,
@@ -28,6 +29,7 @@ const TextInput = forwardRef(function TextInput(
       required={required}
       helperText={helperText}
       error={error}
+      hideLabel={hideLabel}
     >
       <input
         {...props}
