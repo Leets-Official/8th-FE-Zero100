@@ -17,7 +17,7 @@ function Sidebar() {
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `block h-11 px-6 pt-2.5 text-sm leading-5 text-black ${isActive ? 'bg-gray-100' : ''}`
+                `block h-11 px-6 pt-2.5 text-sm leading-5 ${isActive ? 'bg-gray-100 font-medium text-black' : 'text-gray-600'}`
               }
             >
               {item.label}
