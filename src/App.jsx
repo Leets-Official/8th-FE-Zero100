@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/dashboard/DashboardLayout';
 import ComponentsPage from './pages/dashboard/ComponentsPage';
+import DashboardHomePage from './pages/dashboard/DashboardHomePage';
 import HomePage from './pages/todo/HomePage';
 import CompletedPage from './pages/todo/CompletedPage';
 import LoginPage from './pages/auth/LoginPage';
@@ -70,7 +71,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
-        <Route index element={<ComponentsPage />} />
+        <Route index element={<DashboardHomePage />} />
         <Route path="components" element={<ComponentsPage />} />
         <Route path="*" element={<p className="p-8">준비 중인 페이지입니다.</p>} />
       </Route>
