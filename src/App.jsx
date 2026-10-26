@@ -2,11 +2,15 @@ import { Navigate, Route, Routes } from 'react-router';
 import { ROUTES } from './constants/routes.js';
 import ComponentsPage from './pages/ComponentsPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import SignupPage from './pages/SignupPage.jsx';
 import TodoApp from './pages/TodoApp.jsx';
 
 function App() {
   return (
     <Routes>
+      <Route path={ROUTES.login} element={<LoginPage />} />
+      <Route path={ROUTES.signup} element={<SignupPage />} />
       <Route path={ROUTES.dashboard} element={<DashboardPage />} />
       <Route path={ROUTES.components} element={<ComponentsPage />} />
       <Route path="/todolist/*" element={<TodoApp />} />
