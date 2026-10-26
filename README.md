@@ -20,7 +20,17 @@
 
 Figma: [디자인 링크](https://www.figma.com/design/5udme3sBNisPIOyu57QfmD/Zero100-%EB%94%94%EC%9E%90%EC%9D%B8?node-id=105-165&m=dev&t=emvJcXPYT63tSQUZ-1)
 
-## 코드 검사와 포맷팅
+## 4주차 미니 대시보드
+
+4주차 프로젝트는 `mini-dashboard/`에서 실행합니다. [설정·공통 컴포넌트 사용법](./mini-dashboard/README.md)을 참고해 주세요.
+
+```bash
+cd mini-dashboard
+npm ci --ignore-scripts
+npm run dev
+```
+
+## Todo 프로젝트 코드 검사와 포맷팅
 
 의존성을 설치한 뒤 아래 명령을 사용할 수 있습니다.
 
