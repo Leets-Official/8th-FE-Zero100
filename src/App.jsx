@@ -4,6 +4,8 @@ import DashboardLayout from './components/dashboard/DashboardLayout';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import HomePage from './pages/todo/HomePage';
 import CompletedPage from './pages/todo/CompletedPage';
+import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignupPage';
 
 const loadTasks = () => {
   try {
@@ -65,6 +67,8 @@ function App() {
           />
         }
       />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<DashboardPage />} />
         <Route path="*" element={<p className="p-8">준비 중인 페이지입니다.</p>} />
