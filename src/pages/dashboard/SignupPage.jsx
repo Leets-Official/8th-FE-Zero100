@@ -18,21 +18,26 @@ function validatePassword(password) {
   return isValid ? '' : PASSWORD_RULE_TEXT;
 }
 
-function validatePasswordConfirm(passwordConfirm, password) {
-  if (!passwordConfirm) return '비밀번호를 한 번 더 입력하세요';
-  return passwordConfirm === password ? '' : '비밀번호가 일치하지 않습니다';
+// Figma 회원가입 디자인의 이름 안내 문구. 조건을 만족하지 않으면 같은 문구를 오류 메시지로 표시
+const NAME_RULE_TEXT = '2자 이상 8자 이하';
+
+function validateName(name) {
+  const trimmedName = name.trim();
+
+  if (!trimmedName) return '이름을 입력하세요';
+  return trimmedName.length >= 2 && trimmedName.length <= 8 ? '' : NAME_RULE_TEXT;
 }
 
-function validateSignupForm({ email, password, passwordConfirm }) {
+function validateSignupForm({ email, password, name }) {
   return {
     email: validateEmail(email),
     password: validatePassword(password),
-    passwordConfirm: validatePasswordConfirm(passwordConfirm, password),
+    name: validateName(name),
   };
 }
 
 function SignupPage() {
-  const [values, setValues] = useState({ email: '', password: '', passwordConfirm: '' });
+  const [values, setValues] = useState({ email: '', password: '', name: '' });
   // 첫 제출 전에는 null이고, 제출 후에는 입력할 때마다 다시 검사해 오류 상태를 갱신
   const [errors, setErrors] = useState(null);
 
@@ -92,15 +97,15 @@ function SignupPage() {
           error={errors?.password}
         />
         <TextInput
-          type="password"
-          name="passwordConfirm"
-          label="비밀번호 확인"
+          name="name"
+          label="이름"
           hideLabel
-          placeholder="비밀번호를 입력하세요"
-          autoComplete="new-password"
-          value={values.passwordConfirm}
+          placeholder="이름을 입력하세요"
+          helperText={NAME_RULE_TEXT}
+          autoComplete="name"
+          value={values.name}
           onChange={handleChange}
-          error={errors?.passwordConfirm}
+          error={errors?.name}
         />
         <Button type="submit" className="w-full">
           회원가입
