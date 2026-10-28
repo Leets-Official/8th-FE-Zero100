@@ -39,6 +39,10 @@
   --color-dash-toast-line: #ededed;
   --color-dash-bg: #f9fafb;
   --color-dash-active: #f3f4f6;
+
+  /* 카카오 로그인 버튼 (카카오 디자인 가이드 색상) */
+  --color-kakao: #fee500;
+  --color-kakao-text: #191919;
 }
 
 @layer base {
