@@ -8,7 +8,7 @@ import { useDashboardToast } from '../../contexts/DashboardToastContext';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function DashboardPage() {
+function ComponentsPage() {
   const { openModal } = useDashboardModal();
   const { showToast } = useDashboardToast();
   const [email, setEmail] = useState('');
@@ -61,4 +61,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export default ComponentsPage;
