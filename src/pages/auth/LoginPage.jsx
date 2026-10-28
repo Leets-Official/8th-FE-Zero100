@@ -15,6 +15,8 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({ email: '', password: '' });
+  // 복사해서 붙여 넣을 때 딸려 온 앞뒤 공백 때문에 맞는 주소가 에러로 보이지 않도록 공백을 뺀 값으로 검사한다.
+  const trimmedEmail = email.trim();
 
   // 입력 중에는 해당 칸의 에러를 지우고, 입력창에서 벗어나거나 로그인을 누를 때 검사한다.
   const handleEmailChange = (event) => {
@@ -30,7 +32,7 @@ function LoginPage() {
   const handleEmailBlur = () => {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      email: email && !isEmail(email) ? EMAIL_ERROR : '',
+      email: trimmedEmail && !isEmail(trimmedEmail) ? EMAIL_ERROR : '',
     }));
   };
 
@@ -38,13 +40,14 @@ function LoginPage() {
     event.preventDefault();
 
     const nextErrors = {
-      email: isEmail(email) ? '' : EMAIL_ERROR,
+      email: isEmail(trimmedEmail) ? '' : EMAIL_ERROR,
       password: password ? '' : PASSWORD_ERROR,
     };
     setErrors(nextErrors);
     if (nextErrors.email || nextErrors.password) return;
 
     // 로그인 API는 UI 구현 후에 연결한다. 지금은 입력 형식만 맞으면 대시보드로 이동한다.
+    // API를 연결할 때도 검사한 값과 같은 trimmedEmail을 보낸다.
     navigate(ROUTES.DASHBOARD);
   };
 

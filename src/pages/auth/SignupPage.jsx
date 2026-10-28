@@ -10,9 +10,12 @@ import { isValidPassword } from '../../utils/isValidPassword';
 
 const INITIAL_VALUES = { email: '', password: '', name: '' };
 
-/** 칸마다 값이 올바르면 빈 문자열, 틀리면 에러 문구를 돌려준다. */
+/**
+ * 칸마다 값이 올바르면 빈 문자열, 틀리면 에러 문구를 돌려준다.
+ * 이메일은 붙여 넣을 때 딸려 온 앞뒤 공백을 빼고 검사한다. (이름은 isValidName 안에서 공백을 뺀다)
+ */
 const VALIDATORS = {
-  email: (value) => (isEmail(value) ? '' : '올바른 이메일 형식을 입력하세요'),
+  email: (value) => (isEmail(value.trim()) ? '' : '올바른 이메일 형식을 입력하세요'),
   password: (value) =>
     isValidPassword(value) ? '' : '8자 이상, 영문/숫자/특수문자를 포함해 입력하세요',
   name: (value) => (isValidName(value) ? '' : '2자 이상 8자 이하로 입력하세요'),
@@ -49,6 +52,7 @@ function SignupPage() {
     if (Object.values(nextErrors).some(Boolean)) return;
 
     // 회원가입 API는 UI 구현 후에 연결한다. 지금은 입력 형식만 맞으면 로그인 화면으로 이동한다.
+    // API를 연결할 때 이메일과 이름은 검사한 값과 같게 trim()한 값을 보낸다.
     navigate(ROUTES.LOGIN);
   };
 
