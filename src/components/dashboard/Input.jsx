@@ -29,7 +29,11 @@ function Input({
         type={type}
         aria-invalid={Boolean(error)}
         aria-describedby={message ? messageId : undefined}
-        className="w-full min-w-0 rounded-[10px] border-0 bg-[#f9fafb] px-[16px] py-[14px] text-[14px] leading-[19px] font-normal text-[#222222] shadow-[inset_0_0_0_0.93px_#e5e7eb] placeholder:text-[#999999] focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[#222222] disabled:cursor-not-allowed disabled:opacity-50"
+        className={`w-full min-w-0 rounded-[10px] border-0 bg-[#f9fafb] px-[16px] py-[14px] text-[14px] leading-[19px] font-normal text-[#222222] placeholder:text-[#999999] focus-visible:outline-2 focus-visible:outline-offset-0 disabled:cursor-not-allowed disabled:opacity-50 ${
+          error
+            ? 'shadow-[inset_0_0_0_0.93px_#fb2c36] focus-visible:outline-[#fb2c36]'
+            : 'shadow-[inset_0_0_0_0.93px_#e5e7eb] focus-visible:outline-[#222222]'
+        }`}
       />
 
       {message && (
@@ -37,7 +41,7 @@ function Input({
           id={messageId}
           className={`text-[10px] font-normal tracking-[0px] ${
             error ? 'leading-[20px] text-[#fb2c36]' : 'leading-[16px] text-[#6a7282]'
-          } `}
+          }`}
         >
           {message}
         </p>
