@@ -15,8 +15,8 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F9FAFB] px-4">
-      <section className="flex w-full max-w-[448px] flex-col gap-4 rounded-[10px] border border-[#E5E7EB] bg-white p-8">
-        <h1 className="mb-2 text-center text-2xl font-bold text-black">로그인</h1>
+      <section className="flex w-full max-w-[448px] flex-col gap-[26px] rounded-[10px] border border-[#E5E7EB] bg-white p-8">
+        <h1 className="text-center text-2xl font-bold text-black">로그인</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <TextInput
@@ -40,7 +40,7 @@ const LoginPage = () => {
           </Button>
         </form>
 
-        <div className="my-4 flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <span className="h-px flex-1 bg-[#E5E7EB]" />
           <span className="text-sm text-gray-500">또는</span>
           <span className="h-px flex-1 bg-[#E5E7EB]" />

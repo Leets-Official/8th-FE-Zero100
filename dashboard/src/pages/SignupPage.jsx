@@ -40,8 +40,8 @@ const SignupPage = () => {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F9FAFB] px-4">
-      <section className="flex w-full max-w-[448px] flex-col gap-4 rounded-[10px] border border-[#E5E7EB] bg-white p-8">
-        <h1 className="mb-2 text-center text-2xl font-bold text-black">회원가입</h1>
+      <section className="flex w-full max-w-[448px] flex-col gap-[28px] rounded-[10px] border border-[#E5E7EB] bg-white p-8">
+        <h1 className="text-center text-2xl font-bold text-black">회원가입</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
           <TextInput
@@ -79,7 +79,7 @@ const SignupPage = () => {
           </Button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-[#4A5565]">
+        <p className="text-center text-sm text-[#4A5565]">
           이미 계정이 있으신가요?{' '}
           <Link to="/login" className="text-black underline">
             로그인
