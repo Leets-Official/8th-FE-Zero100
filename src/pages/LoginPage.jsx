@@ -7,10 +7,82 @@ import { ROUTES } from '../constants/routes';
 import kakaoLogin from '../assets/kakao-login.svg';
 
 function LoginPage() {
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  });
+
+  const [errors, setErrors] = useState({});
   const [notice, setNotice] = useState('');
+
+  function validateField(name, value) {
+    if (name === 'email') {
+      if (!value.trim()) {
+        return '이메일을 입력해주세요.';
+      }
+
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+        return '올바른 이메일 형식을 입력하세요.';
+      }
+    }
+
+    if (name === 'password' && !value) {
+      return '비밀번호를 입력해주세요.';
+    }
+
+    return '';
+  }
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setValues((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: '',
+    }));
+
+    setNotice('');
+  }
+
+  function handleBlur(event) {
+    const { name, value } = event.target;
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: validateField(name, value),
+    }));
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    const trimmedEmail = values.email.trim();
+
+    setValues((prev) => ({
+      ...prev,
+      email: trimmedEmail,
+    }));
+
+    const nextErrors = {
+      email: validateField('email', trimmedEmail),
+      password: validateField('password', values.password),
+    };
+
+    setErrors(nextErrors);
+
+    const firstInvalidField = Object.keys(nextErrors).find((name) => nextErrors[name]);
+
+    if (firstInvalidField) {
+      setNotice('입력 내용을 확인해주세요.');
+      event.currentTarget.elements.namedItem(firstInvalidField)?.focus();
+      return;
+    }
+
     setNotice('로그인 기능은 API 연동 후 이용할 수 있습니다.');
   }
 
@@ -27,7 +99,11 @@ function LoginPage() {
         로그인
       </h1>
 
-      <form onSubmit={handleSubmit} className="flex min-h-[179.61px] flex-col gap-[15.99px]">
+      <form
+        noValidate
+        onSubmit={handleSubmit}
+        className="flex min-h-[179.61px] flex-col gap-[15.99px]"
+      >
         <Input
           label="이메일"
           hideLabel
@@ -35,6 +111,10 @@ function LoginPage() {
           name="email"
           autoComplete="username"
           placeholder="이메일을 입력하세요"
+          value={values.email}
+          error={errors.email}
+          onChange={handleChange}
+          onBlur={handleBlur}
           required
         />
 
@@ -45,6 +125,10 @@ function LoginPage() {
           name="password"
           autoComplete="current-password"
           placeholder="비밀번호를 입력하세요"
+          value={values.password}
+          error={errors.password}
+          onChange={handleChange}
+          onBlur={handleBlur}
           required
         />
 
