@@ -1,0 +1,71 @@
+/* 로그인 전용: 제목 아래 여백 (Figma padding-bottom 3.864px) */
+.login-page .auth-title {
+  padding-bottom: 3.864px;
+}
+
+/* 입력창 2개 + 로그인 버튼 */
+.login-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15.99px;
+}
+
+/* "또는" 구분선 */
+.login-divider {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 20.006px;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.login-divider__text {
+  position: relative;
+  padding: 0 8px;
+  background: #fff;
+
+  color: #6a7282;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+/* 하단 회원가입 안내 */
+.login-signup {
+  margin: 0;
+  align-self: stretch;
+
+  color: #4a5565;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+}
+
+.login-signup__link {
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-underline-position: from-font;
+}
