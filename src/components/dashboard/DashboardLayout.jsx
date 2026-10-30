@@ -9,13 +9,11 @@ const SIDEBAR_ITEMS = [
   { label: '마이페이지', to: '/dashboard/mypage' },
 ];
 
-// 로그아웃 API 연동 전이므로 버튼 UI만 표시
-const handleLogout = () => {};
-
 function DashboardLayout() {
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#f9fafb]">
-      <Header title="ZERO100 Admin" titleAs="p" onLogout={handleLogout} />
+      {/* 로그아웃 API 연동 전이므로 비활성화. 연동 시 logoutDisabled를 onLogout으로 교체 */}
+      <Header title="ZERO100 Admin" titleAs="p" logoutDisabled />
       <div className="flex flex-col md:flex-row flex-1">
         <Sidebar
           items={SIDEBAR_ITEMS}

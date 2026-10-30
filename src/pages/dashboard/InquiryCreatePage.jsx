@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import Button from '../../components/dashboard/Button.jsx';
 import Card from '../../components/dashboard/Card.jsx';
+import PageTitle from '../../components/dashboard/PageTitle.jsx';
 import TextArea from '../../components/dashboard/TextArea.jsx';
 import TextInput from '../../components/dashboard/TextInput.jsx';
 import { validateEmail } from '../../utils/dashboard/validation.js';
@@ -30,7 +31,7 @@ function InquiryCreatePage({ onAddInquiry }) {
     if (errors) setErrors(validateInquiryForm(nextValues));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const nextErrors = validateInquiryForm(values);
@@ -43,7 +44,7 @@ function InquiryCreatePage({ onAddInquiry }) {
       return;
     }
 
-    onAddInquiry({
+    await onAddInquiry({
       name: values.name.trim(),
       email: values.email.trim(),
       title: values.title.trim(),
@@ -54,9 +55,7 @@ function InquiryCreatePage({ onAddInquiry }) {
 
   return (
     <div className="box-border flex flex-col gap-[20px] w-full max-w-[684px] mx-auto lg:pl-[6px]">
-      <h1 className="mt-[-3.9px] mx-0 mb-[3.9px] font-[family-name:var(--font-family-base)] font-bold text-[24px] leading-[32px] tracking-[0px] text-[#000000]">
-        문의 등록
-      </h1>
+      <PageTitle className="mt-[-3.9px] mb-[3.9px]">문의 등록</PageTitle>
       <Card className="min-h-[580.1px] p-[23.07px]">
         <form className="flex flex-col gap-[16px]" noValidate onSubmit={handleSubmit}>
           <TextInput
