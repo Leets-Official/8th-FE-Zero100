@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router';
 import Button from '../../components/dashboard/Button.jsx';
 import InquiryTable from '../../components/dashboard/InquiryTable.jsx';
-import { MOCK_INQUIRIES } from '../../mocks/dashboard/inquiries.js';
 
-function InquiryListPage() {
+function InquiryListPage({ inquiries }) {
   const navigate = useNavigate();
 
   return (
@@ -16,7 +15,7 @@ function InquiryListPage() {
           문의 등록
         </Button>
       </div>
-      <InquiryTable inquiries={MOCK_INQUIRIES} />
+      <InquiryTable inquiries={inquiries} />
     </div>
   );
 }
