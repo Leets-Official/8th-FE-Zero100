@@ -3,7 +3,13 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from './constants/routes';
 import DashboardPage from './pages/dashboard/DashboardPage';
+import InquiryCreatePage from './pages/inquiry/InquiryCreatePage';
+import InquiryDetailPage from './pages/inquiry/InquiryDetailPage';
+import InquiryPage from './pages/inquiry/InquiryPage';
+import LoginPage from './pages/login/LoginPage';
+import MyPage from './pages/mypage/MyPage';
 import ComponentPreview from './pages/preview/ComponentPreview';
+import SignupPage from './pages/signup/SignupPage';
 import AllPage from './pages/todolist/AllPage';
 import CompletedPage from './pages/todolist/CompletedPage';
 import StatsPage from './pages/todolist/StatsPage';
@@ -36,9 +42,7 @@ function App() {
       completed: false,
     };
 
-    ```
-setTodos((previous) => [...previous, newTodo]);
-```;
+    setTodos((previous) => [...previous, newTodo]);
   };
 
   const handleToggle = (id) => {
@@ -65,11 +69,16 @@ setTodos((previous) => [...previous, newTodo]);
 
   return (
     <BrowserRouter>
-      {' '}
       <Routes>
         <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
 
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
         <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+        <Route path={ROUTES.INQUIRY} element={<InquiryPage />} />
+        <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
+        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
+        <Route path={ROUTES.MYPAGE} element={<MyPage />} />
 
         <Route path={ROUTES.TODO} element={<TodoPage {...pageProps} />} />
         <Route path={ROUTES.TODO_ALL} element={<AllPage {...pageProps} />} />

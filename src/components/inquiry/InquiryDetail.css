@@ -1,0 +1,131 @@
+.inquiry-detail {
+  width: 100%;
+  overflow: hidden;
+
+  border: 0.935px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* 날짜 + 제목 */
+.inquiry-detail__head {
+  display: flex;
+  box-sizing: border-box;
+  padding: 23.992px 31.995px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11.989px;
+
+  border-bottom: 0.935px solid #e5e7eb;
+}
+
+.inquiry-detail__date {
+  margin: 0;
+
+  color: #6a7282;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.inquiry-detail__title {
+  margin: 0;
+  padding-bottom: 3.864px;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+/* 작성자 / 이메일 */
+.inquiry-detail__author {
+  display: grid;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 20px 32px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+
+  border-bottom: 0.935px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.inquiry-detail__author-item {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5.987px;
+}
+
+.inquiry-detail__author-label {
+  margin: 0;
+
+  color: #6a7282;
+  font-family: var(--common-font);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.inquiry-detail__author-value {
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+/* 문의 내용 */
+.inquiry-detail__body {
+  display: flex;
+  box-sizing: border-box;
+  padding: 24px 32px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15.99px;
+}
+
+.inquiry-detail__body-label {
+  margin: 0;
+
+  color: #6a7282;
+  font-family: var(--common-font);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+/* 줄바꿈(\n)과 빈 줄을 그대로 표시 */
+.inquiry-detail__content {
+  margin: 0;
+  align-self: stretch;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+
+  color: #1e2939;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22.75px;
+}
+
+@media (max-width: 768px) {
+  .inquiry-detail__author {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
