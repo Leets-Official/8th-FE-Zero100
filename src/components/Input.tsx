@@ -4,21 +4,32 @@ interface Props {
   value: string;
   onChange: (value: string) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  placeholder?: string;
+  type?: string;
 }
 
-export const Input = ({ value, onChange, onKeyDown }: Props) => {
+export const Input = ({
+  value,
+  onChange,
+  onKeyDown,
+  placeholder = '내용을 입력하세요.',
+  type = 'text',
+}: Props) => {
   return (
     <input
-      type="text"
+      type={type}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       onKeyDown={onKeyDown}
-      placeholder="할 일을 입력하세요..."
+      placeholder={placeholder}
       style={{
-        padding: '6px 10px',
-        borderRadius: '4px',
-        border: '1px solid #ccc',
-        flex: 1,
+        width: '100%',
+        padding: '12px 14px',
+        borderRadius: '8px',
+        border: '1px solid #d1d5db',
+        outline: 'none',
+        boxSizing: 'border-box',
+        fontSize: '14px',
       }}
     />
   );

@@ -1,5 +1,9 @@
-import Header from './components/Header';
+
+import type { ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 
 import Dashboard from './pages/Dashboard';
 import TodoList from './pages/TodoList';
@@ -11,9 +15,8 @@ import InquiryCreate from './pages/InquiryCreate';
 import InquiryDetail from './pages/InquiryDetail';
 import MyPage from './pages/MyPage';
 
-import Sidebar from './components/Sidebar';
-
-function Layout({ children }: { children: React.ReactNode }) {
+// 공통 레이아웃
+function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen md:flex">
       <Sidebar />
@@ -25,14 +28,28 @@ function Layout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* 첫 화면은 대시보드로 이동 */}
+
+        {/* 첫 화면 */}
         <Route
           path="/"
           element={<Navigate to="/dashboard" replace />}
+        />
+
+        {/* 로그인 */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        {/* 회원가입 */}
+        <Route
+          path="/signup"
+          element={<Signup />}
         />
 
         {/* 대시보드 */}
@@ -44,15 +61,6 @@ export default function App() {
             </Layout>
           }
         />
-
-        {/* 기존 TodoList */}
-        <Route path="/todolist" element={<TodoList />} />
-
-        {/* 로그인 */}
-        <Route path="/login" element={<Login />} />
-
-        {/* 회원가입 */}
-        <Route path="/signup" element={<Signup />} />
 
         {/* 문의 목록 */}
         <Route
@@ -94,14 +102,24 @@ export default function App() {
           }
         />
 
-        {/* 완료된 할 일 */}
-        <Route path="/completed" element={<Completed />} />
+        {/* 기존 할 일 페이지 */}
+        <Route
+          path="/todolist"
+          element={<TodoList />}
+        />
 
-        {/* 등록되지 않은 주소 */}
+        {/* 완료된 할 일 */}
+        <Route
+          path="/completed"
+          element={<Completed />}
+        />
+
+        {/* 잘못된 주소 */}
         <Route
           path="*"
           element={<Navigate to="/dashboard" replace />}
         />
+
       </Routes>
     </BrowserRouter>
   );

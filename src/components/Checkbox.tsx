@@ -1,6 +1,6 @@
 interface Props {
   checked: boolean;
-  onChange: () => void;
+  onChange: (checked: boolean) => void;
 }
 
 export const Checkbox = ({ checked, onChange }: Props) => {
@@ -8,8 +8,13 @@ export const Checkbox = ({ checked, onChange }: Props) => {
     <input
       type="checkbox"
       checked={checked}
-      onChange={onChange}
-      style={{ cursor: 'pointer' }}
+      onChange={(e) => onChange(e.target.checked)}
+      style={{
+        cursor: 'pointer',
+        width: '16px',
+        height: '16px',
+        accentColor: '#000000',
+      }}
     />
   );
 };
