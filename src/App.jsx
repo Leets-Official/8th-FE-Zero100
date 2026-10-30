@@ -4,8 +4,8 @@ import DashboardLayout from './components/dashboard/DashboardLayout.jsx';
 import DeleteModal from './components/todo/DeleteModal.jsx';
 import DashboardPage from './pages/dashboard/DashboardPage.jsx';
 import InquiryCreatePage from './pages/dashboard/InquiryCreatePage.jsx';
+import InquiryDetailPage from './pages/dashboard/InquiryDetailPage.jsx';
 import InquiryListPage from './pages/dashboard/InquiryListPage.jsx';
-import InquiryPlaceholderPage from './pages/dashboard/InquiryPlaceholderPage.jsx';
 import LoginPage from './pages/dashboard/LoginPage.jsx';
 import SignupPage from './pages/dashboard/SignupPage.jsx';
 import CompletedTodoPage from './pages/todo/CompletedTodoPage.jsx';
@@ -85,7 +85,10 @@ function App() {
             path="/dashboard/inquiries/new"
             element={<InquiryCreatePage onAddInquiry={handleAddInquiry} />}
           />
-          <Route path="/dashboard/inquiries/:inquiryId" element={<InquiryPlaceholderPage />} />
+          <Route
+            path="/dashboard/inquiries/:id"
+            element={<InquiryDetailPage inquiries={inquiries} />}
+          />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
