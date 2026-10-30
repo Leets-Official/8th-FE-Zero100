@@ -1,12 +1,23 @@
+import { startTransition, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import Button from '../../components/dashboard/Button.jsx';
 import Card from '../../components/dashboard/Card.jsx';
+import InquiryDeleteModal from '../../components/dashboard/InquiryDeleteModal.jsx';
 import InquiryDetailCard from '../../components/dashboard/InquiryDetailCard.jsx';
 
-function InquiryDetailPage({ inquiries }) {
+function InquiryDetailPage({ inquiries, onDeleteInquiry }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const inquiry = inquiries.find((item) => String(item.id) === id);
+
+  const handleConfirmDelete = () => {
+    setIsDeleteModalOpen(false);
+    startTransition(() => {
+      onDeleteInquiry(inquiry.id);
+      navigate('/dashboard/inquiries', { replace: true });
+    });
+  };
 
   return (
     <div className="flex flex-col gap-[24px] w-full max-w-[896.3px] mx-auto">
@@ -19,7 +30,7 @@ function InquiryDetailPage({ inquiries }) {
             목록으로
           </Button>
           {inquiry && (
-            <Button variant="secondary" disabled>
+            <Button variant="secondary" onClick={() => setIsDeleteModalOpen(true)}>
               삭제
             </Button>
           )}
@@ -34,6 +45,11 @@ function InquiryDetailPage({ inquiries }) {
           </p>
         </Card>
       )}
+      <InquiryDeleteModal
+        isOpen={isDeleteModalOpen && Boolean(inquiry)}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 }

@@ -53,6 +53,10 @@ function App() {
     setInquiries([...inquiries, newInquiry]);
   };
 
+  const handleDeleteInquiry = (id) => {
+    setInquiries(inquiries.filter((inquiry) => inquiry.id !== id));
+  };
+
   return (
     <>
       <Routes>
@@ -87,7 +91,9 @@ function App() {
           />
           <Route
             path="/dashboard/inquiries/:id"
-            element={<InquiryDetailPage inquiries={inquiries} />}
+            element={
+              <InquiryDetailPage inquiries={inquiries} onDeleteInquiry={handleDeleteInquiry} />
+            }
           />
         </Route>
         <Route path="/login" element={<LoginPage />} />

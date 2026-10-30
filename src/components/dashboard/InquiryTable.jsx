@@ -31,12 +31,12 @@ function InquiryTable({ inquiries }) {
           </tr>
         </thead>
         <tbody>
-          {inquiries.map((inquiry) => (
+          {inquiries.map((inquiry, index) => (
             <tr
               key={inquiry.id}
               className="relative h-[48.9px] border-0 border-b-[0.93px] border-solid border-[#f3f4f6] last:h-[48.5px] last:border-b-0"
             >
-              <td className={`${CELL_CLASS_NAME} font-normal text-[#000000]`}>{inquiry.id}</td>
+              <td className={`${CELL_CLASS_NAME} font-normal text-[#000000]`}>{index + 1}</td>
               <td className={`${CELL_CLASS_NAME} font-medium wrap-anywhere`}>
                 <Link
                   to={`/dashboard/inquiries/${inquiry.id}`}
