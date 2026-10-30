@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from 'react-router';
 import DashboardLayout from './components/dashboard/DashboardLayout.jsx';
 import DeleteModal from './components/todo/DeleteModal.jsx';
 import DashboardPage from './pages/dashboard/DashboardPage.jsx';
+import InquiryListPage from './pages/dashboard/InquiryListPage.jsx';
+import InquiryPlaceholderPage from './pages/dashboard/InquiryPlaceholderPage.jsx';
 import LoginPage from './pages/dashboard/LoginPage.jsx';
 import SignupPage from './pages/dashboard/SignupPage.jsx';
 import CompletedTodoPage from './pages/todo/CompletedTodoPage.jsx';
@@ -63,6 +65,9 @@ function App() {
         />
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="/dashboard/inquiries" element={<InquiryListPage />} />
+          <Route path="/dashboard/inquiries/new" element={<InquiryPlaceholderPage />} />
+          <Route path="/dashboard/inquiries/:inquiryId" element={<InquiryPlaceholderPage />} />
         </Route>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

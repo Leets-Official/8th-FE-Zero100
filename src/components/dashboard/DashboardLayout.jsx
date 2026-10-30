@@ -3,10 +3,9 @@ import Footer from './Footer.jsx';
 import Header from './Header.jsx';
 import Sidebar from './Sidebar.jsx';
 
-// 문의, 마이페이지 라우트는 아직 구현 전이며 Figma 메뉴 구성에 맞춰 경로만 지정
 const SIDEBAR_ITEMS = [
   { label: '대시보드 홈', to: '/dashboard', end: true },
-  { label: '문의', to: '/inquiry' },
+  { label: '문의', to: '/dashboard/inquiries' },
   { label: '마이페이지', to: '/mypage' },
 ];
 
