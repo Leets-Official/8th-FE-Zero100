@@ -6,7 +6,7 @@ import Sidebar from './Sidebar.jsx';
 const SIDEBAR_ITEMS = [
   { label: '대시보드 홈', to: '/dashboard', end: true },
   { label: '문의', to: '/dashboard/inquiries' },
-  { label: '마이페이지', to: '/mypage' },
+  { label: '마이페이지', to: '/dashboard/mypage' },
 ];
 
 // 로그아웃 API 연동 전이므로 버튼 UI만 표시
