@@ -5,6 +5,7 @@ import TodoItem from '../../components/todo/TodoItem';
 import TodoStats from '../../components/todo/TodoStats';
 import PageHeader from '../../components/todo/PageHeader';
 import TabMenu from '../../components/todo/TabMenu';
+import { ROUTES } from '../../constants/routes';
 
 function HomePage(props) {
   const [tab, setTab] = useState('list');
@@ -19,7 +20,11 @@ function HomePage(props) {
 
   return (
     <main className="mx-auto flex max-w-[536px] flex-col gap-6 p-2">
-      <PageHeader title="TodoMatic" linkTo="/todolist/completed" linkText="완료 목록 &rarr;" />
+      <PageHeader
+        title="TodoMatic"
+        linkTo={ROUTES.TODOLIST_COMPLETED}
+        linkText="완료 목록 &rarr;"
+      />
 
       {tab === 'list' ? (
         <>

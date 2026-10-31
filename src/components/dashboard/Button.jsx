@@ -16,7 +16,7 @@ function Button(props) {
     <button
       type={props.type ?? 'button'}
       disabled={props.disabled}
-      className={`cursor-pointer rounded-[10px] py-2.5 font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-40 ${variantStyles[variant]} ${sizeStyles[size]}`}
+      className={`cursor-pointer rounded-[10px] py-2.5 font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black disabled:cursor-not-allowed disabled:opacity-40 ${variantStyles[variant]} ${sizeStyles[size]} ${props.className ?? ''}`}
       onClick={props.onClick}
     >
       {props.children}
