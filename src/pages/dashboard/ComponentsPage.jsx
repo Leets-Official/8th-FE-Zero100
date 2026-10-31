@@ -16,7 +16,7 @@ function ComponentsPage() {
     email !== '' && !EMAIL_PATTERN.test(email) ? '올바른 이메일 형식을 입력하세요' : '';
 
   return (
-    <div className="flex flex-col gap-4 p-8">
+    <div className="flex flex-col gap-4">
       <h1>공통 컴포넌트 예시 페이지</h1>
       <section className="flex items-center gap-3">
         <Button>Primary Button</Button>

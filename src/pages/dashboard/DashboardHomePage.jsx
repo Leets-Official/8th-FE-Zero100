@@ -14,7 +14,7 @@ const inquiryStats = [
 
 function DashboardHomePage() {
   return (
-    <div className="flex flex-col gap-6 p-8">
+    <div className="flex flex-col gap-6">
       <h1 className="text-2xl leading-8 font-bold text-black">대시보드</h1>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <InfoCard title="내 정보" items={myInfo} />

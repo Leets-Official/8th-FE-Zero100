@@ -74,7 +74,7 @@ function App() {
       <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
         <Route index element={<DashboardHomePage />} />
         <Route path={ROUTES.DASHBOARD_COMPONENTS} element={<ComponentsPage />} />
-        <Route path="*" element={<p className="p-8">준비 중인 페이지입니다.</p>} />
+        <Route path="*" element={<p>준비 중인 페이지입니다.</p>} />
       </Route>
       <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     </Routes>
