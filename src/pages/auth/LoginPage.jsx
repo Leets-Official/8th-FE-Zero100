@@ -14,8 +14,20 @@ function LoginPage() {
     <AuthLayout title="로그인">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4">
-          <TextField type="email" aria-label="이메일" placeholder="이메일을 입력하세요" />
-          <TextField type="password" aria-label="비밀번호" placeholder="비밀번호를 입력하세요" />
+          <TextField
+            type="email"
+            name="email"
+            aria-label="이메일"
+            placeholder="이메일을 입력하세요"
+            autoComplete="username"
+          />
+          <TextField
+            type="password"
+            name="password"
+            aria-label="비밀번호"
+            placeholder="비밀번호를 입력하세요"
+            autoComplete="current-password"
+          />
         </div>
         <Button type="submit" className="w-full">
           로그인
