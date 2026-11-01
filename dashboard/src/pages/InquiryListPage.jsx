@@ -1,9 +1,25 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
+import Toast from '../components/Toast';
 import { INQUIRIES } from '../data/inquiries';
 
 const InquiryListPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [toastMessage, setToastMessage] = useState(location.state?.toast ?? '');
+
+  useEffect(() => {
+    if (location.state?.toast) {
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location.pathname, location.state, navigate]);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => setToastMessage(''), 3000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -41,6 +57,11 @@ const InquiryListPage = () => {
           </tbody>
         </table>
       </div>
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Toast message={toastMessage} />
+        </div>
+      )}
     </div>
   );
 };

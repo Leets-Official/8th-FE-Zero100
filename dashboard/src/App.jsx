@@ -5,6 +5,7 @@ import DashboardLayout from './components/DashboardLayout';
 import DashboardHomePage from './pages/DashboardHomePage';
 import InquiryListPage from './pages/InquiryListPage';
 import InquiryCreatePage from './pages/InquiryCreatePage';
+import InquiryDetailPage from './pages/InquiryDetailPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<DashboardHomePage />} />
         <Route path="/inquiries" element={<InquiryListPage />} />
         <Route path="/inquiries/new" element={<InquiryCreatePage />} />
+        <Route path="/inquiries/:id" element={<InquiryDetailPage />} />
       </Route>
     </Routes>
   );
