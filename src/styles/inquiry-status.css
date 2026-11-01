@@ -1,0 +1,16 @@
+.inquiry-status {
+  display: inline-block;
+  white-space: nowrap;
+  border-radius: 5px;
+  padding: 4px 7px;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.inquiry-status--pending {
+  color: #785c1c;
+  background: #fff5da;
+}
+.inquiry-status--answered {
+  color: #29654c;
+  background: #eaf6ef;
+}

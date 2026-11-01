@@ -2,7 +2,7 @@ import { adminClient } from './adminClient';
 import { inquiryClient } from './inquiryClient';
 import type { User } from '../types/auth';
 import type { ApiOptions, Inquiry, InquiryValues } from '../types/inquiry';
-import { hasErrors, validateInquiry } from '../utils/validation';
+import { validateInquiryValues } from '../utils/inquiryValidation';
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -54,8 +54,8 @@ async function currentUser(options?: ApiOptions): Promise<User> {
 }
 
 function cleanValues(values: InquiryValues): InquiryValues {
-  const errors = validateInquiry(values);
-  if (hasErrors(errors)) throw new Error('이름, 이메일, 제목과 내용을 확인해 주세요.');
+  const errors = validateInquiryValues(values);
+  if (Object.keys(errors).length) throw new Error('이름, 이메일, 제목과 내용을 확인해 주세요.');
   return {
     name: values.name.trim(),
     email: values.email.trim(),
@@ -71,6 +71,7 @@ export async function getInquiries(options?: ApiOptions): Promise<Inquiry[]> {
 }
 
 export async function getInquiry(id: string, options?: ApiOptions): Promise<Inquiry> {
+  if (!id.trim()) throw new Error('문의 번호를 확인할 수 없습니다. 목록에서 다시 선택해 주세요.');
   const { data } = await inquiryClient.get<unknown>(
     `/inquiries/${encodeURIComponent(id)}`,
     options,

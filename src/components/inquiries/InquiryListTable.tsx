@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import { formatDate } from '../../utils/date';
 import type { Inquiry } from '../../types/inquiry';
+import InquiryStatusBadge from './InquiryStatusBadge';
 
 interface InquiryTableProps {
   inquiries: Inquiry[];
@@ -43,9 +44,7 @@ export default function InquiryListTable({
                 </Link>
               </td>
               <td>
-                <span className={`inquiry-status inquiry-status--${inquiry.status}`}>
-                  {inquiry.status === 'answered' ? '답변 완료' : '답변 대기'}
-                </span>
+                <InquiryStatusBadge status={inquiry.status} />
               </td>
               <td>
                 <time dateTime={inquiry.createdAt}>{formatDate(inquiry.createdAt, true)}</time>

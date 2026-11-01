@@ -7,6 +7,14 @@ export const inquiryClient = axios.create({
 
 export function inquiryErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
+    const data: unknown = error.response?.data;
+    if (
+      typeof data === 'object' &&
+      data !== null &&
+      'message' in data &&
+      typeof data.message === 'string'
+    )
+      return data.message;
     if (error.response?.status === 404)
       return '문의를 찾을 수 없습니다. 이미 삭제되었을 수 있습니다.';
     if (!error.response)
