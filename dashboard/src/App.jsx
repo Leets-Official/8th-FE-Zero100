@@ -6,7 +6,7 @@ import DashboardHomePage from './pages/DashboardHomePage';
 import InquiryListPage from './pages/InquiryListPage';
 import InquiryCreatePage from './pages/InquiryCreatePage';
 import InquiryDetailPage from './pages/InquiryDetailPage';
-import MyPage from './pages/MyPage';
+import MyPage from './pages/Mypage';
 
 function App() {
   return (
