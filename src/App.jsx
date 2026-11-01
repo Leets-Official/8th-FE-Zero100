@@ -9,6 +9,7 @@ import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import InquiryListPage from './pages/inquiry/InquiryListPage';
 import InquiryCreatePage from './pages/inquiry/InquiryCreatePage';
+import InquiryDetailPage from './pages/inquiry/InquiryDetailPage';
 import { ROUTES } from './constants/routes';
 
 const loadTasks = () => {
@@ -78,6 +79,7 @@ function App() {
         <Route path={ROUTES.DASHBOARD_COMPONENTS} element={<ComponentsPage />} />
         <Route path={ROUTES.INQUIRY} element={<InquiryListPage />} />
         <Route path={ROUTES.INQUIRY_NEW} element={<InquiryCreatePage />} />
+        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
         <Route path="*" element={<p>준비 중인 페이지입니다.</p>} />
       </Route>
       <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
