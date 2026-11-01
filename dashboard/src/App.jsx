@@ -4,6 +4,7 @@ import SignupPage from './pages/SignupPage';
 import DashboardLayout from './components/DashboardLayout';
 import DashboardHomePage from './pages/DashboardHomePage';
 import InquiryListPage from './pages/InquiryListPage';
+import InquiryCreatePage from './pages/InquiryCreatePage';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route element={<DashboardLayout />}>
         <Route path="/" element={<DashboardHomePage />} />
         <Route path="/inquiries" element={<InquiryListPage />} />
+        <Route path="/inquiries/new" element={<InquiryCreatePage />} />
       </Route>
     </Routes>
   );
