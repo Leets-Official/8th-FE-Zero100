@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import Button from '../../components/dashboard/Button';
 import TextInput from '../../components/dashboard/TextInput';
-import Textarea from '../../components/dashboard/Textarea';
+import TextField from '../../components/dashboard/TextField';
 import CheckIcon from '../../components/dashboard/CheckIcon';
 import { useDashboardModal } from '../../contexts/DashboardModalContext';
 import { useDashboardToast } from '../../contexts/DashboardToastContext';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function DashboardPage() {
+function ComponentsPage() {
   const { openModal } = useDashboardModal();
   const { showToast } = useDashboardToast();
   const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ function DashboardPage() {
     email !== '' && !EMAIL_PATTERN.test(email) ? '올바른 이메일 형식을 입력하세요' : '';
 
   return (
-    <div className="flex flex-col gap-4 p-8">
+    <div className="flex flex-col gap-4">
       <h1>공통 컴포넌트 예시 페이지</h1>
       <section className="flex items-center gap-3">
         <Button>Primary Button</Button>
@@ -29,12 +29,12 @@ function DashboardPage() {
       </section>
 
       <section className="flex w-[630px] flex-col gap-6">
-        <Textarea
+        <TextField
           label="Text Input"
           placeholder="텍스트를 입력하세요"
           helperText="8자 이상, 영문/숫자/특수문자 포함"
         />
-        <Textarea
+        <TextField
           label="Email Input"
           type="email"
           placeholder="이메일을 입력하세요"
@@ -61,4 +61,4 @@ function DashboardPage() {
   );
 }
 
-export default DashboardPage;
+export default ComponentsPage;
