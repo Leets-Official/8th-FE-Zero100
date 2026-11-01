@@ -1,95 +1,121 @@
-# Zero100 4주차 미니 대시보드 — 1차
+# ZERO100 6주차 - 미니 대시보드
 
-React 기반 미니 대시보드입니다. 공개 예제 API에서 사용자·게시글을 조회하고, 브라우저에 저장하는 나의 할 일을 함께 보여줍니다.
+현재 **3단계: 마이페이지 보완을 포함한 최종 단계**입니다.
+1차 → 2차 → 3차 순서로 적용하면 문의 목록·등록·상세·마이페이지를 사용할 수 있습니다.
 
-## 실행
+## 3차 적용과 실행
 
-Node.js 22.12 이상이 필요합니다. `package.json`이 있는 프로젝트 루트에서 실행합니다.
+1. 실행 중인 개발 서버를 `Ctrl+C`로 종료합니다.
+2. **2차까지 적용한 프로젝트**의 `package.json`이 있는 폴더에 3차 ZIP **내용물**을 덮어씁니다. `src`는 병합합니다.
+3. 같은 폴더에서 실행합니다.
 
 ```bash
-npm ci
 npm run dev
 ```
 
-Windows PowerShell에서 실행 정책 오류가 나면 `npm.cmd ci`, `npm.cmd run dev`를 사용합니다.
-API 키와 별도 서버는 필요하지 않습니다. 사용자·게시글 조회에는 인터넷 연결이 필요합니다.
+3차 ZIP은 변경·추가 파일만 포함하므로 기존 폴더를 삭제하지 마세요.
+이번 단계에는 의존성 변경이 없어 다시 설치할 필요가 없습니다.
+`.git`, `db.json`, `.env`, `node_modules`는 ZIP에 포함하지 않습니다.
 
-## 구현 범위
+- Node.js 22.12 이상
+- Vite: 터미널에 표시되는 주소, 기본 `http://127.0.0.1:5173`
+- JSON Server: `http://127.0.0.1:3001`
+- `npm run dev`로 두 서버를 함께 실행하고 `Ctrl+C`로 종료합니다.
+- 초기 데모 계정: `demo@zero100.dev` / `Demo1234!`
+- 비밀번호를 변경했다면 **변경한 비밀번호**로 로그인하세요.
 
-- Vite, React Router, Tailwind CSS, Axios 적용
-- `Button`, `Header`, `TextInput`, `Card`, `PageHeading`, `AsyncState` 등 공통 컴포넌트
-- 데스크톱 사이드바와 모바일 가로 메뉴, 현재 경로 표시, 404 페이지
-- 대시보드: 사용자 수·게시글 수·진행 중인 할 일·완료율, 게시글과 사용자 미리보기
-- 사용자: 이름·이메일·아이디·회사명 검색, 프로필 카드
-- 게시글: 제목·본문 검색, 9개 단위 페이지 이동, 전체 본문 표시
-- 할 일: 추가·수정·삭제·완료 전환, 상태별 필터, 통계
-- 각 API 영역의 로딩·조회 완료·오류·빈 목록 화면과 재시도
-- Axios 인스턴스, 10초 타임아웃, 응답 형식 검증, 요청 취소와 늦은 응답 방지
-- localStorage 저장 오류 화면 안내, 공백 입력 방지, 키보드 포커스와 reduced-motion 대응
+## 3차 변경 내용
 
-**디자인 상태:** 제공된 Figma 링크가 작업 환경에서 `Site Unavailable`로 열려 원본 디자인을 확인하지 못했습니다. 현재 UI는 임시 구성입니다. Figma 일치 구현이 완료된 제출 최종본이 아닙니다.
-68페이지에는 대시보드의 세부 데이터 종류가 명시되지 않아 사용자·게시글 API와 기존 할 일 기능으로 1차 범위를 구성했습니다.
+- 마이페이지와 이름·비밀번호 변경 폼을 TypeScript로 구현
+- 로그인·회원가입·사용자 조회·계정 변경 API의 입력/응답 타입 정의와 응답 검사
+- `useTypedForm<T>`로 폼 값·오류·제출 상태 관리
+- 현재 이름 자동 입력, 앞뒤 공백 제거, 2~8자 검증, 동일 이름의 불필요한 저장 방지
+- 이름 변경 결과를 Context에 반영하고 대시보드·새 문의 작성에도 적용
+- 새로고침 후 변경한 이름 유지
+- 비밀번호 8~64자·영문/숫자/특수문자·공백 제외 규칙과 확인 값 검증
+- 현재 비밀번호 확인, 기존 비밀번호와 같은 새 비밀번호 제한
+- 비밀번호 표시/숨기기 전환
+- 이름·비밀번호 변경 동시 실행 및 연속 제출 방지
+- 저장 실패 시 입력 유지, 필드별 오류와 재시도
+- 비밀번호 변경 성공 시 입력과 현재 세션을 비우고 재로그인
+- 기존 데모 어댑터에서 해당 사용자의 다른 세션도 무효화
+- 로그인 화면에 비밀번호 변경 이후 사용 방법 안내
+- Figma의 카드 2개 구성·최대 너비 672px·입력 높이 47px·버튼·여백 적용
+- 작은 화면에서 가로 넘침 없이 표시
 
-다음 단계에서는 Figma 캡처를 기준으로 스타일을 조정하고 게시글 상세·댓글, 사용자 상세 기능을 추가할 수 있도록 파일을 분리했습니다.
+이름은 앞뒤 공백을 제거한 Unicode 문자 수를 검사합니다.
+비밀번호는 입력한 문자열 그대로 검사하며 앞뒤 공백을 임의로 제거하지 않습니다.
+저장이 실패하면 비밀번호 입력도 현재 화면에 유지하지만, 페이지를 벗어나거나 다시 로그인하면 빈 입력으로 시작합니다.
 
-## 화면 경로
+## 필수 화면과 구현 파일
 
-| 경로         | 화면                          |
-| ------------ | ----------------------------- |
-| `/`          | 대시보드                      |
-| `/users`     | 사용자 목록·검색              |
-| `/posts`     | 게시글 목록·검색·페이지 이동  |
-| `/tasks`     | 전체 할 일                    |
-| `/active`    | 진행 중인 할 일               |
-| `/completed` | 완료한 할 일                  |
-| `/stats`     | 할 일 통계                    |
-| `/all`       | `/tasks`로 이동하는 이전 주소 |
-| 그 외        | 404                           |
+| PDF 필수 화면 | 구현                                        |
+| ------------- | ------------------------------------------- |
+| 문의 목록     | `src/pages/inquiries/InquiryListView.tsx`   |
+| 문의 등록     | `src/pages/inquiries/InquiryCreateView.tsx` |
+| 문의 상세     | `src/pages/inquiries/InquiryDetailView.tsx` |
+| 마이페이지    | `src/pages/admin/MyPageView.tsx`            |
 
-## 구조
+문의 수정은 `InquiryEditView.tsx`, 등록/수정 공통 폼은 `InquiryEditorForm.tsx`에서 담당합니다.
+문의는 검색·정렬·상태/내 문의 필터·페이지 이동·등록·상세·수정·삭제와 목록 조건 복귀를 지원합니다.
+등록/수정 취소 버튼은 작성 중인 내용의 취소를 확인합니다. 다른 내부 링크 이동까지 차단하지는 않습니다.
 
-```text
-src/
-  api/                 # Axios 설정·조회 함수·응답 검증
-  assets/              # 로고
-  components/
-    commons/           # 재사용하는 UI와 상태 표시
-    layout/            # Header·Sidebar
-    dashboard/         # 요약 카드·할 일 미리보기
-    users/             # 사용자 카드
-    posts/             # 게시글 카드
-    todo/              # 기존 할 일 UI
-  constants/           # 경로·메뉴 정의
-  context/             # 할 일 상태 공유와 저장
-  hooks/               # API 조회·Context 접근
-  pages/               # 라우트별 화면 조합
-  styles/              # Tailwind import·공통 스타일·반응형
-  utils/               # 검색·할 일 필터·저장 데이터 검증
-```
+이번 단계의 주요 파일은 다음과 같습니다.
 
-기존 `TasksProvider`가 라우트 바깥에서 상태를 공유합니다. 저장 키 `zero100-week3-tasks`를 유지해서 **같은 브라우저와 origin**에서는 기존 할 일을 이어서 사용할 수 있습니다. 포트·호스트·브라우저가 바뀌면 저장 공간이 달라집니다.
+- `src/components/account/NameChangeView.tsx`
+- `src/components/account/PasswordChangeView.tsx`
+- `src/hooks/useTypedForm.ts`
+- `src/api/authApi.ts`
+- `src/utils/accountValidation.ts`
+- `src/types/auth.ts`
+- `src/styles/mypage.css`
+
+기존 JS/JSX 진입점과 인증·데모 어댑터 구현을 유지하며, 새 TS/TSX는 `strict`로 검사합니다.
+프로젝트 전체를 TS로 변환한 것은 아니며 `allowJs: true`, `checkJs: false`를 사용합니다.
+
+## 디자인 기준
+
+PDF의 Figma에서 [마이페이지](https://www.figma.com/design/4hyz65a9mwAkEKplbXcfyo?node-id=4849-5527)를 직접 확인했습니다.
+앞 단계에서는 문의 등록·상세·삭제 확인창도 확인했습니다.
+실제 사용자 정보·오류·안내 문구에 따라 높이가 늘어나도록 구현했습니다.
+비밀번호 표시, 글자 수, 답변 상태, 수정 버튼 등은 실제 사용을 위한 추가 요소입니다.
+기존 공통 헤더·사이드바·푸터의 크기는 유지하므로 Figma와 일부 차이가 있습니다.
 
 ## 데이터와 API
 
-- 사용자: `GET https://jsonplaceholder.typicode.com/users`
-- 게시글: `GET https://jsonplaceholder.typicode.com/posts`
-- 이 데이터는 JSONPlaceholder의 공개 예제이며 실제 서비스의 사용자나 게시글이 아닙니다.
-- API 응답에 작성 시각이 없으므로 게시글을 임의로 최신순이라고 표시하지 않습니다.
-- 할 일은 API 게시글과 별도로 브라우저에만 저장합니다. 기기 간 동기화는 하지 않습니다.
-- 요청 오류를 가짜 성공 데이터로 대체하지 않습니다. 해당 영역에서 원인 안내와 재시도를 제공합니다.
-- API 주소 변경이 필요하면 `.env.example`을 `.env`로 복사하고 `VITE_API_BASE_URL`을 수정한 다음 개발 서버를 재시작합니다. `/users`, `/posts` 응답은 JSONPlaceholder와 같은 구조여야 합니다.
+문의 목록·상세·등록·수정·삭제는 Axios와 JSON Server로 연결했습니다.
+프론트엔드의 `/api` 요청은 Vite 개발 프록시가 서버로 전달합니다.
+처음 실행할 때만 `db.seed.json`을 `db.json`으로 복사하고, 기존 `db.json`은 유지합니다.
+문의 저장은 서버의 `db.json`에, 계정 정보는 기존 브라우저 데모 저장소에 유지됩니다.
 
-공식 참고: [JSONPlaceholder](https://jsonplaceholder.typicode.com/), [Axios 요청 취소](https://axios-http.com/docs/cancellation).
+로그인·회원가입·계정 변경은 브라우저 데모 어댑터를 계속 사용합니다.
+계정 비밀번호는 기존 PBKDF2 해시와 salt로 저장하며 평문 비밀번호를 브라우저 저장소에 넣지 않습니다.
+JSON Server는 학습용 mock API로 실제 서버 인증·권한 검사를 제공하지 않습니다.
+문의 작성자 확인은 프론트엔드에서 수행하며 카카오 인증은 미연결입니다.
 
-## 검사
+## 검증
 
 ```bash
-npm run lint
-npm run format:check
-npm run build
+npm run check
 ```
 
-`npm run check`로 세 가지를 연속 실행할 수 있습니다. ESLint는 경고가 1개라도 있으면 실패합니다.
+ESLint·Prettier·TypeScript 타입 검사·Vite 빌드를 실행합니다.
 
-- [ZIP 적용·커밋 안내](docs/STEP_1_GUIDE.md)
-- [검증 범위와 직접 확인 항목](docs/VERIFICATION.md)
+브라우저에서 문의 기능 회귀 검증과 마이페이지 검증을 수행했습니다.
+이름 변경/저장 유지, 비밀번호 규칙, 현재 비밀번호 오류, 저장 실패/재시도, 중복/동시 요청 방지,
+세션 무효화, 변경한 비밀번호로 재로그인, 회원가입, 모바일 화면을 확인했습니다.
+검증용 데이터는 제출 ZIP에 포함하지 않습니다.
+
+`npm run preview`에는 개발 프록시가 없습니다. Preview에서 API를 사용하려면 `.env.example`을 `.env`로 복사하고
+`VITE_INQUIRY_API_BASE_URL=http://127.0.0.1:3001`로 설정한 다음 다시 빌드하세요.
+
+## 3차 커밋
+
+현재 `김민정/6주차` 작업 브랜치에서 실행을 확인한 뒤 커밋합니다.
+
+```bash
+git add .
+git commit -m "feat: 마이페이지 이름 및 비밀번호 변경 기능 보완"
+```
+
+1차·2차·3차를 각각 커밋했다면 같은 브랜치에 기능별 커밋 세 개가 쌓입니다.

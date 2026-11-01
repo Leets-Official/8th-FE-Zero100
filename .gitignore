@@ -6,3 +6,7 @@ dist/
 *.log
 *.zip
 .DS_Store
+
+# Local JSON Server data: keep across incremental ZIP overlays.
+db.json
+*.tsbuildinfo
