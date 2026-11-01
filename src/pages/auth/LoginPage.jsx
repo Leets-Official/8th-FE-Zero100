@@ -30,7 +30,7 @@ function LoginPage() {
 
       <button
         type="button"
-        className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-yellow-400 py-3 text-base leading-6 font-bold text-stone-800"
+        className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#FEE500] py-3 text-base leading-6 font-bold text-stone-800"
       >
         <KakaoIcon />
         카카오 로그인
