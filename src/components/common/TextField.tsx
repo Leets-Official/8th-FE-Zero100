@@ -3,6 +3,7 @@ import type { ChangeEventHandler, FocusEventHandler, HTMLInputTypeAttribute } fr
 
 interface TextFieldProps {
   label: string;
+  hideLabel?: boolean;
   name: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -21,6 +22,7 @@ interface TextFieldProps {
 
 export default function TextField({
   label,
+  hideLabel = false,
   error,
   hint,
   counter,
@@ -43,7 +45,7 @@ export default function TextField({
   };
   return (
     <div className="admin-field">
-      <div className="field-label-row">
+      <div className={hideLabel ? 'sr-only' : 'field-label-row'}>
         <label htmlFor={id} className="admin-field-label">
           {label}
         </label>

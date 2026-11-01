@@ -76,9 +76,11 @@ export default function LoginPage() {
         계정이 없으신가요? <Link to="/signup">회원가입</Link>
       </p>
       <p className="demo-credentials">
-        데모 계정: {DEMO_EMAIL}
+        초기 데모 계정: {DEMO_EMAIL}
         <br />
         비밀번호: {DEMO_PASSWORD}
+        <br />
+        비밀번호를 변경했다면 변경한 비밀번호를 입력하세요.
       </p>
     </AuthLayout>
   );

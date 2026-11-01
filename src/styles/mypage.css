@@ -1,0 +1,93 @@
+.form-page.mypage-page {
+  max-width: 672px;
+  width: 100%;
+  margin-inline: auto;
+}
+.mypage-page .admin-page-title {
+  font-size: 24px;
+  line-height: 32px;
+  margin-bottom: 20px;
+}
+.account-forms.mypage-forms {
+  gap: 28px;
+}
+.account-card.mypage-card {
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+}
+.mypage-page .mypage-card h2 {
+  font-size: 18px;
+  line-height: 28px;
+  margin: 0 0 12px;
+}
+.account-card-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.mypage-page .mypage-card .account-card-heading h2 {
+  margin-bottom: 0;
+}
+.account-password-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #6a7282;
+  font-size: 12px;
+  cursor: pointer;
+}
+.account-password-toggle input {
+  width: 15px;
+  height: 15px;
+  accent-color: #111;
+}
+.mypage-card .admin-input {
+  height: 47px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border-color: #e5e7eb;
+  background: #f9fafb;
+  font-size: 16px;
+}
+.mypage-card .field-label-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.mypage-card .admin-field-label {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #364153;
+}
+.account-card.mypage-card .admin-field {
+  margin-bottom: 12px;
+}
+.mypage-card .field-error {
+  font-size: 12px;
+}
+.mypage-card .field-hint {
+  font-size: 11px;
+}
+.mypage-card .admin-button {
+  min-height: 44px;
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: 16px;
+  line-height: 24px;
+}
+.account-card.mypage-card .form-actions {
+  margin-top: 4px;
+}
+@media (max-width: 640px) {
+  .account-card.mypage-card {
+    padding: 20px;
+  }
+  .account-card-heading {
+    gap: 6px;
+  }
+}
