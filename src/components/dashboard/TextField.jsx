@@ -1,8 +1,10 @@
 import { useId } from 'react';
 import TextInput from './TextInput';
+import Textarea from './Textarea';
 
 function TextField(props) {
-  const { label, helperText, error, ...inputProps } = props;
+  const { label, helperText, error, multiline, ...inputProps } = props;
+  const InputComponent = multiline ? Textarea : TextInput;
   const id = useId();
   const messageId = `${id}-message`;
   const hasMessage = Boolean(error || helperText);
@@ -14,7 +16,7 @@ function TextField(props) {
           {label}
         </label>
       )}
-      <TextInput
+      <InputComponent
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={hasMessage ? messageId : undefined}
