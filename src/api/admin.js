@@ -27,21 +27,12 @@ export const authApi = {
     clearSession();
   },
 };
-export async function getDashboard(options) {
-  return (await adminClient.get('/dashboard', options)).data;
-}
-export async function getInquiries(options) {
-  return (await adminClient.get('/inquiries', options)).data;
-}
-export async function getInquiry(id, options) {
-  return (await adminClient.get(`/inquiries/${encodeURIComponent(id)}`, options)).data;
-}
-export async function createInquiry(values) {
-  return (await adminClient.post('/inquiries', values)).data;
-}
-export async function updateInquiry(id, values) {
-  return (await adminClient.patch(`/inquiries/${encodeURIComponent(id)}`, values)).data;
-}
-export async function deleteInquiry(id) {
-  await adminClient.delete(`/inquiries/${encodeURIComponent(id)}`);
-}
+// 기존 화면도 같은 서버 데이터를 사용하도록 한 진입점으로 연결합니다.
+export {
+  getDashboard,
+  getInquiries,
+  getInquiry,
+  createInquiry,
+  updateInquiry,
+  deleteInquiry,
+} from './inquiryApi';

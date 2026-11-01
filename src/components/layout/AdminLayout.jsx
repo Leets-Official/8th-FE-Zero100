@@ -33,7 +33,7 @@ export default function AdminLayout() {
         </main>
       </div>
       <footer className="admin-footer">
-        <span className="demo-badge">로컬 데모</span>
+        <span className="demo-badge">학습용 데모</span>
         <span>ZERO100 Admin</span>
       </footer>
     </div>
