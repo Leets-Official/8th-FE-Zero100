@@ -3,6 +3,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import DashboardLayout from './components/DashboardLayout';
 import DashboardHomePage from './pages/DashboardHomePage';
+import InquiryListPage from './pages/InquiryListPage';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route element={<DashboardLayout />}>
         <Route path="/" element={<DashboardHomePage />} />
+        <Route path="/inquiries" element={<InquiryListPage />} />
       </Route>
     </Routes>
   );
