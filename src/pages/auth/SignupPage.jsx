@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import Button from '../../components/dashboard/Button';
-import Textarea from '../../components/dashboard/Textarea';
+import TextField from '../../components/dashboard/TextField';
 import { validateEmail, validateName, validatePassword } from '../../utils/validators';
 import { ROUTES } from '../../constants/routes';
 
@@ -36,7 +36,7 @@ function SignupPage() {
   return (
     <AuthLayout title="회원가입" gap="gap-7">
       <form className="flex flex-col gap-4" noValidate onSubmit={handleSubmit}>
-        <Textarea
+        <TextField
           type="email"
           name="email"
           aria-label="이메일"
@@ -45,7 +45,7 @@ function SignupPage() {
           onChange={handleChange}
           error={errors.email}
         />
-        <Textarea
+        <TextField
           type="password"
           name="password"
           aria-label="비밀번호"
@@ -55,7 +55,7 @@ function SignupPage() {
           onChange={handleChange}
           error={errors.password}
         />
-        <Textarea
+        <TextField
           name="name"
           aria-label="이름"
           placeholder="이름을 입력하세요"

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Button from '../../components/dashboard/Button';
 import TextInput from '../../components/dashboard/TextInput';
-import Textarea from '../../components/dashboard/Textarea';
+import TextField from '../../components/dashboard/TextField';
 import CheckIcon from '../../components/dashboard/CheckIcon';
 import { useDashboardModal } from '../../contexts/DashboardModalContext';
 import { useDashboardToast } from '../../contexts/DashboardToastContext';
@@ -29,12 +29,12 @@ function ComponentsPage() {
       </section>
 
       <section className="flex w-[630px] flex-col gap-6">
-        <Textarea
+        <TextField
           label="Text Input"
           placeholder="텍스트를 입력하세요"
           helperText="8자 이상, 영문/숫자/특수문자 포함"
         />
-        <Textarea
+        <TextField
           label="Email Input"
           type="email"
           placeholder="이메일을 입력하세요"

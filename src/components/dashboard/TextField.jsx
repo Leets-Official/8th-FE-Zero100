@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import TextInput from './TextInput';
 
-function Textarea(props) {
+function TextField(props) {
   const { label, helperText, error, ...inputProps } = props;
   const id = useId();
   const messageId = `${id}-message`;
@@ -35,4 +35,4 @@ function Textarea(props) {
   );
 }
 
-export default Textarea;
+export default TextField;
