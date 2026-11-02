@@ -1,0 +1,31 @@
+.inquiry-page {
+  display: flex;
+  flex-direction: column;
+  gap: 23.992px;
+}
+
+.inquiry-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.inquiry-page__title {
+  margin: 0;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+/* 삭제 완료 Toast: 화면 오른쪽 아래 고정 (Figma: 오른쪽 약 24px, 아래 약 48.5px) */
+.inquiry-page__toast {
+  position: fixed;
+  right: 24px;
+  bottom: 48.5px;
+  z-index: 1100;
+}

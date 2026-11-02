@@ -1,0 +1,20 @@
+/* Figma: 본문 좌우 패딩 256px → 내용 폭 672px, 가운데 정렬 */
+.inquiry-create {
+  display: flex;
+  width: 100%;
+  max-width: 672px;
+  margin: 0 auto;
+  flex-direction: column;
+  gap: 23.992px;
+}
+
+.inquiry-create__title {
+  margin: 0;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}

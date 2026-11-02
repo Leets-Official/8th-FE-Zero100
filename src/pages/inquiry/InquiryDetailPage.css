@@ -1,0 +1,46 @@
+/* Figma: 본문 좌우 144px → 내용 폭 약 894px, 가운데 정렬 */
+.inquiry-detail-page {
+  display: flex;
+  width: 100%;
+  max-width: 894px;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.inquiry-detail-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  gap: 16px;
+}
+
+.inquiry-detail-page__title {
+  margin: 0;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+.inquiry-detail-page__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.inquiry-detail-page__message {
+  margin: 0;
+
+  color: #4a5565;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}

@@ -1,0 +1,47 @@
+/* 폼 카드 (Figma: padding 24, border #E5E7EB, radius 10) */
+.inquiry-form {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15.99px;
+
+  border: 0.935px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* 라벨과 입력창 사이 간격 5.987px, 카드 폭에 맞춰 늘어나게 함 */
+.inquiry-form .common-field,
+.inquiry-form .common-field.common-field--textarea {
+  gap: 5.987px;
+}
+
+.inquiry-form .common-field.common-field--textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 내용 입력창: 높이 고정, 리사이즈 핸들 제거 (Figma와 동일) */
+.inquiry-form .common-textarea {
+  height: 164px;
+  min-height: 164px;
+  resize: none;
+}
+
+/* 비어 있고 포커스가 없을 때만 placeholder를 세로 가운데처럼 보이게 함 */
+.inquiry-form .common-textarea:placeholder-shown:not(:focus) {
+  padding-top: 69px;
+}
+
+/* 취소 / 등록 버튼 */
+.inquiry-form__actions {
+  display: flex;
+  padding-top: 7.988px;
+  justify-content: flex-end;
+  align-items: center;
+  align-self: stretch;
+  gap: 12px;
+}

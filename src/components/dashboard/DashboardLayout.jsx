@@ -11,7 +11,7 @@ const SIDEBAR_ITEMS = [
   { label: '대시보드 홈', to: ROUTES.DASHBOARD },
   { label: '문의', to: ROUTES.INQUIRY },
   { label: 'Todolist', to: ROUTES.TODO },
-  { label: '마이페이지' },
+  { label: '마이페이지', to: ROUTES.MYPAGE },
 ];
 
 const DashboardLayout = ({ children }) => {
