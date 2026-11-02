@@ -11,9 +11,10 @@ function SignupPage() {
   const [touched, setTouched] = useState({});
   const [message, setMessage] = useState('');
 
-  const emailError = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)
-    ? '올바른 이메일 형식을 입력해주세요'
-    : '';
+  const emailError =
+    touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)
+      ? '올바른 이메일 형식을 입력해주세요'
+      : '';
   const passwordError =
     touched.password && !passwordPattern.test(values.password)
       ? '8자 이상, 영문/숫자/특수문자를 포함해주세요'
