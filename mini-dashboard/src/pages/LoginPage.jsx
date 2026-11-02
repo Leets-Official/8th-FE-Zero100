@@ -41,7 +41,7 @@ function LoginPage() {
           autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          className="!rounded-[10px] !bg-[#f9fafb]"
+          variant="auth"
           required
         />
         <TextInput
@@ -53,7 +53,7 @@ function LoginPage() {
           autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          className="!rounded-[10px] !bg-[#f9fafb]"
+          variant="auth"
           required
         />
         <Button type="submit" className="w-full rounded-[10px]">
@@ -69,8 +69,8 @@ function LoginPage() {
 
       <Button
         type="button"
-        variant="primary"
-        className="w-full rounded-[10px] border-transparent !bg-[#fee500] !text-[#191919] hover:!bg-[#fada0a]"
+        variant="kakao"
+        className="w-full rounded-[10px]"
         onClick={handleKakaoLogin}
       >
         <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 fill-current">
