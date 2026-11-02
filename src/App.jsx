@@ -13,6 +13,7 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import InquiryListPage from './pages/InquiryListPage';
 import InquiryCreatePage from './pages/InquiryCreatePage';
+import InquiryDetailPage from './pages/InquiryDetailPage';
 
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import { ROUTES } from './constants/routes';
@@ -78,10 +79,7 @@ function App() {
 
         <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
 
-        <Route
-          path={ROUTES.INQUIRY_DETAIL}
-          element={<h2 className="text-[24px] font-bold text-[#000000]">문의 상세 페이지</h2>}
-        />
+        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
 
         <Route
           path={ROUTES.MYPAGE}

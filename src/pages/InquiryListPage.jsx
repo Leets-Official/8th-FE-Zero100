@@ -1,26 +1,10 @@
-import { Link } from 'react-router';
+import { Link, useOutletContext } from 'react-router';
 import { ROUTES, getInquiryDetailPath } from '../constants/routes';
-import { mockInquiries } from '../data/inquiries';
-
-const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
-  timeZone: 'Asia/Seoul',
-  year: 'numeric',
-  month: 'numeric',
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-  hourCycle: 'h23',
-});
-
-function formatCreatedAt(value) {
-  const parts = dateFormatter.formatToParts(new Date(value));
-
-  const getPart = (type) => parts.find((part) => part.type === type)?.value ?? '';
-
-  return `${getPart('year')}년 ${getPart('month')}월 ${getPart('day')}일 ${getPart('hour')}:${getPart('minute')}`;
-}
+import { formatCreatedAt } from '../utils/formatCreatedAt';
 
 function InquiryListPage() {
+  const { inquiries } = useOutletContext();
+
   return (
     <section aria-labelledby="inquiry-list-title" className="flex flex-col gap-[24px]">
       <div className="flex min-h-[40px] items-center justify-between gap-[16px]">
@@ -64,14 +48,14 @@ function InquiryListPage() {
             </thead>
 
             <tbody>
-              {mockInquiries.length === 0 ? (
+              {inquiries.length === 0 ? (
                 <tr>
                   <td colSpan={3} className="px-[16px] py-[48px] text-center text-[#4A5565]">
                     등록된 문의가 없습니다.
                   </td>
                 </tr>
               ) : (
-                mockInquiries.map((inquiry, index) => (
+                inquiries.map((inquiry, index) => (
                   <tr
                     key={inquiry.id}
                     className="border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F9FAFB]"
