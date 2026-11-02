@@ -1,4 +1,7 @@
 export const ROUTES = {
+  LOGIN: '/login',
+  SIGNUP: '/signup',
+
   DASHBOARD: '/dashboard',
   DASHBOARD_INQUIRIES: '/dashboard/inquiries',
   DASHBOARD_MYPAGE: '/dashboard/mypage',
