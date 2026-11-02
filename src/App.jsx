@@ -3,7 +3,9 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { ROUTES } from './constants/routes';
 import DashboardPage from './pages/dashboard/DashboardPage';
+import LoginPage from './pages/login/LoginPage';
 import ComponentPreview from './pages/preview/ComponentPreview';
+import SignupPage from './pages/signup/SignupPage';
 import AllPage from './pages/todolist/AllPage';
 import CompletedPage from './pages/todolist/CompletedPage';
 import StatsPage from './pages/todolist/StatsPage';
@@ -36,9 +38,7 @@ function App() {
       completed: false,
     };
 
-    ```
-setTodos((previous) => [...previous, newTodo]);
-```;
+    setTodos((previous) => [...previous, newTodo]);
   };
 
   const handleToggle = (id) => {
@@ -65,10 +65,11 @@ setTodos((previous) => [...previous, newTodo]);
 
   return (
     <BrowserRouter>
-      {' '}
       <Routes>
         <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
 
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
         <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
 
         <Route path={ROUTES.TODO} element={<TodoPage {...pageProps} />} />

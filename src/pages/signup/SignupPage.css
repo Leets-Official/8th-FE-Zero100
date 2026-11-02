@@ -1,0 +1,43 @@
+/* 회원가입 전용: 카드 간격 28px (Figma), 로그인은 공통 기본값 26px */
+.signup-page .auth-card {
+  gap: 28px;
+}
+
+/* 입력창 3개 + 회원가입 버튼 */
+.signup-form {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 15.99px;
+}
+
+/* Figma: 입력창과 안내/에러 문구 사이 간격 5.987px */
+.signup-form .common-field {
+  gap: 5.987px;
+}
+
+/* 하단 로그인 안내 */
+.signup-login {
+  margin: 0;
+  align-self: stretch;
+
+  color: #4a5565;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+}
+
+.signup-login__link {
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-underline-position: from-font;
+}
