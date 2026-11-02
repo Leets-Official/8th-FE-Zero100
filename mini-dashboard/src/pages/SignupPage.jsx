@@ -14,19 +14,23 @@ function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [emailTouched, setEmailTouched] = useState(true);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmationTouched, setConfirmationTouched] = useState(false);
 
   const emailError =
     emailTouched && !isValidEmail(email) ? '올바른 이메일 형식으로 입력해 주세요.' : '';
+  const passwordError =
+    passwordTouched && password.length < 8 ? '비밀번호를 8자 이상 입력해 주세요.' : '';
   const confirmationError =
-    confirmationTouched && passwordConfirmation && password !== passwordConfirmation
-      ? '비밀번호가 일치하지 않습니다.'
+    confirmationTouched && (!passwordConfirmation || password !== passwordConfirmation)
+      ? '비밀번호가 일치하도록 입력해 주세요.'
       : '';
 
   function handleSubmit(event) {
     event.preventDefault();
     setEmailTouched(true);
+    setPasswordTouched(true);
     setConfirmationTouched(true);
 
     if (!isValidEmail(email) || password.length < 8 || password !== passwordConfirmation) return;
@@ -45,7 +49,7 @@ function SignupPage() {
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} noValidate className="space-y-3">
         <TextInput
           label="이메일"
           hideLabel
@@ -57,7 +61,7 @@ function SignupPage() {
           onChange={(event) => setEmail(event.target.value)}
           onBlur={() => setEmailTouched(true)}
           error={emailError}
-          className="!rounded-[10px] !bg-[#f9fafb]"
+          variant="auth"
           required
         />
         <TextInput
@@ -69,9 +73,11 @@ function SignupPage() {
           autoComplete="new-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          helperText="8자 이상 입력해 주세요."
+          onBlur={() => setPasswordTouched(true)}
+          helperText={passwordError ? undefined : '8자 이상 입력해 주세요.'}
+          error={passwordError}
           minLength={8}
-          className="!rounded-[10px] !bg-[#f9fafb]"
+          variant="auth"
           required
         />
         <TextInput
@@ -86,7 +92,7 @@ function SignupPage() {
           onBlur={() => setConfirmationTouched(true)}
           helperText={confirmationError ? undefined : '비밀번호가 일치해야 합니다.'}
           error={confirmationError}
-          className="!rounded-[10px] !bg-[#f9fafb]"
+          variant="auth"
           required
         />
         <Button type="submit" className="w-full rounded-[10px]">
