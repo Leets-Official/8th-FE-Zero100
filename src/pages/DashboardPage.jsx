@@ -1,110 +1,73 @@
-import { useEffect, useState } from 'react';
-import Button from '../components/dashboard/Button';
-import Input from '../components/dashboard/Input';
-import Modal from '../components/dashboard/Modal';
-import Toast from '../components/dashboard/Toast';
+//임시 데이터
+const mockUser = {
+  name: '홍길동',
+  email: 'hong@example.com',
+  joinedAt: '2024.01.15',
+};
+
+const mockInquiryStats = {
+  total: 24,
+  mine: 8,
+};
+
+const cards = [
+  {
+    id: 'user-info',
+    title: '내 정보',
+    items: [
+      { label: '이름', value: mockUser.name },
+      { label: '이메일', value: mockUser.email },
+      { label: '가입일', value: mockUser.joinedAt },
+    ],
+  },
+  {
+    id: 'inquiry-stats',
+    title: '문의 현황',
+    items: [
+      { label: '전체 문의', value: `${mockInquiryStats.total}건` },
+      { label: '내가 쓴 문의', value: `${mockInquiryStats.mine}건` },
+    ],
+  },
+];
 
 function DashboardPage() {
-  const [text, setText] = useState('');
-  const [guideText, setGuideText] = useState('');
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [toast, setToast] = useState(null);
-
-  useEffect(() => {
-    if (!toast) return;
-
-    const timer = setTimeout(() => {
-      setToast(null);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [toast]);
-
-  function handleEmailBlur(event) {
-    const { value, validity } = event.target;
-
-    setEmailError(value && !validity.valid ? '올바른 이메일 형식을 입력하세요' : '');
-  }
-
-  function handleConfirm() {
-    setIsModalOpen(false);
-    setToast({ message: '문의가 삭제되었습니다.' });
-  }
-
   return (
-    <section aria-labelledby="dashboard-title">
-      <div className="mx-auto flex max-w-[630px] flex-col gap-[32px]">
-        <h2 id="dashboard-title" className="text-[24px] font-bold text-[#222222]">
-          공통 컴포넌트
-        </h2>
+    <section aria-labelledby="dashboard-title" className="flex flex-col gap-[24px]">
+      <h2 id="dashboard-title" className="text-[24px] leading-[32px] font-bold text-[#000000]">
+        대시보드
+      </h2>
 
-        <section className="flex flex-col gap-[16px]">
-          <h3 className="text-[20px] font-bold text-[#222222]">Text Input</h3>
+      <div className="grid grid-cols-1 gap-[24px] lg:grid-cols-2">
+        {cards.map((card) => (
+          <section
+            key={card.id}
+            aria-labelledby={`${card.id}-title`}
+            className="min-w-0 rounded-[10px] bg-[#ffffff] p-[24px] shadow-[inset_0_0_0_0.93px_#e5e7eb]"
+          >
+            <h3
+              id={`${card.id}-title`}
+              className="mb-[12px] text-[18px] leading-[28px] font-bold text-[#000000]"
+            >
+              {card.title}
+            </h3>
 
-          <Input
-            label="텍스트 입력"
-            hideLabel
-            placeholder="텍스트를 입력하세요"
-            value={text}
-            onChange={(event) => setText(event.target.value)}
-          />
-        </section>
+            <dl>
+              {card.items.map((item) => (
+                <div
+                  key={item.label}
+                  className="flex items-start justify-between gap-[16px] border-b border-[#f3f4f6] py-[14px] text-[14px] leading-[20px] last:border-b-0"
+                >
+                  <dt className="shrink-0 text-[#6a7282]">{item.label}</dt>
 
-        <section className="flex flex-col gap-[24px]">
-          <h3 className="text-[20px] font-bold text-[#222222]">Text area</h3>
-
-          <Input
-            label="Text Input"
-            placeholder="텍스트를 입력하세요"
-            helperText="8자 이상, 영문/숫자/특수문자 포함"
-            value={guideText}
-            onChange={(event) => setGuideText(event.target.value)}
-          />
-
-          <Input
-            label="Email Input"
-            type="email"
-            placeholder="이메일을 입력하세요"
-            value={email}
-            error={emailError}
-            onChange={(event) => {
-              setEmail(event.target.value);
-              setEmailError('');
-            }}
-            onBlur={handleEmailBlur}
-          />
-        </section>
-
-        <section className="flex flex-col gap-[16px]">
-          <h3 className="text-[20px] font-bold text-[#222222]">Button</h3>
-
-          <div className="flex flex-wrap items-center gap-[16px]">
-            <Button>Primary Button</Button>
-
-            <Button variant="secondary">Secondary Button</Button>
-
-            <Button size="small">Small Button</Button>
-          </div>
-        </section>
-
-        <section className="flex flex-col items-start gap-[16px]">
-          <h3 className="text-[20px] font-bold text-[#222222]">Modal</h3>
-
-          <Button onClick={() => setIsModalOpen(true)}>삭제 모달 열기</Button>
-        </section>
+                  <dd className="min-w-0 text-right font-medium break-words text-[#000000]">
+                    {item.value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))}
       </div>
-
-      {isModalOpen && (
-        <Modal
-          title="문의를 삭제하시겠습니까?"
-          onClose={() => setIsModalOpen(false)}
-          onConfirm={handleConfirm}
-        />
-      )}
-
-      <Toast message={toast?.message} />
     </section>
   );
 }

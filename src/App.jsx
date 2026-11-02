@@ -1,14 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
+
 import TodoPage from './pages/TodoPage';
 import CompletedPage from './pages/CompletedPage';
-import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
-import './App.css';
 import StatsPage from './pages/StatsPage';
+import DashboardPage from './pages/DashboardPage';
+
 import Layout from './components/Layout/Layout';
 import DashboardLayout from './components/dashboard/DashboardLayout';
-import DashboardPage from './pages/DashboardPage';
+import AuthLayout from './components/auth/AuthLayout';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+
+import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import { ROUTES } from './constants/routes';
+
+import './App.css';
 
 function App() {
   const [todos, setTodos] = useState(loadTodos);
@@ -56,6 +63,11 @@ function App() {
   return (
     <Routes>
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+
+      <Route element={<AuthLayout />}>
+        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+        <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+      </Route>
 
       <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
         <Route index element={<DashboardPage />} />
