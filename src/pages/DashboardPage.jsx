@@ -1,5 +1,4 @@
-import { AdminFooter, AdminHeader, AdminSidebar } from '../components/admin/AdminUI.jsx';
-import './dashboard-page.css';
+import AdminLayout from '../components/admin/AdminLayout.jsx';
 
 const profileRows = [
   { label: '이름', value: '홍길동' },
@@ -30,20 +29,13 @@ function InfoCard({ title, rows }) {
 
 function DashboardPage() {
   return (
-    <div className="dashboard-page">
-      <div className="dashboard-shell">
-        <AdminHeader />
-        <AdminSidebar />
-        <main className="dashboard-main">
-          <h1>대시보드</h1>
-          <div className="dashboard-cards">
-            <InfoCard title="내 정보" rows={profileRows} />
-            <InfoCard title="문의 현황" rows={inquiryRows} />
-          </div>
-        </main>
-        <AdminFooter />
+    <AdminLayout>
+      <h1>대시보드</h1>
+      <div className="dashboard-cards">
+        <InfoCard title="내 정보" rows={profileRows} />
+        <InfoCard title="문의 현황" rows={inquiryRows} />
       </div>
-    </div>
+    </AdminLayout>
   );
 }
 

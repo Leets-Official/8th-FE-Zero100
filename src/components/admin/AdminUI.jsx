@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, NavLink } from 'react-router';
 import { ROUTES } from '../../constants/routes.js';
 
 export function AdminButton({ children, variant = 'primary', size = 'normal', ...props }) {
@@ -58,12 +58,26 @@ export function AdminFooter() {
 export function AdminSidebar() {
   return (
     <nav className="admin-sidebar" aria-label="대시보드 메뉴">
-      <span className="admin-sidebar__current" aria-current="page">
+      <NavLink
+        to={ROUTES.dashboard}
+        end
+        className={({ isActive }) => (isActive ? 'admin-sidebar__current' : undefined)}
+      >
         대시보드 홈
-      </span>
-      <span>문의</span>
+      </NavLink>
+      <NavLink
+        to={ROUTES.inquiries}
+        className={({ isActive }) => (isActive ? 'admin-sidebar__current' : undefined)}
+      >
+        문의
+      </NavLink>
       <Link to={ROUTES.home}>Todolist</Link>
-      <span>마이페이지</span>
+      <NavLink
+        to={ROUTES.mypage}
+        className={({ isActive }) => (isActive ? 'admin-sidebar__current' : undefined)}
+      >
+        마이페이지
+      </NavLink>
     </nav>
   );
 }
