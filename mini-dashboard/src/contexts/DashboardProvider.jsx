@@ -7,7 +7,13 @@ import { DashboardContext } from './DashboardContext.js';
 function DashboardProvider({ children }) {
   const [result, setResult] = useState({ status: 'loading', data: null });
   const [requestNumber, setRequestNumber] = useState(0);
-  const [toastMessage, setToastMessage] = useState('');
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -28,11 +34,11 @@ function DashboardProvider({ children }) {
   }
 
   function showToast(message) {
-    setToastMessage(message);
+    setToast({ message, id: crypto.randomUUID() });
   }
 
   function closeToast() {
-    setToastMessage('');
+    setToast(null);
   }
 
   function addInquiry({ title, content }) {
@@ -75,7 +81,7 @@ function DashboardProvider({ children }) {
   return (
     <DashboardContext.Provider value={{ ...result, reload, addInquiry, updateProfile, showToast }}>
       {children}
-      <Toast message={toastMessage} onDismiss={closeToast} />
+      <Toast message={toast?.message ?? ''} announcementId={toast?.id} onDismiss={closeToast} />
     </DashboardContext.Provider>
   );
 }
