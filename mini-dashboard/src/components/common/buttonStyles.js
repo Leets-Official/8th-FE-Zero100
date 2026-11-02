@@ -1,8 +1,9 @@
 const variants = {
-  primary: 'border-brand bg-brand text-white hover:bg-[#343a40]',
-  secondary: 'border-[#ced4da] bg-white text-brand hover:bg-page',
-  ghost: 'border-transparent bg-transparent text-[#495057] hover:bg-[#f1f3f5]',
-  danger: 'border-[#e03131] bg-[#e03131] text-white hover:bg-[#c92a2a]',
+  primary: 'border-brand bg-brand text-white enabled:hover:bg-[#343a40]',
+  secondary: 'border-[#ced4da] bg-white text-brand enabled:hover:bg-page',
+  ghost: 'border-transparent bg-transparent text-[#495057] enabled:hover:bg-[#f1f3f5]',
+  danger: 'border-[#e03131] bg-[#e03131] text-white enabled:hover:bg-[#c92a2a]',
+  kakao: 'border-transparent bg-[#fee500] text-[#191919] enabled:hover:bg-[#fada0a]',
 };
 
 const sizes = {
