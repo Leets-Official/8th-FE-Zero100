@@ -9,7 +9,7 @@ const menus = [
 
 function Sidebar() {
   return (
-    <aside className="min-h-[818px] w-[240px] shrink-0 bg-[#ffffff] py-[16px] shadow-[inset_-0.93px_0_0_#e5e7eb]">
+    <aside className="min-h-[818px] w-[240px] shrink-0 border-r border-[#E5E7EB] bg-[#FFFFFF] py-[16px]">
       <nav aria-label="대시보드 메뉴">
         {menus.map((menu) => (
           <NavLink
@@ -17,7 +17,9 @@ function Sidebar() {
             to={menu.to}
             end={menu.to === ROUTES.DASHBOARD}
             className={({ isActive }) =>
-              `block px-[24px] py-[12px] text-[14px] leading-[20px] text-[#222222] hover:bg-[#f3f4f6] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#222222] ${isActive ? 'bg-[#f3f4f6] font-medium' : ''} `
+              `block px-[24px] py-[12px] text-[14px] leading-[20px] hover:bg-[#F3F4F6] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#364153] ${
+                isActive ? 'bg-[#F3F4F6] font-medium text-[#000000]' : 'text-[#4A5565]'
+              }`
             }
           >
             {menu.label}

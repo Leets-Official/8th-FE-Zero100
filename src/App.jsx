@@ -11,6 +11,7 @@ import DashboardLayout from './components/dashboard/DashboardLayout';
 import AuthLayout from './components/auth/AuthLayout';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import InquiryListPage from './pages/InquiryListPage';
 
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import { ROUTES } from './constants/routes';
@@ -72,9 +73,16 @@ function App() {
       <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
         <Route index element={<DashboardPage />} />
 
+        <Route path={ROUTES.INQUIRIES} element={<InquiryListPage />} />
+
         <Route
-          path={ROUTES.INQUIRIES}
-          element={<h2 className="text-[24px] font-bold text-[#222222]">문의</h2>}
+          path={ROUTES.INQUIRY_CREATE}
+          element={<h2 className="text-[24px] font-bold text-[#000000]">문의 등록 페이지</h2>}
+        />
+
+        <Route
+          path={ROUTES.INQUIRY_DETAIL}
+          element={<h2 className="text-[24px] font-bold text-[#000000]">문의 상세 페이지</h2>}
         />
 
         <Route
