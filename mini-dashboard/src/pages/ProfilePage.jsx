@@ -57,6 +57,21 @@ function ProfilePage() {
           </Button>
         </div>
       </form>
+      <section
+        className="mt-6 max-w-2xl space-y-5 rounded-lg border border-line bg-white p-6 sm:p-8"
+        aria-labelledby="password-heading"
+      >
+        <h2 id="password-heading" className="text-base font-semibold">
+          비밀번호 변경
+        </h2>
+        <TextInput label="현재 비밀번호" type="password" autoComplete="current-password" />
+        <TextInput label="새 비밀번호" type="password" autoComplete="new-password" />
+        <TextInput label="새 비밀번호 확인" type="password" autoComplete="new-password" />
+        <p className="text-sm text-muted">비밀번호 변경은 인증 API 연결 후 사용할 수 있습니다.</p>
+        <div className="flex justify-end">
+          <Button disabled>비밀번호 변경</Button>
+        </div>
+      </section>
     </>
   );
 }

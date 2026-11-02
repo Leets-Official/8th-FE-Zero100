@@ -35,7 +35,7 @@ function DashboardProvider({ children }) {
     setToastMessage('');
   }
 
-  function addInquiry({ title, content }) {
+  function addInquiry({ title, content, authorName, authorEmail }) {
     const trimmedTitle = title.trim();
     const trimmedContent = content.trim();
     if (!trimmedTitle || !trimmedContent) return;
@@ -51,6 +51,8 @@ function DashboardProvider({ children }) {
             title: trimmedTitle,
             content: trimmedContent,
             authorId: current.data.profile.id,
+            authorName: authorName.trim(),
+            authorEmail: authorEmail.trim(),
             createdAt,
           },
           ...current.data.inquiries,

@@ -42,11 +42,17 @@ function InquiryDetailPage() {
           <dl className="grid gap-4 border-b border-line py-5 text-sm sm:grid-cols-2">
             <div>
               <dt className="mb-2 text-muted">작성자</dt>
-              <dd>{inquiry.authorId === data.profile.id ? data.profile.name : '정보 없음'}</dd>
+              <dd>
+                {inquiry.authorName ||
+                  (inquiry.authorId === data.profile.id ? data.profile.name : '정보 없음')}
+              </dd>
             </div>
             <div>
               <dt className="mb-2 text-muted">이메일</dt>
-              <dd>{inquiry.authorId === data.profile.id ? data.profile.email : '정보 없음'}</dd>
+              <dd>
+                {inquiry.authorEmail ||
+                  (inquiry.authorId === data.profile.id ? data.profile.email : '정보 없음')}
+              </dd>
             </div>
           </dl>
           <h3 className="pt-6 text-sm text-muted">문의 내용</h3>
