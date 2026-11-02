@@ -40,7 +40,14 @@ function InquiryTable({ inquiries }) {
           {inquiries.map((inquiry, index) => (
             <tr key={inquiry.id} className="border-b border-line last:border-b-0 hover:bg-page">
               <td className="px-5 py-5 text-muted">{index + 1}</td>
-              <td className="px-5 py-5">{inquiry.title}</td>
+              <td className="px-5 py-5">
+                <Link
+                  to={`/inquiries/${encodeURIComponent(inquiry.id)}`}
+                  className="font-medium hover:underline"
+                >
+                  {inquiry.title}
+                </Link>
+              </td>
               <td className="px-5 py-5 text-xs whitespace-nowrap text-muted">
                 <time dateTime={inquiry.createdAt}>
                   {dateFormatter.format(new Date(inquiry.createdAt))}
@@ -55,3 +62,4 @@ function InquiryTable({ inquiries }) {
 }
 
 export default InquiryTable;
+import { Link } from 'react-router';
