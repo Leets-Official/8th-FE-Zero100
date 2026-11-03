@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router';
 import Button from '../../components/dashboard/Button/Button';
+import ButtonLink from '../../components/dashboard/ButtonLink/ButtonLink';
 import Modal from '../../components/dashboard/Modal/Modal';
 import PageHeading from '../../components/dashboard/PageHeading/PageHeading';
 import { ROUTES } from '../../constants/routes';
@@ -17,7 +18,6 @@ function InquiryDetailPage() {
 
   // 주소의 id는 문자열이라 문자열끼리 비교한다.
   const inquiry = inquiries.find(({ id }) => String(id) === inquiryId);
-  const goToList = () => navigate(ROUTES.DASHBOARD_INQUIRIES);
 
   if (!inquiry) {
     return (
@@ -25,9 +25,9 @@ function InquiryDetailPage() {
         <PageHeading
           title="문의 상세"
           actions={
-            <Button variant="secondary" onClick={goToList}>
+            <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
               목록으로
-            </Button>
+            </ButtonLink>
           }
         />
         <p className="rounded-[10px] border border-dash-line bg-white py-12 text-center text-sm text-dash-muted">
@@ -46,7 +46,7 @@ function InquiryDetailPage() {
   const confirmDelete = () => {
     deleteInquiry(inquiry.id);
     showToast('문의가 삭제되었습니다.');
-    goToList();
+    navigate(ROUTES.DASHBOARD_INQUIRIES);
   };
 
   return (
@@ -55,9 +55,9 @@ function InquiryDetailPage() {
         title="문의 상세"
         actions={
           <>
-            <Button variant="secondary" onClick={goToList}>
+            <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
               목록으로
-            </Button>
+            </ButtonLink>
             <Button
               variant="secondary"
               onClick={() => setModalTrigger(document.activeElement)}

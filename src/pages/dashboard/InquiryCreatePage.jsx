@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 import Button from '../../components/dashboard/Button/Button';
+import ButtonLink from '../../components/dashboard/ButtonLink/ButtonLink';
 import PageHeading from '../../components/dashboard/PageHeading/PageHeading';
 import TextArea from '../../components/dashboard/TextArea/TextArea';
 import TextInput from '../../components/dashboard/TextInput/TextInput';
@@ -118,9 +119,9 @@ function InquiryCreatePage() {
         />
 
         <div className="mt-2 flex justify-end gap-3">
-          <Button variant="secondary" onClick={() => navigate(ROUTES.DASHBOARD_INQUIRIES)}>
+          <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
             취소
-          </Button>
+          </ButtonLink>
           <Button type="submit">등록</Button>
         </div>
       </form>
