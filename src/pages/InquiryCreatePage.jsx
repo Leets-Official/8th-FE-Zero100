@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate, useOutletContext } from 'react-router';
 
 import Button from '../components/dashboard/Button';
 import Input from '../components/dashboard/Input';
 import Textarea from '../components/dashboard/Textarea';
-import { ROUTES } from '../constants/routes';
+import { ROUTES, getInquiryDetailPath } from '../constants/routes';
 
 const INITIAL_VALUES = {
   name: '',
@@ -35,6 +35,9 @@ function validateField(name, value) {
 }
 
 function InquiryCreatePage() {
+  const navigate = useNavigate();
+  const { addInquiry } = useOutletContext();
+
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState({});
   const [notice, setNotice] = useState('');
@@ -84,7 +87,11 @@ function InquiryCreatePage() {
       return;
     }
 
-    setNotice('문의 등록 기능은 API 연동 후 이용할 수 있습니다.');
+    const newInquiry = addInquiry(values);
+
+    navigate(getInquiryDetailPath(newInquiry.id), {
+      replace: true,
+    });
   }
 
   return (

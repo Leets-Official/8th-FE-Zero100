@@ -21,6 +21,22 @@ function DashboardLayout() {
     return () => clearTimeout(timer);
   }, [toast]);
 
+  function addInquiry({ name, email, title, content }) {
+    const newInquiry = {
+      id: crypto.randomUUID(),
+      author: name.trim(),
+      email: email.trim(),
+      title: title.trim(),
+      content: content.trim(),
+      createdAt: new Date().toISOString(),
+    };
+
+    setInquiries((prev) => [newInquiry, ...prev]);
+    setToast({ message: '문의가 등록되었습니다.' });
+
+    return newInquiry;
+  }
+
   function deleteInquiry(inquiryId) {
     setInquiries((prev) => prev.filter((inquiry) => String(inquiry.id) !== String(inquiryId)));
 
@@ -35,7 +51,7 @@ function DashboardLayout() {
         <Sidebar />
 
         <main className="min-w-0 flex-1 p-[24px]">
-          <Outlet context={{ inquiries, deleteInquiry }} />
+          <Outlet context={{ inquiries, addInquiry, deleteInquiry }} />
         </main>
       </div>
 
