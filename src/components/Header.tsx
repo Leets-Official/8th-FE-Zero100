@@ -8,7 +8,7 @@ const confirmed = window.confirm('로그아웃하시겠어요?');
 
 
 if (confirmed) {
-  navigate('/login');
+  navigate('/login', { replace: true });
 }
 
 
