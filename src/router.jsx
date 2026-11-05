@@ -5,8 +5,11 @@ import { ROUTES } from './constants/routes';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import CompletedPage from './pages/CompletedPage';
-import ComingSoonPage from './pages/dashboard/ComingSoonPage';
 import DashboardHomePage from './pages/dashboard/DashboardHomePage';
+import InquiryCreatePage from './pages/dashboard/InquiryCreatePage';
+import InquiryDetailPage from './pages/dashboard/InquiryDetailPage';
+import InquiryListPage from './pages/dashboard/InquiryListPage';
+import MyPage from './pages/dashboard/MyPage';
 import NotFoundPage from './pages/NotFoundPage';
 import StatsPage from './pages/StatsPage';
 import TodoListPage from './pages/TodoListPage';
@@ -22,8 +25,10 @@ export const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       { index: true, element: <DashboardHomePage /> },
-      { path: ROUTES.DASHBOARD_INQUIRIES, element: <ComingSoonPage title="문의" /> },
-      { path: ROUTES.DASHBOARD_MYPAGE, element: <ComingSoonPage title="마이페이지" /> },
+      { path: ROUTES.DASHBOARD_INQUIRIES, element: <InquiryListPage /> },
+      { path: ROUTES.DASHBOARD_INQUIRY_NEW, element: <InquiryCreatePage /> },
+      { path: ROUTES.DASHBOARD_INQUIRY_DETAIL, element: <InquiryDetailPage /> },
+      { path: ROUTES.DASHBOARD_MYPAGE, element: <MyPage /> },
     ],
   },
   {

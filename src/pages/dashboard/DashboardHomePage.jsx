@@ -1,4 +1,5 @@
 import InfoCard from '../../components/dashboard/InfoCard/InfoCard';
+import PageHeading from '../../components/dashboard/PageHeading/PageHeading';
 
 // API 연동 전까지는 Figma 시안의 예시 값으로 화면을 그린다.
 const MY_INFO = [
@@ -16,7 +17,7 @@ const INQUIRY_SUMMARY = [
 function DashboardHomePage() {
   return (
     <div className="flex flex-col gap-5">
-      <h1 className="text-2xl leading-8 font-bold text-dash-black">대시보드</h1>
+      <PageHeading title="대시보드" />
       <div className="grid gap-6 lg:grid-cols-2">
         <InfoCard title="내 정보" items={MY_INFO} />
         <InfoCard title="문의 현황" items={INQUIRY_SUMMARY} />
