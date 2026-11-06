@@ -1,0 +1,106 @@
+import { Navigate, Route, Routes } from 'react-router';
+import AuthRoute from './components/dashboard/AuthRoute.tsx';
+import DashboardLayout from './components/dashboard/DashboardLayout.tsx';
+import Toast from './components/dashboard/Toast.tsx';
+import DeleteModal from './components/todo/DeleteModal.tsx';
+import { useInquiries } from './hooks/dashboard/useInquiries.ts';
+import { useToast } from './hooks/dashboard/useToast.ts';
+import { useUser } from './hooks/dashboard/useUser.ts';
+import { useTodos } from './hooks/todo/useTodos.ts';
+import DashboardPage from './pages/dashboard/DashboardPage.tsx';
+import InquiryCreatePage from './pages/dashboard/InquiryCreatePage.tsx';
+import InquiryDetailPage from './pages/dashboard/InquiryDetailPage.tsx';
+import InquiryListPage from './pages/dashboard/InquiryListPage.tsx';
+import LoginPage from './pages/dashboard/LoginPage.tsx';
+import MyPage from './pages/dashboard/MyPage.tsx';
+import SignupPage from './pages/dashboard/SignupPage.tsx';
+import CompletedTodoPage from './pages/todo/CompletedTodoPage.tsx';
+import TodoPage from './pages/todo/TodoPage.tsx';
+
+function App() {
+  const { todos, addTodo, toggleTodo, editTodo, deleteTodo } = useTodos();
+  const { inquiries, isLoading, getInquiryById, addInquiry, deleteInquiry } = useInquiries();
+  const { user, changeName } = useUser();
+  const { toastMessage, showToast } = useToast();
+
+  const handleDeleteInquiry = (id: number, onDeleted: () => void) =>
+    deleteInquiry(id, () => {
+      onDeleted();
+      showToast('문의가 삭제되었습니다.');
+    });
+
+  const handleChangeName = (name: string) => {
+    changeName(name);
+    showToast('이름이 변경되었습니다.');
+  };
+
+  const handleChangePassword = () => {
+    showToast('비밀번호가 변경되었습니다.');
+  };
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Navigate to="/todolist" replace />} />
+        <Route
+          path="/todolist"
+          element={
+            <TodoPage
+              todos={todos}
+              onAddTodo={addTodo}
+              onToggleTodo={toggleTodo}
+              onEditTodo={editTodo}
+            />
+          }
+        />
+        <Route
+          path="/todolist/completed"
+          element={
+            <CompletedTodoPage todos={todos} onToggleTodo={toggleTodo} onEditTodo={editTodo} />
+          }
+        />
+        <Route element={<AuthRoute />}>
+          <Route element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<DashboardPage user={user} />} />
+            <Route
+              path="/dashboard/inquiries"
+              element={<InquiryListPage inquiries={inquiries} />}
+            />
+            <Route
+              path="/dashboard/inquiries/new"
+              element={<InquiryCreatePage onAddInquiry={addInquiry} />}
+            />
+            <Route
+              path="/dashboard/inquiries/:id"
+              element={
+                <InquiryDetailPage
+                  isLoading={isLoading}
+                  getInquiryById={getInquiryById}
+                  onDeleteInquiry={handleDeleteInquiry}
+                />
+              }
+            />
+            <Route
+              path="/dashboard/mypage"
+              element={
+                <MyPage onChangeName={handleChangeName} onChangePassword={handleChangePassword} />
+              }
+            />
+          </Route>
+        </Route>
+        <Route element={<AuthRoute guestOnly />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/signup"
+            element={<SignupPage onSignup={() => showToast('회원가입이 완료되었습니다.')} />}
+          />
+        </Route>
+      </Routes>
+
+      <DeleteModal onConfirm={deleteTodo} />
+      <Toast message={toastMessage} />
+    </>
+  );
+}
+
+export default App;
