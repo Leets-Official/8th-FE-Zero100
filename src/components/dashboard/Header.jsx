@@ -8,7 +8,16 @@ const BASE_CLASS_NAME =
   'box-border flex flex-row items-center justify-between h-[60px] px-[24px] border-0 border-b-[0.93px] border-solid border-[#e5e7eb] bg-[#ffffff]';
 
 // Dashboard 전용 헤더. 제목 태그는 titleAs(h1~h6, p)로 선택하고, 로고, 사용자 정보 등은 children으로 전달
-function Header({ title, titleAs = 'h1', onLogout, className, children, ...props }) {
+// 로그아웃 버튼은 onLogout이나 logoutDisabled가 있을 때 표시
+function Header({
+  title,
+  titleAs = 'h1',
+  onLogout,
+  logoutDisabled = false,
+  className,
+  children,
+  ...props
+}) {
   const TitleTag = TITLE_TAGS.includes(titleAs) ? titleAs : 'h1';
 
   return (
@@ -19,10 +28,11 @@ function Header({ title, titleAs = 'h1', onLogout, className, children, ...props
         </TitleTag>
       )}
       {children}
-      {onLogout && (
+      {(onLogout || logoutDisabled) && (
         <button
           type="button"
           className="m-0 p-0 border-0 bg-transparent font-[family-name:var(--font-family-base)] font-medium text-[14px] leading-[20px] tracking-[0px] text-[#4a5565]"
+          disabled={logoutDisabled}
           onClick={onLogout}
         >
           로그아웃

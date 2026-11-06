@@ -3,20 +3,17 @@ import Footer from './Footer.jsx';
 import Header from './Header.jsx';
 import Sidebar from './Sidebar.jsx';
 
-// 문의, 마이페이지 라우트는 아직 구현 전이며 Figma 메뉴 구성에 맞춰 경로만 지정
 const SIDEBAR_ITEMS = [
   { label: '대시보드 홈', to: '/dashboard', end: true },
-  { label: '문의', to: '/inquiry' },
-  { label: '마이페이지', to: '/mypage' },
+  { label: '문의', to: '/dashboard/inquiries' },
+  { label: '마이페이지', to: '/dashboard/mypage' },
 ];
-
-// 로그아웃 API 연동 전이므로 버튼 UI만 표시
-const handleLogout = () => {};
 
 function DashboardLayout() {
   return (
     <div className="flex flex-col w-full min-h-screen bg-[#f9fafb]">
-      <Header title="ZERO100 Admin" titleAs="p" onLogout={handleLogout} />
+      {/* 로그아웃 API 연동 전이므로 비활성화. 연동 시 logoutDisabled를 onLogout으로 교체 */}
+      <Header title="ZERO100 Admin" titleAs="p" logoutDisabled />
       <div className="flex flex-col md:flex-row flex-1">
         <Sidebar
           items={SIDEBAR_ITEMS}
