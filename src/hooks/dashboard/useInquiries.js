@@ -1,5 +1,6 @@
 import { startTransition, useEffect, useState } from 'react';
-import * as inquiryApi from '../../api/inquiryApi.js';
+// 실제 API 연동 전까지 Mock을 사용. 연동 시 '../../api/inquiryApi.js'로 교체
+import * as inquiryApi from '../../mocks/dashboard/inquiryMockApi.js';
 
 // 문의 상태 관리
 export function useInquiries() {
