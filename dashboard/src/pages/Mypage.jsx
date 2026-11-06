@@ -4,7 +4,7 @@ import TextInput from '../components/TextInput';
 import Toast from '../components/Toast';
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
-const CARD_CLASS = 'flex flex-col gap-4 rounded-[10px] border border-[#E5E7EB] bg-white p-6';
+const CARD_CLASS = 'flex flex-col gap-3 rounded-[10px] border border-[#E5E7EB] bg-white p-5';
 
 const MyPage = () => {
   const [name, setName] = useState('');
@@ -57,7 +57,7 @@ const MyPage = () => {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[678px] flex-col gap-5">
+    <div className="mx-auto flex w-full max-w-[672px] flex-col gap-6">
       <h2 className="text-2xl font-bold text-black">마이페이지</h2>
 
       <form onSubmit={handleNameSubmit} noValidate className={CARD_CLASS}>
