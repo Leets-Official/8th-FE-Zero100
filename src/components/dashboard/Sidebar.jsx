@@ -1,10 +1,11 @@
 import { NavLink } from 'react-router-dom';
+import { ROUTES } from '../../constants/routes';
 
 const menuItems = [
-  { label: '대시보드 홈', to: '/dashboard', end: true },
-  { label: '문의', to: '/dashboard/inquiry' },
-  { label: 'Todolist', to: '/todolist' },
-  { label: '마이페이지', to: '/dashboard/mypage' },
+  { label: '대시보드 홈', to: ROUTES.DASHBOARD, end: true },
+  { label: '문의', to: ROUTES.INQUIRY },
+  { label: 'Todolist', to: ROUTES.TODOLIST },
+  { label: '마이페이지', to: ROUTES.MYPAGE },
 ];
 
 function Sidebar() {
@@ -17,7 +18,7 @@ function Sidebar() {
               to={item.to}
               end={item.end}
               className={({ isActive }) =>
-                `block h-11 px-6 pt-2.5 text-sm leading-5 text-black ${isActive ? 'bg-gray-100' : ''}`
+                `block h-11 px-6 pt-2.5 text-sm leading-5 ${isActive ? 'bg-gray-100 font-medium text-black' : 'text-gray-600'}`
               }
             >
               {item.label}
