@@ -1,0 +1,29 @@
+.kakao-callback {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  background: #f9fafb;
+  font-family: var(--common-font);
+}
+
+.kakao-callback__message {
+  margin: 0;
+
+  color: #fb2c36;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.kakao-callback__link {
+  color: #000;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-decoration-line: underline;
+  text-underline-position: from-font;
+}

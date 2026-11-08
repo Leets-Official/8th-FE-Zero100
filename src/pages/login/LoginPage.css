@@ -69,3 +69,11 @@
   text-decoration-style: solid;
   text-underline-position: from-font;
 }
+
+/* 회원가입 완료 Toast: 화면 오른쪽 아래 고정 */
+.login-page__toast {
+  position: fixed;
+  right: 24px;
+  bottom: 48.5px;
+  z-index: 1100;
+}
