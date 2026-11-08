@@ -1,6 +1,7 @@
 export const ROUTES = {
   login: '/login',
   signup: '/signup',
+  kakaoCallback: '/auth/kakao/callback',
   dashboard: '/',
   inquiries: '/inquiries',
   inquiryNew: '/inquiries/new',

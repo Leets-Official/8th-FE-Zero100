@@ -44,6 +44,24 @@
   font-size: 14px;
 }
 
+.my-page__card .my-page__feedback {
+  padding: 12px 14px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
+.my-page__card .my-page__feedback--error {
+  border: 1px solid #fecdca;
+  background: #fef3f2;
+  color: #b42318;
+}
+
+.my-page__card .my-page__feedback--success {
+  border: 1px solid #abefc6;
+  background: #ecfdf3;
+  color: #067647;
+}
+
 .my-page__actions {
   display: flex;
   justify-content: flex-end;

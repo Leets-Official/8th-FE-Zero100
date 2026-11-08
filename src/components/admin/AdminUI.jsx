@@ -1,4 +1,5 @@
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
+import useAuth from '../../context/useAuth.js';
 import { ROUTES } from '../../constants/routes.js';
 
 export function AdminButton({ children, variant = 'primary', size = 'normal', ...props }) {
@@ -43,10 +44,21 @@ export function AdminTextArea({ label, ...props }) {
 }
 
 export function AdminHeader() {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   return (
     <header className="admin-header">
       <strong>ZERO100 Admin</strong>
-      <span>로그아웃</span>
+      <button
+        type="button"
+        className="admin-logout"
+        onClick={() => {
+          logout();
+          navigate(ROUTES.login, { replace: true });
+        }}
+      >
+        로그아웃
+      </button>
     </header>
   );
 }

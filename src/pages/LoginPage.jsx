@@ -1,15 +1,32 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate, useLocation } from 'react-router';
 import { AdminButton, AdminTextInput } from '../components/admin/AdminUI.jsx';
 import { ROUTES } from '../constants/routes.js';
 import './login-page.css';
+import useAuth from '../context/useAuth.js';
+import { API_BASE_URL } from '../api/client.js';
 
 function LoginPage() {
-  const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+  const [pending, setPending] = useState(false);
+  const [message, setMessage] = useState(location.state?.message || '');
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    setMessage('로그인 서비스는 준비 중입니다.');
+    if (pending) return;
+    const form = new FormData(event.currentTarget);
+    setPending(true);
+    setMessage('');
+    try {
+      await login(form.get('email').trim(), form.get('password'));
+      navigate(ROUTES.dashboard, { replace: true });
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -36,7 +53,9 @@ function LoginPage() {
             placeholder="비밀번호를 입력하세요"
             required
           />
-          <AdminButton type="submit">로그인</AdminButton>
+          <AdminButton type="submit" disabled={pending}>
+            {pending ? '로그인 중…' : '로그인'}
+          </AdminButton>
         </form>
 
         <div className="login-divider">
@@ -46,7 +65,7 @@ function LoginPage() {
         <button
           className="login-kakao"
           type="button"
-          onClick={() => setMessage('카카오 로그인 서비스는 준비 중입니다.')}
+          onClick={() => window.location.assign(`${API_BASE_URL}/api/auth/kakao`)}
         >
           <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
             <path

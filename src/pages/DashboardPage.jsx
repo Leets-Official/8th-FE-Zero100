@@ -1,15 +1,7 @@
+import useAuth from '../context/useAuth.js';
+import useInquiries from '../hooks/useInquiries.js';
+import InquiryStatus from '../components/InquiryStatus.jsx';
 import AdminLayout from '../components/admin/AdminLayout.jsx';
-
-const profileRows = [
-  { label: '이름', value: '홍길동' },
-  { label: '이메일', value: 'hong@example.com' },
-  { label: '가입일', value: '2024.01.15' },
-];
-
-const inquiryRows = [
-  { label: '전체 문의', value: '24건' },
-  { label: '내가 쓴 문의', value: '8건' },
-];
 
 function InfoCard({ title, rows }) {
   return (
@@ -28,12 +20,30 @@ function InfoCard({ title, rows }) {
 }
 
 function DashboardPage() {
+  const { user } = useAuth();
+  const request = useInquiries();
+  const profileRows = [
+    { label: '이름', value: user?.name || '미설정' },
+    { label: '이메일', value: user?.email || '—' },
+    { label: '가입일', value: user?.created_at || '—' },
+  ];
+  const inquiryRows = [
+    { label: '전체 문의', value: `${request.inquiries.length}건` },
+    {
+      label: '내가 쓴 문의',
+      value: `${request.inquiries.filter((item) => item.user_id === user?.id).length}건`,
+    },
+  ];
   return (
     <AdminLayout>
       <h1>대시보드</h1>
       <div className="dashboard-cards">
         <InfoCard title="내 정보" rows={profileRows} />
-        <InfoCard title="문의 현황" rows={inquiryRows} />
+        {request.loading || request.error ? (
+          <InquiryStatus {...request} />
+        ) : (
+          <InfoCard title="문의 현황" rows={inquiryRows} />
+        )}
       </div>
     </AdminLayout>
   );

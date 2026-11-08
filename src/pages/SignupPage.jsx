@@ -1,12 +1,16 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { AdminButton, AdminTextInput } from '../components/admin/AdminUI.jsx';
 import { ROUTES } from '../constants/routes.js';
 import './login-page.css';
+import { apiRequest } from '../api/client.js';
 
 const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d\s]).{8,}$/;
 
 function SignupPage() {
+  const navigate = useNavigate();
+  const kakaoId = useLocation().state?.kakaoId;
+  const [pending, setPending] = useState(false);
   const [values, setValues] = useState({ email: '', password: '', confirmation: '' });
   const [touched, setTouched] = useState({});
   const [message, setMessage] = useState('');
@@ -34,8 +38,9 @@ function SignupPage() {
     setTouched((previous) => ({ ...previous, [event.target.name]: true }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    if (pending) return;
     setTouched({ email: true, password: true, confirmation: true });
 
     if (
@@ -46,13 +51,33 @@ function SignupPage() {
       return;
     }
 
-    setMessage('회원가입 서비스는 준비 중입니다.');
+    setPending(true);
+    setMessage('');
+    try {
+      await apiRequest('/api/auth/signup', {
+        method: 'POST',
+        body: {
+          email: values.email,
+          password: values.password,
+          ...(kakaoId ? { kakaoId } : {}),
+        },
+      });
+      navigate(ROUTES.login, {
+        replace: true,
+        state: { message: '회원가입이 완료되었습니다. 로그인해주세요.' },
+      });
+    } catch (error) {
+      setMessage(error.message);
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
     <main className="login-page signup-page">
       <section className="login-card signup-card" aria-labelledby="signup-title">
         <h1 id="signup-title">회원가입</h1>
+        {kakaoId && <p role="status">카카오 계정을 연결하려면 회원가입을 완료해주세요.</p>}
 
         <form className="login-form signup-form" onSubmit={handleSubmit} noValidate>
           <AdminTextInput
@@ -109,7 +134,9 @@ function SignupPage() {
               </span>
             )}
           </div>
-          <AdminButton type="submit">회원가입</AdminButton>
+          <AdminButton type="submit" disabled={pending}>
+            {pending ? '가입 중…' : '회원가입'}
+          </AdminButton>
         </form>
 
         <p className="login-signup">
