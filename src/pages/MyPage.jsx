@@ -6,6 +6,18 @@ import './my-page.css';
 function MyPage() {
   const [nameNotice, setNameNotice] = useState(false);
   const [passwordNotice, setPasswordNotice] = useState(false);
+  const [passwords, setPasswords] = useState({ newPassword: '', confirmPassword: '' });
+  const [passwordSubmitted, setPasswordSubmitted] = useState(false);
+  const confirmationError =
+    passwordSubmitted && passwords.newPassword !== passwords.confirmPassword
+      ? '새 비밀번호가 일치하지 않습니다'
+      : '';
+
+  function handlePasswordChange(event) {
+    const { name, value } = event.target;
+    setPasswords((previous) => ({ ...previous, [name]: value }));
+    setPasswordNotice(false);
+  }
 
   function handleNameSubmit(event) {
     event.preventDefault();
@@ -14,6 +26,9 @@ function MyPage() {
 
   function handlePasswordSubmit(event) {
     event.preventDefault();
+    setPasswordSubmitted(true);
+    setPasswordNotice(false);
+    if (passwords.newPassword !== passwords.confirmPassword) return;
     setPasswordNotice(true);
   }
 
@@ -45,6 +60,7 @@ function MyPage() {
             label="현재 비밀번호"
             placeholder="현재 비밀번호"
             autoComplete="current-password"
+            onChange={() => setPasswordNotice(false)}
             required
           />
           <AdminTextInput
@@ -54,6 +70,8 @@ function MyPage() {
             label="새 비밀번호"
             placeholder="새 비밀번호"
             autoComplete="new-password"
+            value={passwords.newPassword}
+            onChange={handlePasswordChange}
             required
           />
           <AdminTextInput
@@ -63,6 +81,9 @@ function MyPage() {
             label="새 비밀번호 확인"
             placeholder="새 비밀번호 확인"
             autoComplete="new-password"
+            value={passwords.confirmPassword}
+            onChange={handlePasswordChange}
+            error={confirmationError}
             required
           />
           {passwordNotice && <p role="status">비밀번호 변경 기능은 준비 중입니다.</p>}
