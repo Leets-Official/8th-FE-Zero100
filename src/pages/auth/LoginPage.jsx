@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import KakaoIcon from '../../components/auth/KakaoIcon';
 import Button from '../../components/dashboard/Button';
-import Textarea from '../../components/dashboard/Textarea';
+import TextField from '../../components/dashboard/TextField';
 import { ROUTES } from '../../constants/routes';
 
 function LoginPage() {
@@ -14,8 +14,20 @@ function LoginPage() {
     <AuthLayout title="로그인">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4">
-          <Textarea type="email" aria-label="이메일" placeholder="이메일을 입력하세요" />
-          <Textarea type="password" aria-label="비밀번호" placeholder="비밀번호를 입력하세요" />
+          <TextField
+            type="email"
+            name="email"
+            aria-label="이메일"
+            placeholder="이메일을 입력하세요"
+            autoComplete="username"
+          />
+          <TextField
+            type="password"
+            name="password"
+            aria-label="비밀번호"
+            placeholder="비밀번호를 입력하세요"
+            autoComplete="current-password"
+          />
         </div>
         <Button type="submit" className="w-full">
           로그인
@@ -30,7 +42,7 @@ function LoginPage() {
 
       <button
         type="button"
-        className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-yellow-400 py-3 text-base leading-6 font-bold text-stone-800"
+        className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#FEE500] py-3 text-base leading-6 font-bold text-stone-800"
       >
         <KakaoIcon />
         카카오 로그인
