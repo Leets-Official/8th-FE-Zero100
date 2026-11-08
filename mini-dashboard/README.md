@@ -1,6 +1,6 @@
 # ZERO100 미니 대시보드
 
-4·5주차 과제: Vite 프로젝트 세팅과 재사용 가능한 공통 컴포넌트, 로그인·회원가입 및 대시보드 홈 UI 구현.
+7주차 과제: 로그인·회원가입과 문의·마이페이지 기능을 ZERO100 Admin API에 연결했습니다.
 
 [Figma 디자인](https://www.figma.com/design/4hyz65a9mwAkEKplbXcfyo?node-id=1262-5365)의 헤더, 사이드바, 흰색 카드, 검정 버튼과 입력 폼을 참고했습니다.
 
@@ -20,7 +20,7 @@ npm run format:check
 npm run build
 ```
 
-개발 서버 주소는 터미널에 표시됩니다. Node 24.19.0에서 코드 검사와 빌드를 확인했습니다.
+개발 서버는 `http://localhost:5173`을 사용합니다. 서버에 등록된 카카오 콜백이 이 주소로 고정되어 있어 다른 포트를 사용하면 카카오 로그인이 동작하지 않습니다. API 주소를 바꾸려면 `.env.example`을 참고해 `VITE_API_BASE_URL`을 설정합니다. 설정하지 않으면 과제 API 주소를 사용합니다.
 
 ## 프로젝트 설정
 
@@ -32,19 +32,18 @@ npm run build
 | Axios        | 공통 인스턴스, 10초 timeout, AbortController를 이용한 요청 취소              |
 | 코드 품질    | ESLint flat config, Prettier, 사용하지 않는 import 검사, 스타일 충돌 방지    |
 
-버전을 고정하고 `package-lock.json`을 포함했습니다. 별도의 폰트 설치나 환경 변수 파일 없이 실행할 수 있습니다.
+버전을 고정하고 `package-lock.json`을 포함했습니다. 기본 API 주소 사용 시 별도의 환경 변수 파일은 필요하지 않습니다.
 
 ## 폴더 구조
 
 ```text
 src/
-  assets/           # 예시 JSON
-  api/              # Axios 인스턴스와 데이터 요청
+  api/              # Axios 인스턴스, 인증 및 대시보드 API
   components/
     common/         # Button, TextInput, TextArea, Modal, Toast 등
     layout/         # Header, Sidebar, Footer, 공통 레이아웃
     dashboard/      # 정보 카드와 문의 테이블
-  contexts/         # 화면이 공유하는 예시 데이터와 알림
+  contexts/         # 인증, 서버 데이터와 알림
   hooks/            # Context 접근
   pages/            # 경로별 화면
 ```
@@ -88,24 +87,26 @@ src/
 
 ## 화면
 
-- `/login`: 이메일·비밀번호 로그인 UI와 카카오 로그인 버튼
-- `/signup`: 이메일·비밀번호·비밀번호 확인 회원가입 UI와 입력 검증 안내
+- `/login`: 이메일·비밀번호 및 카카오 로그인
+- `/signup`: 이메일·비밀번호 회원가입과 입력 검증
+- `/auth/kakao/callback`: 카카오 인가코드 교환과 미가입자 가입 연결
 - `/`: 내 정보와 문의 현황
 - `/inquiries`: 문의 목록
 - `/inquiries/new`: 공통 입력 컴포넌트를 이용한 문의 등록 폼
-- `/inquiries/:inquiryId`: 문의 상세 화면과 목록 복귀
-- `/mypage`: 이름·이메일 입력과 저장·취소
+- `/inquiries/:inquiryId`: 문의 상세와 본인 문의 삭제
+- `/mypage`: 이름 및 비밀번호 변경
 - `/components`: 버튼 크기·스타일·로딩, 입력창 상태, 모달·알림 예시
 - 없는 경로: 안내 화면
 
 중첩 Route의 `DashboardLayout`에서 Header·Sidebar·Footer를 한 번 선언하고 페이지 내용만 Outlet으로 변경합니다.
 
-## 예시 데이터와 구현 범위
+## API와 인증
 
-이번 과제는 프로젝트 세팅과 공통 UI입니다. Axios로 `assets/dashboard.json`을 HTTP 요청하여 화면에 표시하고, 실패하면 오류 안내와 다시 시도를 제공합니다. 초기 요청은 StrictMode에서도 정리되도록 취소합니다.
-
-문의 등록과 프로필 저장은 컴포넌트 사용 예시로 현재 화면의 메모리 상태만 변경합니다. 새로고침하면 예시 데이터로 돌아옵니다. 실제 서버 저장, 로그인·회원가입, 계정 인증은 연결하지 않았으며 로그아웃 버튼은 비활성화되어 있습니다. 실제 API를 연결할 때는 `api/client.js`와 `api/dashboard.js`를 변경하고 Header에 `onLogout`을 전달합니다.
-
-로그인·회원가입 폼은 화면과 입력 검증만 구현했습니다. 회원가입은 입력 후 또는 제출 시 오류를 표시합니다. 제출 및 카카오 로그인 버튼은 API가 연결되지 않은 상태임을 알리는 알림을 보여주며, 알림은 3초 후 자동으로 닫힙니다.
+- [API 명세](https://leetszero100-fe.kro.kr/api-docs)의 회원가입·로그인·카카오 콜백, 내 정보·이름·비밀번호 변경, 문의 조회·등록·삭제를 사용합니다.
+- 로그인으로 받은 토큰은 현재 브라우저 탭의 `sessionStorage`에 저장하고 인증 요청에 Bearer 토큰으로 전달합니다. 로그아웃하면 토큰과 화면 데이터를 지웁니다.
+- 토큰이 없거나 초기 조회에서 인증이 만료되면 로그인 화면으로 이동합니다. 서버 오류에는 안내와 재시도를 제공합니다.
+- 서버 명세에 문의 단건 조회 API가 없어 목록에서 해당 ID를 찾아 상세를 표시합니다. 본인이 작성한 문의만 삭제할 수 있습니다.
+- 서버는 이메일 변경 API를 제공하지 않아 이메일은 읽기 전용입니다. 회원가입·비밀번호 변경은 영문·숫자·특수문자를 포함한 8자 이상 비밀번호를 사용합니다.
+- 카카오 미가입자는 콜백에서 회원가입 화면으로 이동하며 이메일과 비밀번호를 추가로 입력합니다. 실제 카카오 앱의 콜백 주소는 서버 설정에 따릅니다.
 
 배포 서버에는 각 경로로 직접 접속해도 `index.html`을 반환하는 SPA fallback 설정이 필요합니다.
