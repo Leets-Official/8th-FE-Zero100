@@ -1,7 +1,7 @@
-function FormField({ id, label, required, helperText, error, children }) {
+function FormField({ id, label, required, helperText, error, hideLabel = false, children }) {
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="block text-sm font-medium">
+      <label htmlFor={id} className={`block text-sm font-medium ${hideLabel ? 'sr-only' : ''}`}>
         {label}
         {required && (
           <span className="ml-1 text-[#e03131]" aria-hidden="true">
