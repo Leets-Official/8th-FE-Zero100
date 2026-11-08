@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Navigate, Outlet } from 'react-router';
 import { useDashboard } from '../../hooks/useDashboard.js';
 import StatusMessage from '../common/StatusMessage.jsx';
 import Header from './Header.jsx';
@@ -6,7 +6,9 @@ import Sidebar from './Sidebar.jsx';
 import Footer from './Footer.jsx';
 
 function DashboardLayout() {
-  const { status, reload } = useDashboard();
+  const { status, reload, logout } = useDashboard();
+
+  if (status === 'unauthenticated') return <Navigate to="/login" replace />;
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -16,7 +18,7 @@ function DashboardLayout() {
       >
         본문 바로가기
       </a>
-      <Header />
+      <Header onLogout={logout} />
       <div className="flex-1 md:grid md:grid-cols-[200px_minmax(0,1fr)]">
         <Sidebar />
         <main id="main-content" className="min-w-0 px-5 py-7 sm:px-8 sm:py-8 lg:px-10">

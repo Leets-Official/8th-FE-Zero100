@@ -1,22 +1,39 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import AuthLayout from '../components/auth/AuthLayout.jsx';
 import Button from '../components/common/Button.jsx';
 import TextInput from '../components/common/TextInput.jsx';
 import { useDashboard } from '../hooks/useDashboard.js';
+import { API_BASE_URL, getApiError } from '../api/client.js';
 
 function LoginPage() {
-  const { showToast } = useDashboard();
+  const { login } = useDashboard();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
-    showToast('로그인 API는 화면 구현 후 연결할 예정입니다.');
+    setError('');
+    setPending(true);
+    try {
+      await login({ email: email.trim(), password });
+      navigate('/', { replace: true });
+    } catch (err) {
+      setError(getApiError(err));
+    } finally {
+      setPending(false);
+    }
   }
 
   function handleKakaoLogin() {
-    showToast('카카오 로그인 API는 화면 구현 후 연결할 예정입니다.');
+    if (window.location.origin !== 'http://localhost:5173') {
+      setError('카카오 로그인은 현재 http://localhost:5173에서 사용할 수 있습니다.');
+      return;
+    }
+    window.location.assign(`${API_BASE_URL}/api/auth/kakao`);
   }
 
   return (
@@ -56,7 +73,12 @@ function LoginPage() {
           variant="auth"
           required
         />
-        <Button type="submit" className="w-full rounded-[10px]">
+        {error && (
+          <p role="alert" className="text-sm text-red-700">
+            {error}
+          </p>
+        )}
+        <Button type="submit" isLoading={pending} className="w-full rounded-[10px]">
           로그인
         </Button>
       </form>

@@ -10,6 +10,7 @@ import ComponentsPage from './pages/ComponentsPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import SignupPage from './pages/SignupPage.jsx';
+import KakaoCallbackPage from './pages/KakaoCallbackPage.jsx';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="login" element={<LoginPage />} />
         <Route path="signup" element={<SignupPage />} />
+        <Route path="auth/kakao/callback" element={<KakaoCallbackPage />} />
         <Route element={<DashboardLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="inquiries" element={<InquiryPage />} />
