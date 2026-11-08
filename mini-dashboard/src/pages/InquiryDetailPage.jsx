@@ -2,16 +2,7 @@ import { useParams } from 'react-router';
 import { useDashboard } from '../hooks/useDashboard.js';
 import LinkButton from '../components/common/LinkButton.jsx';
 import PageHeading from '../components/layout/PageHeading.jsx';
-
-const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
-  timeZone: 'Asia/Seoul',
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: false,
-});
+import InquiryDate from '../components/dashboard/InquiryDate.jsx';
 
 function InquiryDetailPage() {
   const { inquiryId } = useParams();
@@ -32,10 +23,7 @@ function InquiryDetailPage() {
         <article className="max-w-3xl rounded-lg border border-line bg-white p-6 sm:p-8">
           <header className="border-b border-line pb-5">
             <p className="mb-3 text-sm text-muted">
-              작성일{' '}
-              <time dateTime={inquiry.createdAt}>
-                {dateFormatter.format(new Date(inquiry.createdAt))}
-              </time>
+              작성일 <InquiryDate value={inquiry.createdAt} />
             </p>
             <h2 className="text-lg font-semibold break-words">{inquiry.title}</h2>
           </header>

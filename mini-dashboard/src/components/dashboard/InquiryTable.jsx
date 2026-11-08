@@ -1,12 +1,5 @@
-const dateFormatter = new Intl.DateTimeFormat('ko-KR', {
-  timeZone: 'Asia/Seoul',
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: false,
-});
+import { Link } from 'react-router';
+import InquiryDate from './InquiryDate.jsx';
 
 function InquiryTable({ inquiries }) {
   if (inquiries.length === 0)
@@ -49,9 +42,7 @@ function InquiryTable({ inquiries }) {
                 </Link>
               </td>
               <td className="px-5 py-5 text-xs whitespace-nowrap text-muted">
-                <time dateTime={inquiry.createdAt}>
-                  {dateFormatter.format(new Date(inquiry.createdAt))}
-                </time>
+                <InquiryDate value={inquiry.createdAt} />
               </td>
             </tr>
           ))}
@@ -62,4 +53,3 @@ function InquiryTable({ inquiries }) {
 }
 
 export default InquiryTable;
-import { Link } from 'react-router';
