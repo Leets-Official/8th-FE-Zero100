@@ -1,0 +1,344 @@
+.inquiry-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.dashboard-main .inquiry-heading h1 {
+  margin: 0;
+}
+
+.inquiry-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 20px;
+  border-radius: 8px;
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.inquiry-create:hover {
+  background: #242424;
+}
+
+.inquiry-create:focus-visible,
+.inquiry-table a:focus-visible {
+  outline: 2px solid #4f46e5;
+  outline-offset: 3px;
+}
+
+.inquiry-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.inquiry-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+
+.inquiry-table th,
+.inquiry-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #edf0f2;
+}
+
+.inquiry-table th {
+  background: #f9fafb;
+  color: #4a5565;
+  font-weight: 600;
+}
+
+.inquiry-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.inquiry-table th:first-child,
+.inquiry-table td:first-child {
+  width: 72px;
+}
+
+.inquiry-table th:last-child,
+.inquiry-table td:last-child {
+  width: 200px;
+  color: #4a5565;
+  white-space: nowrap;
+}
+
+.inquiry-table a {
+  color: #111;
+  text-decoration: none;
+}
+
+.inquiry-table a:hover {
+  text-decoration: underline;
+}
+
+.inquiry-form-page {
+  width: min(100%, 680px);
+  margin: 0 auto;
+}
+
+.inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.inquiry-form .admin-field {
+  gap: 6px;
+}
+
+.inquiry-form .admin-field label {
+  color: #344054;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.inquiry-form .admin-field input,
+.inquiry-form .admin-field textarea {
+  min-height: 48px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 16px;
+}
+
+.inquiry-form .admin-field textarea {
+  min-height: 168px;
+}
+
+.inquiry-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.inquiry-form__actions .admin-button,
+.inquiry-form__cancel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 24px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.inquiry-form__cancel {
+  border: 1px solid #e5e7eb;
+  color: #344054;
+  text-decoration: none;
+}
+
+.inquiry-form__cancel:focus-visible {
+  outline: 2px solid #8034e9;
+  outline-offset: 2px;
+}
+
+.inquiry-form__notice {
+  margin: 0;
+  color: #4a5565;
+  font-size: 14px;
+}
+
+.inquiry-detail-page {
+  width: min(100%, 900px);
+  margin: 0 auto;
+}
+
+.inquiry-detail__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.inquiry-detail__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: transparent;
+  color: #344054;
+  font: inherit;
+  font-size: 14px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.inquiry-detail__button:focus-visible {
+  outline: 2px solid #8034e9;
+  outline-offset: 2px;
+}
+
+.inquiry-detail {
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.inquiry-detail__header,
+.inquiry-detail__content {
+  padding: 24px 32px;
+}
+
+.inquiry-detail__header p,
+.inquiry-detail__author dt,
+.inquiry-detail__content h3 {
+  margin: 0;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.inquiry-detail__header h2 {
+  margin: 8px 0 0;
+  font-size: 22px;
+}
+
+.inquiry-detail__author {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 20px 32px;
+  border-block: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.inquiry-detail__author dd {
+  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.inquiry-detail__content p {
+  margin: 18px 0 0;
+  color: #344054;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.inquiry-detail-page > .inquiry-form__notice {
+  margin-top: 16px;
+}
+
+.inquiry-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 10;
+}
+
+.inquiry-toast .admin-toast {
+  width: min(340px, calc(100vw - 48px));
+  min-height: 56px;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.inquiry-toast .admin-check-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  font-size: 11px;
+}
+
+.inquiry-delete-dialog {
+  box-sizing: border-box;
+  width: min(385px, calc(100% - 32px));
+  margin: auto;
+  padding: 33px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+}
+
+.inquiry-delete-dialog::backdrop {
+  background: rgb(0 0 0 / 50%);
+}
+
+.inquiry-delete-dialog h2 {
+  margin: 0;
+  color: #111;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.inquiry-delete-dialog__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.inquiry-delete-dialog__actions button {
+  padding: 10px 25px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  color: #344054;
+  font: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.inquiry-delete-dialog__actions button:last-child {
+  padding-inline: 24px;
+  border-color: #000;
+  background: #000;
+  color: #fff;
+}
+
+.inquiry-delete-dialog__actions button:focus-visible {
+  outline: 2px solid #8034e9;
+  outline-offset: 2px;
+}
+
+@media (max-width: 560px) {
+  .inquiry-heading {
+    gap: 12px;
+  }
+
+  .inquiry-create {
+    padding: 0 14px;
+  }
+
+  .inquiry-detail__button {
+    padding: 0 12px;
+  }
+
+  .inquiry-detail__header,
+  .inquiry-detail__author,
+  .inquiry-detail__content {
+    padding-inline: 20px;
+  }
+}
