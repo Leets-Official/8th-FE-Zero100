@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '../../constants/routes';
+import useAuth from '../../hooks/useAuth';
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 import Sidebar from '../common/Sidebar';
@@ -16,10 +17,11 @@ const SIDEBAR_ITEMS = [
 
 const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    // TODO: 로그인 API 연동 후 토큰 삭제 처리 추가
-    navigate(ROUTES.LOGIN);
+    logout();
+    navigate(ROUTES.LOGIN, { replace: true });
   };
 
   return (

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import PublicOnlyRoute from './components/auth/PublicOnlyRoute';
 import { ROUTES } from './constants/routes';
+import AuthProvider from './contexts/AuthProvider';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import InquiryCreatePage from './pages/inquiry/InquiryCreatePage';
 import InquiryDetailPage from './pages/inquiry/InquiryDetailPage';
 import InquiryPage from './pages/inquiry/InquiryPage';
+import KakaoCallbackPage from './pages/login/KakaoCallbackPage';
 import LoginPage from './pages/login/LoginPage';
 import MyPage from './pages/mypage/MyPage';
 import ComponentPreview from './pages/preview/ComponentPreview';
@@ -69,26 +73,38 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
 
-        <Route path={ROUTES.LOGIN} element={<LoginPage />} />
-        <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
-        <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
-        <Route path={ROUTES.INQUIRY} element={<InquiryPage />} />
-        <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
-        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
-        <Route path={ROUTES.MYPAGE} element={<MyPage />} />
+          {/* 로그인하지 않은 사용자만 접근 */}
+          <Route element={<PublicOnlyRoute />}>
+            <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+            <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+          </Route>
 
-        <Route path={ROUTES.TODO} element={<TodoPage {...pageProps} />} />
-        <Route path={ROUTES.TODO_ALL} element={<AllPage {...pageProps} />} />
-        <Route path={ROUTES.TODO_COMPLETED} element={<CompletedPage {...pageProps} />} />
-        <Route path={ROUTES.TODO_STATS} element={<StatsPage {...pageProps} />} />
+          {/* 카카오 로그인 콜백: 로그인 처리 중이므로 별도로 둠 */}
+          <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallbackPage />} />
 
-        <Route path={ROUTES.COMPONENT_PREVIEW} element={<ComponentPreview />} />
+          {/* 로그인한 사용자만 접근 */}
+          <Route element={<ProtectedRoute />}>
+            <Route path={ROUTES.DASHBOARD} element={<DashboardPage />} />
+            <Route path={ROUTES.INQUIRY} element={<InquiryPage />} />
+            <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
+            <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
+            <Route path={ROUTES.MYPAGE} element={<MyPage />} />
+          </Route>
 
-        <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
-      </Routes>
+          <Route path={ROUTES.TODO} element={<TodoPage {...pageProps} />} />
+          <Route path={ROUTES.TODO_ALL} element={<AllPage {...pageProps} />} />
+          <Route path={ROUTES.TODO_COMPLETED} element={<CompletedPage {...pageProps} />} />
+          <Route path={ROUTES.TODO_STATS} element={<StatsPage {...pageProps} />} />
+
+          <Route path={ROUTES.COMPONENT_PREVIEW} element={<ComponentPreview />} />
+
+          <Route path="*" element={<Navigate to={ROUTES.DASHBOARD} replace />} />
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
