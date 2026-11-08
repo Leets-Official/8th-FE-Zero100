@@ -10,13 +10,15 @@ import PageHeading from '../components/layout/PageHeading.jsx';
 function InquiryCreatePage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const { addInquiry } = useDashboard();
+  const { addInquiry, data } = useDashboard();
+  const [authorName, setAuthorName] = useState(data.profile.name);
+  const [authorEmail, setAuthorEmail] = useState(data.profile.email);
   const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (!title.trim() || !content.trim()) return;
-    addInquiry({ title, content });
+    if (!title.trim() || !content.trim() || !authorName.trim() || !authorEmail.trim()) return;
+    addInquiry({ title, content, authorName, authorEmail });
     navigate('/inquiries');
   }
 
@@ -27,6 +29,21 @@ function InquiryCreatePage() {
         onSubmit={handleSubmit}
         className="max-w-3xl space-y-6 rounded-lg border border-line bg-white p-6 sm:p-8"
       >
+        <TextInput
+          label="이름"
+          name="authorName"
+          value={authorName}
+          onChange={(event) => setAuthorName(event.target.value)}
+          required
+        />
+        <TextInput
+          label="이메일"
+          name="authorEmail"
+          type="email"
+          value={authorEmail}
+          onChange={(event) => setAuthorEmail(event.target.value)}
+          required
+        />
         <TextInput
           label="제목"
           name="title"
@@ -51,7 +68,10 @@ function InquiryCreatePage() {
           <LinkButton to="/inquiries" variant="secondary">
             취소
           </LinkButton>
-          <Button type="submit" disabled={!title.trim() || !content.trim()}>
+          <Button
+            type="submit"
+            disabled={!title.trim() || !content.trim() || !authorName.trim() || !authorEmail.trim()}
+          >
             등록
           </Button>
         </div>
