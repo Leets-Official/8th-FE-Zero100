@@ -20,7 +20,7 @@ function InquiryTable(props) {
         </thead>
         <tbody>
           {props.inquiries.map((inquiry) => (
-            <tr key={inquiry.id} className="h-12 border-b border-gray-100 last:border-b-0">
+            <tr key={inquiry.id} className="h-[49px] border-b border-gray-100 last:border-b-0">
               <td className="px-4 text-black">{inquiry.id}</td>
               <td className="px-4">
                 <Link
