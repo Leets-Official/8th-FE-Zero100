@@ -11,6 +11,10 @@ import DashboardLayout from './components/dashboard/DashboardLayout';
 import AuthLayout from './components/auth/AuthLayout';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import InquiryListPage from './pages/InquiryListPage';
+import InquiryCreatePage from './pages/InquiryCreatePage';
+import InquiryDetailPage from './pages/InquiryDetailPage';
+import MyPage from './pages/MyPage';
 
 import { loadTodos, TODO_STORAGE_KEY } from './utils/todoStorage';
 import { ROUTES } from './constants/routes';
@@ -72,15 +76,13 @@ function App() {
       <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
         <Route index element={<DashboardPage />} />
 
-        <Route
-          path={ROUTES.INQUIRIES}
-          element={<h2 className="text-[24px] font-bold text-[#222222]">문의</h2>}
-        />
+        <Route path={ROUTES.INQUIRIES} element={<InquiryListPage />} />
 
-        <Route
-          path={ROUTES.MYPAGE}
-          element={<h2 className="text-[24px] font-bold text-[#222222]">마이페이지</h2>}
-        />
+        <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
+
+        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
+
+        <Route path={ROUTES.MYPAGE} element={<MyPage />} />
       </Route>
 
       <Route path={ROUTES.TODO} element={<Layout />}>
