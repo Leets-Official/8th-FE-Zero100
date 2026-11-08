@@ -29,15 +29,18 @@ const InquiryTable = ({ inquiries = [] }) => {
         </thead>
 
         <tbody>
-          {inquiries.map((inquiry) => (
+          {inquiries.map((inquiry, index) => (
             <tr key={inquiry.id}>
-              <td className="inquiry-table__cell">{inquiry.id}</td>
+              {/* id가 uuid라서 번호는 목록 순서(최신순)로 표시 */}
+              <td className="inquiry-table__cell">{index + 1}</td>
               <td className="inquiry-table__cell inquiry-table__cell--title">
                 <Link to={`${ROUTES.INQUIRY}/${inquiry.id}`} className="inquiry-table__link">
                   {inquiry.title}
                 </Link>
               </td>
-              <td className="inquiry-table__cell inquiry-table__cell--date">{inquiry.createdAt}</td>
+              <td className="inquiry-table__cell inquiry-table__cell--date">
+                {inquiry.created_at}
+              </td>
             </tr>
           ))}
         </tbody>

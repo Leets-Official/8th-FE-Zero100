@@ -44,3 +44,7 @@
   font-weight: 400;
   line-height: 20px;
 }
+
+.inquiry-detail-page__message--error {
+  color: #fb2c36;
+}

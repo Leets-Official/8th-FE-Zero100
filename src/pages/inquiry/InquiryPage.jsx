@@ -5,8 +5,8 @@ import Button from '../../components/common/Button';
 import Toast from '../../components/common/Toast';
 import DashboardLayout from '../../components/dashboard/DashboardLayout';
 import InquiryTable from '../../components/inquiry/InquiryTable';
-import { INQUIRIES } from '../../constants/inquiries';
 import { ROUTES } from '../../constants/routes';
+import useInquiries from '../../hooks/useInquiries';
 
 import './InquiryPage.css';
 
@@ -15,6 +15,7 @@ const TOAST_DURATION = 3000;
 function InquiryPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { inquiries, isLoading, error } = useInquiries();
 
   // 삭제 후 이동해 왔을 때 상세 페이지에서 넘긴 메시지로 Toast를 표시
   const [toastMessage, setToastMessage] = useState(location.state?.toast ?? '');
@@ -39,6 +40,26 @@ function InquiryPage() {
     navigate(ROUTES.INQUIRY_CREATE);
   };
 
+  const renderContent = () => {
+    if (isLoading) {
+      return <p className="inquiry-page__message">문의 목록을 불러오는 중입니다.</p>;
+    }
+
+    if (error) {
+      return (
+        <p className="inquiry-page__message inquiry-page__message--error" role="alert">
+          {error}
+        </p>
+      );
+    }
+
+    if (inquiries.length === 0) {
+      return <p className="inquiry-page__message">등록된 문의가 없습니다.</p>;
+    }
+
+    return <InquiryTable inquiries={inquiries} />;
+  };
+
   return (
     <DashboardLayout>
       <div className="inquiry-page">
@@ -47,7 +68,7 @@ function InquiryPage() {
           <Button onClick={handleCreate}>문의 등록</Button>
         </div>
 
-        <InquiryTable inquiries={INQUIRIES} />
+        {renderContent()}
       </div>
 
       {toastMessage && (

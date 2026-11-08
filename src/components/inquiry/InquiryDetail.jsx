@@ -4,7 +4,7 @@ const InquiryDetail = ({ inquiry }) => {
   return (
     <article className="inquiry-detail">
       <header className="inquiry-detail__head">
-        <p className="inquiry-detail__date">{inquiry.createdAt}</p>
+        <p className="inquiry-detail__date">{inquiry.created_at}</p>
         <h3 className="inquiry-detail__title">{inquiry.title}</h3>
       </header>
 
