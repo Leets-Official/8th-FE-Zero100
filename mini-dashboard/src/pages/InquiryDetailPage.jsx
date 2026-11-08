@@ -1,22 +1,51 @@
-import { useParams } from 'react-router';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import { useDashboard } from '../hooks/useDashboard.js';
 import LinkButton from '../components/common/LinkButton.jsx';
 import PageHeading from '../components/layout/PageHeading.jsx';
 import InquiryDate from '../components/dashboard/InquiryDate.jsx';
+import Modal from '../components/common/Modal.jsx';
+import Button from '../components/common/Button.jsx';
+import { getApiError } from '../api/client.js';
 
 function InquiryDetailPage() {
   const { inquiryId } = useParams();
-  const { data } = useDashboard();
+  const { data, removeInquiry } = useDashboard();
+  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState('');
   const inquiry = data.inquiries.find((item) => item.id === inquiryId);
+
+  async function confirmDelete() {
+    setError('');
+    setPending(true);
+    try {
+      await removeInquiry(inquiry.id);
+      setModalOpen(false);
+      navigate('/inquiries', { replace: true });
+    } catch (err) {
+      setError(getApiError(err));
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <>
       <PageHeading
         title="문의 상세"
         action={
-          <LinkButton to="/inquiries" variant="secondary">
-            목록으로
-          </LinkButton>
+          <div className="flex gap-3">
+            <LinkButton to="/inquiries" variant="secondary">
+              목록으로
+            </LinkButton>
+            {inquiry && inquiry.authorId === data.profile.id && (
+              <Button variant="secondary" onClick={() => setModalOpen(true)}>
+                삭제
+              </Button>
+            )}
+          </div>
         }
       />
       {inquiry ? (
@@ -55,6 +84,28 @@ function InquiryDetailPage() {
         >
           문의를 찾을 수 없습니다.
         </p>
+      )}
+      {modalOpen && (
+        <Modal
+          title="문의를 삭제하시겠습니까?"
+          onClose={() => {
+            if (!pending) setModalOpen(false);
+          }}
+        >
+          {error && (
+            <p role="alert" className="mt-4 text-sm text-red-700">
+              {error}
+            </p>
+          )}
+          <div className="mt-6 flex justify-end gap-3">
+            <Button variant="secondary" onClick={() => setModalOpen(false)} disabled={pending}>
+              취소
+            </Button>
+            <Button variant="danger" onClick={confirmDelete} isLoading={pending}>
+              삭제
+            </Button>
+          </div>
+        </Modal>
       )}
     </>
   );

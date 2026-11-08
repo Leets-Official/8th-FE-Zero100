@@ -6,20 +6,35 @@ import LinkButton from '../components/common/LinkButton.jsx';
 import TextInput from '../components/common/TextInput.jsx';
 import TextArea from '../components/common/TextArea.jsx';
 import PageHeading from '../components/layout/PageHeading.jsx';
+import { getApiError } from '../api/client.js';
 
 function InquiryCreatePage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
   const { addInquiry, data } = useDashboard();
   const [authorName, setAuthorName] = useState(data.profile.name);
   const [authorEmail, setAuthorEmail] = useState(data.profile.email);
   const navigate = useNavigate();
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     if (!title.trim() || !content.trim() || !authorName.trim() || !authorEmail.trim()) return;
-    addInquiry({ title, content, authorName, authorEmail });
-    navigate('/inquiries');
+    if (title.trim().length < 2 || authorName.trim().length < 2) {
+      setError('이름과 제목은 2자 이상 입력해 주세요.');
+      return;
+    }
+    setError('');
+    setPending(true);
+    try {
+      await addInquiry({ title, content, authorName, authorEmail });
+      navigate('/inquiries');
+    } catch (err) {
+      setError(getApiError(err));
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -34,6 +49,7 @@ function InquiryCreatePage() {
           name="authorName"
           value={authorName}
           onChange={(event) => setAuthorName(event.target.value)}
+          maxLength={20}
           required
         />
         <TextInput
@@ -50,7 +66,7 @@ function InquiryCreatePage() {
           placeholder="문의 제목을 입력해 주세요"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
-          maxLength={100}
+          maxLength={50}
           required
         />
         <TextArea
@@ -64,12 +80,18 @@ function InquiryCreatePage() {
           rows={10}
           required
         />
+        {error && (
+          <p role="alert" className="text-sm text-red-700">
+            {error}
+          </p>
+        )}
         <div className="flex justify-end gap-3">
           <LinkButton to="/inquiries" variant="secondary">
             취소
           </LinkButton>
           <Button
             type="submit"
+            isLoading={pending}
             disabled={!title.trim() || !content.trim() || !authorName.trim() || !authorEmail.trim()}
           >
             등록
