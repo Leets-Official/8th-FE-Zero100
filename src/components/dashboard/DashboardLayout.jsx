@@ -1,5 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../constants/routes';
+import { removeToken } from '../../api/token';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
@@ -10,8 +11,8 @@ function DashboardLayout() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    // TODO: API 연동 후 토큰 삭제 처리
-    navigate(ROUTES.LOGIN);
+    removeToken();
+    navigate(ROUTES.LOGIN, { replace: true });
   }
 
   return (
