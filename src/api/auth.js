@@ -14,3 +14,12 @@ export async function getMe() {
   const response = await client.get('/api/auth/me');
   return response.data.data;
 }
+
+export async function updateName(name) {
+  const response = await client.patch('/api/auth/me', { name });
+  return response.data.data;
+}
+
+export async function updatePassword({ currentPassword, newPassword }) {
+  await client.patch('/api/auth/me/password', { currentPassword, newPassword });
+}
