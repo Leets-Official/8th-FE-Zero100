@@ -26,3 +26,14 @@ export async function getInquiries({ signal } = {}) {
 
   return inquiries.map(normalizeInquiry);
 }
+
+export async function createInquiry({ name, email, title, content }) {
+  const response = await api.post('/api/inquiries', {
+    name: name.trim(),
+    email: email.trim(),
+    title: title.trim(),
+    content: content.trim(),
+  });
+
+  return normalizeInquiry(response.data.data);
+}

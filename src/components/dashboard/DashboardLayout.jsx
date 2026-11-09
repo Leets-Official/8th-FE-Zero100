@@ -7,7 +7,7 @@ import Footer from './Footer';
 import Toast from './Toast';
 import Button from './Button';
 
-import { getInquiries } from '../../api/inquiries';
+import { createInquiry, getInquiries } from '../../api/inquiries';
 import { ROUTES } from '../../constants/routes';
 import { removeAccessToken } from '../../utils/authStorage';
 import { getApiErrorMessage } from '../../utils/getApiErrorMessage';
@@ -76,16 +76,8 @@ function DashboardLayout() {
     navigate(ROUTES.LOGIN, { replace: true });
   }
 
-  function addInquiry({ name, email, title, content }) {
-    const newInquiry = {
-      id: crypto.randomUUID(),
-      userId: user.id,
-      author: name.trim(),
-      email: email.trim(),
-      title: title.trim(),
-      content: content.trim(),
-      createdAt: new Date().toISOString(),
-    };
+  async function addInquiry(values) {
+    const newInquiry = await createInquiry(values);
 
     setInquiries((prev) => [newInquiry, ...prev]);
     setToast({ message: '문의가 등록되었습니다.' });
