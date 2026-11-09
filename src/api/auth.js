@@ -23,3 +23,8 @@ export async function updateName(name) {
 export async function updatePassword({ currentPassword, newPassword }) {
   await client.patch('/api/auth/me/password', { currentPassword, newPassword });
 }
+
+export async function kakaoLogin(code) {
+  const response = await client.get('/api/auth/kakao/redirect', { params: { code } });
+  return response.data.data;
+}

@@ -41,6 +41,10 @@ function LoginPage() {
     }
   }
 
+  function handleKakaoLogin() {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/kakao`;
+  }
+
   return (
     <AuthLayout title="로그인">
       <form className="flex flex-col gap-6" noValidate onSubmit={handleSubmit}>
@@ -82,6 +86,7 @@ function LoginPage() {
 
       <button
         type="button"
+        onClick={handleKakaoLogin}
         className="flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-[#FEE500] py-3 text-base leading-6 font-bold text-stone-800"
       >
         <KakaoIcon />

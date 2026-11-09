@@ -13,6 +13,7 @@ import InquiryDetailPage from './pages/inquiry/InquiryDetailPage';
 import MyPage from './pages/mypage/MyPage';
 import { ROUTES } from './constants/routes';
 import RequireAuth from './components/auth/RequireAuth';
+import KakaoCallbackPage from './pages/auth/KakaoCallbackPage';
 
 const loadTasks = () => {
   try {
@@ -76,6 +77,7 @@ function App() {
       />
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
+      <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallbackPage />} />
       <Route element={<RequireAuth />}>
         <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
           <Route index element={<DashboardHomePage />} />
