@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { signup } from '../../api/authApi';
 import AuthCard from '../../components/auth/AuthCard/AuthCard';
 import Button from '../../components/dashboard/Button/Button';
@@ -25,6 +25,8 @@ const VALIDATORS = {
 
 function SignupPage() {
   const navigate = useNavigate();
+  // 카카오 로그인에서 가입하지 않은 계정으로 넘어오면 kakaoId가 있다. 가입할 때 함께 보내 계정을 연결한다.
+  const kakaoId = useLocation().state?.kakaoId;
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState(INITIAL_VALUES);
   // 서버가 돌려준 실패 이유 (예: 이미 가입된 이메일)
@@ -62,7 +64,7 @@ function SignupPage() {
     const email = values.email.trim();
     setIsSubmitting(true);
     try {
-      await signup({ email, password: values.password, name: values.name.trim() });
+      await signup({ email, password: values.password, name: values.name.trim(), kakaoId });
       // 가입한 이메일을 로그인 화면에 미리 채우고, 가입이 끝났다는 안내를 보여준다.
       navigate(ROUTES.LOGIN, { state: { signupEmail: email } });
     } catch (error) {
@@ -86,6 +88,11 @@ function SignupPage() {
         </>
       }
     >
+      {kakaoId && (
+        <p role="status" className="text-center text-sm leading-5 text-dash-text-sub">
+          카카오 계정으로 처음 로그인했어요. 회원가입을 마치면 카카오 계정이 연결돼요.
+        </p>
+      )}
       <form className="mb-4 flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
         {/* 디자인에는 라벨이 보이지 않으므로 aria-label로 입력칸 이름을 알려준다. */}
         <TextInput

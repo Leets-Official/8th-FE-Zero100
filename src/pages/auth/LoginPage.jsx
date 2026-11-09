@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router';
-import { login } from '../../api/authApi';
+import { KAKAO_LOGIN_URL, login } from '../../api/authApi';
 import AuthCard from '../../components/auth/AuthCard/AuthCard';
 import KakaoLoginButton from '../../components/auth/KakaoLoginButton/KakaoLoginButton';
 import Button from '../../components/dashboard/Button/Button';
@@ -131,8 +131,8 @@ function LoginPage() {
         <span className="h-px flex-1 bg-dash-line" />
       </div>
 
-      {/* 카카오 로그인도 API 연결 단계에서 동작을 붙인다. */}
-      <KakaoLoginButton />
+      {/* 카카오 로그인은 서버 주소로 직접 이동하고, 끝나면 KakaoCallbackPage로 돌아온다. */}
+      <KakaoLoginButton onClick={() => window.location.assign(KAKAO_LOGIN_URL)} />
     </AuthCard>
   );
 }

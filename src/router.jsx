@@ -3,6 +3,7 @@ import RequireAuth from './components/auth/RequireAuth/RequireAuth';
 import DashboardLayout from './components/dashboard/DashboardLayout/DashboardLayout';
 import TodoTabsLayout from './components/layout/TodoTabsLayout/TodoTabsLayout';
 import { ROUTES } from './constants/routes';
+import KakaoCallbackPage from './pages/auth/KakaoCallbackPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import CompletedPage from './pages/CompletedPage';
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
   // 로그인/회원가입은 대시보드 틀(Header/Sidebar) 없이 카드만 보여준다.
   { path: ROUTES.LOGIN, element: <LoginPage /> },
   { path: ROUTES.SIGNUP, element: <SignupPage /> },
+  { path: ROUTES.KAKAO_CALLBACK, element: <KakaoCallbackPage /> },
   {
     // 대시보드: Header/Sidebar/Footer는 DashboardLayout이 그리고, 가운데 내용만 바뀐다.
     // 로그인하지 않았으면 RequireAuth가 로그인 화면으로 보낸다.

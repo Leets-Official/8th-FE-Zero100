@@ -1,6 +1,8 @@
 export const ROUTES = {
   LOGIN: '/login',
   SIGNUP: '/signup',
+  // 서버에 등록된 카카오 redirect_uri와 같은 주소여야 한다.
+  KAKAO_CALLBACK: '/auth/kakao/callback',
 
   DASHBOARD: '/dashboard',
   DASHBOARD_INQUIRIES: '/dashboard/inquiries',
