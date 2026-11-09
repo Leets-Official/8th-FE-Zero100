@@ -3,26 +3,39 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import TextArea from '../components/TextArea';
+import { createInquiry } from '../api/inquiries';
+import { getErrorMessage } from '../api/client';
+import { useAuth } from '../context/AuthContext';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const validate = (form) => {
   const errors = {};
-  if (!form.name.trim()) errors.name = '이름을 입력하세요';
+  const nameLength = form.name.trim().length;
+  if (nameLength < 2 || nameLength > 20) errors.name = '이름은 2자 이상 20자 이하로 입력하세요';
   if (!form.email.trim()) {
     errors.email = '이메일을 입력하세요';
   } else if (!EMAIL_REGEX.test(form.email)) {
     errors.email = '올바른 이메일 형식을 입력하세요';
   }
-  if (!form.title.trim()) errors.title = '제목을 입력하세요';
+  const titleLength = form.title.trim().length;
+  if (titleLength < 2 || titleLength > 50) errors.title = '제목은 2자 이상 50자 이하로 입력하세요';
   if (!form.content.trim()) errors.content = '내용을 입력하세요';
   return errors;
 };
 
 const InquiryCreatePage = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', title: '', content: '' });
+  const { user } = useAuth();
+  const [form, setForm] = useState({
+    name: user?.name ?? '',
+    email: user?.email ?? '',
+    title: '',
+    content: '',
+  });
   const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,13 +43,26 @@ const InquiryCreatePage = () => {
     setErrors((prev) => ({ ...prev, [name]: undefined }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const nextErrors = validate(form);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
-    // 문의 등록 API 연동은 다음 단계에서 구현
-    navigate('/inquiries');
+
+    setServerError('');
+    setIsSubmitting(true);
+    try {
+      await createInquiry({
+        name: form.name.trim(),
+        email: form.email.trim(),
+        title: form.title.trim(),
+        content: form.content,
+      });
+      navigate('/inquiries', { state: { toast: '문의가 등록되었습니다.' } });
+    } catch (error) {
+      setServerError(getErrorMessage(error, '문의를 등록하지 못했습니다'));
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -82,12 +108,18 @@ const InquiryCreatePage = () => {
           errorText={errors.content}
         />
 
+        {serverError && (
+          <p role="alert" className="text-sm text-red-500">
+            {serverError}
+          </p>
+        )}
+
         <div className="flex justify-end gap-2">
           <Button variant="secondary" size="small" onClick={() => navigate('/inquiries')}>
             취소
           </Button>
-          <Button type="submit" size="small">
-            등록
+          <Button type="submit" size="small" disabled={isSubmitting}>
+            {isSubmitting ? '등록 중...' : '등록'}
           </Button>
         </div>
       </form>
