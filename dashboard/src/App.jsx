@@ -8,12 +8,14 @@ import InquiryCreatePage from './pages/InquiryCreatePage';
 import InquiryDetailPage from './pages/InquiryDetailPage';
 import MyPage from './pages/Mypage';
 import ProtectedRoute from './components/ProtectedRoute';
+import KakaoCallbackPage from './pages/KakaoCallbackPage';
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/auth/kakao/callback" element={<KakaoCallbackPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<DashboardHomePage />} />

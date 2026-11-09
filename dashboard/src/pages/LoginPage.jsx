@@ -35,6 +35,9 @@ const LoginPage = () => {
     <div className="flex min-h-screen items-center justify-center bg-[#F9FAFB] px-4">
       <section className="flex w-full max-w-[448px] flex-col gap-[26px] rounded-[10px] border border-[#E5E7EB] bg-white p-8">
         <h1 className="text-center text-2xl font-bold text-black">로그인</h1>
+        {location.state?.message && (
+          <p className="text-center text-sm text-[#4A5565]">{location.state.message}</p>
+        )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <TextInput
@@ -69,7 +72,11 @@ const LoginPage = () => {
           <span className="h-px flex-1 bg-[#E5E7EB]" />
         </div>
 
-        <KakaoLoginButton />
+        <KakaoLoginButton
+          onClick={() => {
+            window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/kakao`;
+          }}
+        />
 
         <p className="text-center text-sm text-[#4A5565]">
           계정이 없으신가요?{' '}

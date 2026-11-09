@@ -1,8 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { signup } from '../api/auth';
 import { getErrorMessage } from '../api/client';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 
@@ -13,6 +12,8 @@ const SignupPage = () => {
   const [form, setForm] = useState({ email: '', password: '', nickname: '' });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const location = useLocation();
+  const kakaoId = location.state?.kakaoId;
   const [serverError, setServerError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,8 +46,21 @@ const SignupPage = () => {
     setServerError('');
     setIsLoading(true);
     try {
-      await signup({ email: form.email, password: form.password, name: form.nickname.trim() });
-      navigate('/login', { replace: true, state: { email: form.email } });
+      await signup({
+        email: form.email,
+        password: form.password,
+        name: form.nickname.trim(),
+        ...(kakaoId && { kakaoId }),
+      });
+      navigate('/login', {
+        replace: true,
+        state: {
+          email: form.email,
+          message: kakaoId
+            ? '카카오 계정 연결이 완료되었습니다. 카카오 로그인을 다시 눌러주세요.'
+            : '회원가입이 완료되었습니다. 로그인해주세요.',
+        },
+      });
     } catch (error) {
       setServerError(getErrorMessage(error, '회원가입에 실패했습니다'));
     } finally {
@@ -58,6 +72,11 @@ const SignupPage = () => {
     <div className="flex min-h-screen items-center justify-center bg-[#F9FAFB] px-4">
       <section className="flex w-full max-w-[448px] flex-col gap-[28px] rounded-[10px] border border-[#E5E7EB] bg-white p-8">
         <h1 className="text-center text-2xl font-bold text-black">회원가입</h1>
+        {kakaoId && (
+          <p className="text-center text-sm text-[#4A5565]">
+            카카오 계정 연결을 위해 회원가입을 완료해주세요.
+          </p>
+        )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
           <TextInput
