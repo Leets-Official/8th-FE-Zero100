@@ -1,16 +1,33 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import KakaoLoginButton from '../components/KakaoLoginButton';
+import { login } from '../api/auth';
+import { getErrorMessage } from '../api/client';
+import { setToken } from '../api/token';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [email, setEmail] = useState(location.state?.email ?? '');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 로그인 API 연동은 다음 단계에서 구현
+    setErrorMessage('');
+    setIsLoading(true);
+    try {
+      const data = await login({ email, password });
+      setToken(data.accessToken);
+      navigate('/', { replace: true });
+    } catch (error) {
+      setErrorMessage(getErrorMessage(error, '로그인에 실패했습니다'));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -35,8 +52,13 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" className="w-full">
-            로그인
+          {errorMessage && (
+            <p role="alert" className="text-sm text-red-500">
+              {errorMessage}
+            </p>
+          )}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? '로그인 중...' : '로그인'}
           </Button>
         </form>
 

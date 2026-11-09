@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+import { signup } from '../api/auth';
+import { getErrorMessage } from '../api/client';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
@@ -9,6 +12,9 @@ const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
 const SignupPage = () => {
   const [form, setForm] = useState({ email: '', password: '', nickname: '' });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const [serverError, setServerError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,12 +36,22 @@ const SignupPage = () => {
     return nextErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const nextErrors = validate();
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
-    // 회원가입 API 연동은 다음 단계에서 구현
+
+    setServerError('');
+    setIsLoading(true);
+    try {
+      await signup({ email: form.email, password: form.password, name: form.nickname.trim() });
+      navigate('/login', { replace: true, state: { email: form.email } });
+    } catch (error) {
+      setServerError(getErrorMessage(error, '회원가입에 실패했습니다'));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -74,8 +90,13 @@ const SignupPage = () => {
             helperText="2자 이상 8자 이하"
             errorText={errors.nickname}
           />
-          <Button type="submit" className="w-full">
-            회원가입
+          {serverError && (
+            <p role="alert" className="text-sm text-red-500">
+              {serverError}
+            </p>
+          )}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? '가입 중...' : '회원가입'}
           </Button>
         </form>
 
