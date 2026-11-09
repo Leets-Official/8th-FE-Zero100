@@ -1,4 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router';
+import RequireAuth from './components/auth/RequireAuth/RequireAuth';
 import DashboardLayout from './components/dashboard/DashboardLayout/DashboardLayout';
 import TodoTabsLayout from './components/layout/TodoTabsLayout/TodoTabsLayout';
 import { ROUTES } from './constants/routes';
@@ -21,8 +22,13 @@ export const router = createBrowserRouter([
   { path: ROUTES.SIGNUP, element: <SignupPage /> },
   {
     // 대시보드: Header/Sidebar/Footer는 DashboardLayout이 그리고, 가운데 내용만 바뀐다.
+    // 로그인하지 않았으면 RequireAuth가 로그인 화면으로 보낸다.
     path: ROUTES.DASHBOARD,
-    element: <DashboardLayout />,
+    element: (
+      <RequireAuth>
+        <DashboardLayout />
+      </RequireAuth>
+    ),
     children: [
       { index: true, element: <DashboardHomePage /> },
       { path: ROUTES.DASHBOARD_INQUIRIES, element: <InquiryListPage /> },
