@@ -1,15 +1,24 @@
 import { useNavigate } from 'react-router';
-import type { MockInquiry } from '../../types/inquiry.ts';
 import Button from '../../components/dashboard/Button.tsx';
 import InquiryTable from '../../components/dashboard/InquiryTable.tsx';
+import MessageCard from '../../components/dashboard/MessageCard.tsx';
 import PageTitle from '../../components/dashboard/PageTitle.tsx';
+import { useInquiries } from '../../hooks/dashboard/useInquiries.ts';
 
-interface InquiryListPageProps {
-  inquiries: MockInquiry[];
-}
-
-function InquiryListPage({ inquiries }: InquiryListPageProps) {
+function InquiryListPage() {
   const navigate = useNavigate();
+  const { inquiries, isLoading, errorMessage, reload } = useInquiries();
+
+  const renderContent = () => {
+    if (isLoading) return <MessageCard message="문의 목록을 불러오는 중입니다..." />;
+    if (errorMessage) {
+      return (
+        <MessageCard message={errorMessage} isError actionLabel="다시 시도" onAction={reload} />
+      );
+    }
+    if (inquiries.length === 0) return <MessageCard message="등록된 문의가 없습니다." />;
+    return <InquiryTable inquiries={inquiries} />;
+  };
 
   return (
     <div className="flex flex-col gap-[24px]">
@@ -19,7 +28,7 @@ function InquiryListPage({ inquiries }: InquiryListPageProps) {
           문의 등록
         </Button>
       </div>
-      <InquiryTable inquiries={inquiries} />
+      {renderContent()}
     </div>
   );
 }

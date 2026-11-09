@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import type { MockInquiry } from '../../types/inquiry.ts';
+import type { Inquiry } from '../../types/inquiry.ts';
 import Card from './Card.tsx';
 
 const LABEL_CLASS_NAME =
@@ -24,7 +24,7 @@ function InquiryInfoField({ label, value, labelClassName }: InquiryInfoFieldProp
 
 // Figma 문의 내용 화면의 상세 카드
 interface InquiryDetailCardProps {
-  inquiry: MockInquiry;
+  inquiry: Inquiry;
 }
 
 function InquiryDetailCard({ inquiry }: InquiryDetailCardProps) {
@@ -32,7 +32,7 @@ function InquiryDetailCard({ inquiry }: InquiryDetailCardProps) {
     <Card className="overflow-hidden">
       <div className="flex flex-col gap-[12px] px-[32px] pt-[24px] pb-[24px] border-0 border-b-[0.93px] border-solid border-[#e5e7eb]">
         <p className="m-0 font-[family-name:var(--font-family-base)] font-normal text-[14px] leading-[20px] tracking-[0px] text-[#6a7282]">
-          {inquiry.createdAt}
+          {inquiry.created_at}
         </p>
         <h2 className="mt-[-3.9px] mx-0 mb-[3.9px] font-[family-name:var(--font-family-base)] font-bold text-[24px] leading-[32px] tracking-[0px] text-[#000000] wrap-anywhere">
           {inquiry.title}

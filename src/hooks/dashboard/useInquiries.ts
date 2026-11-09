@@ -1,43 +1,48 @@
-import { startTransition, useEffect, useState } from 'react';
-// 실제 API 연동 전까지 Mock을 사용. 연동 시 '../../api/inquiryApi.ts'로 교체
-import * as inquiryApi from '../../mocks/dashboard/inquiryMockApi.ts';
-import type { MockInquiry, NewMockInquiry } from '../../types/inquiry.ts';
+import { useEffect, useState } from 'react';
+import { getErrorMessage } from '../../api/axiosInstance.ts';
+import { fetchInquiries } from '../../api/inquiryApi.ts';
+import type { Inquiry } from '../../types/inquiry.ts';
 
-// 문의 상태 관리
+type InquiryListState =
+  | { status: 'loading' }
+  | { status: 'success'; inquiries: Inquiry[] }
+  | { status: 'error'; errorMessage: string };
+
+const EMPTY_INQUIRIES: Inquiry[] = [];
+
+// 서버의 문의 목록을 조회한다.
+// 목록·상세·대시보드가 각각 마운트될 때 조회하므로 등록·삭제 후 이동하면 항상 최신 데이터를 받는다.
 export function useInquiries() {
-  const [inquiries, setInquiries] = useState<MockInquiry[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [state, setState] = useState<InquiryListState>({ status: 'loading' });
+  // 값을 바꾸면 목록을 다시 조회한다. (다시 시도)
+  const [requestKey, setRequestKey] = useState(0);
 
   useEffect(() => {
+    // 언마운트되었거나 다시 조회를 시작했다면 이전 응답은 반영하지 않는다.
     let isIgnored = false;
 
-    inquiryApi.fetchInquiries().then((fetchedInquiries) => {
-      if (isIgnored) return;
-      setInquiries(fetchedInquiries);
-      setIsLoading(false);
-    });
+    fetchInquiries()
+      .then((inquiries) => {
+        if (!isIgnored) setState({ status: 'success', inquiries });
+      })
+      .catch((error: unknown) => {
+        if (!isIgnored) setState({ status: 'error', errorMessage: getErrorMessage(error) });
+      });
 
     return () => {
       isIgnored = true;
     };
-  }, []);
+  }, [requestKey]);
 
-  // URL 파라미터(문자열)와 숫자 id를 함께 비교할 수 있도록 문자열로 맞춘다.
-  const getInquiryById = (id: string | undefined) =>
-    inquiries.find((inquiry) => String(inquiry.id) === String(id));
-
-  const addInquiry = async (inquiry: NewMockInquiry) => {
-    const createdInquiry = await inquiryApi.createInquiry(inquiry);
-    setInquiries((current) => [...current, createdInquiry]);
+  const reload = () => {
+    setState({ status: 'loading' });
+    setRequestKey((key) => key + 1);
   };
 
-  const deleteInquiry = async (id: number, onDeleted?: () => void) => {
-    await inquiryApi.deleteInquiry(id);
-    startTransition(() => {
-      setInquiries((current) => current.filter((inquiry) => inquiry.id !== id));
-      onDeleted?.();
-    });
+  return {
+    inquiries: state.status === 'success' ? state.inquiries : EMPTY_INQUIRIES,
+    isLoading: state.status === 'loading',
+    errorMessage: state.status === 'error' ? state.errorMessage : '',
+    reload,
   };
-
-  return { inquiries, isLoading, getInquiryById, addInquiry, deleteInquiry };
 }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import type { MockInquiry } from '../../types/inquiry.ts';
+import type { Inquiry } from '../../types/inquiry.ts';
 import Card from './Card.tsx';
 
 const HEADER_CELL_CLASS_NAME =
@@ -10,7 +10,7 @@ const CELL_CLASS_NAME =
 
 // Figma 문의 화면의 문의 목록 테이블
 interface InquiryTableProps {
-  inquiries: MockInquiry[];
+  inquiries: Inquiry[];
 }
 
 function InquiryTable({ inquiries }: InquiryTableProps) {
@@ -51,7 +51,7 @@ function InquiryTable({ inquiries }: InquiryTableProps) {
                 </Link>
               </td>
               <td className={`${CELL_CLASS_NAME} font-normal text-[#4a5565]`}>
-                {inquiry.createdAt}
+                {inquiry.created_at}
               </td>
             </tr>
           ))}
