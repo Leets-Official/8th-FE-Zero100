@@ -9,3 +9,8 @@ export async function signup({ email, password, name }) {
   const response = await client.post('/api/auth/signup', { email, password, name });
   return response.data.data;
 }
+
+export async function getMe() {
+  const response = await client.get('/api/auth/me');
+  return response.data.data;
+}

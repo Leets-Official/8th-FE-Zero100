@@ -6,7 +6,8 @@ import InquiryDetail from '../../components/inquiry/InquiryDetail';
 import { ROUTES } from '../../constants/routes';
 import { useDashboardModal } from '../../contexts/DashboardModalContext';
 import { useDashboardToast } from '../../contexts/DashboardToastContext';
-import { getInquiries } from '../../api/inquiry';
+import { deleteInquiry, getInquiries } from '../../api/inquiry';
+import { getMe } from '../../api/auth';
 import { getErrorMessage } from '../../api/client';
 
 function InquiryDetailPage() {
@@ -15,21 +16,33 @@ function InquiryDetailPage() {
   const { showToast } = useDashboardToast();
   const { id } = useParams();
   const [inquiry, setInquiry] = useState(null);
+  const [me, setMe] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [deleteError, setDeleteError] = useState('');
 
   useEffect(() => {
-    getInquiries()
-      .then((inquiries) => setInquiry(inquiries.find((item) => item.id === id) ?? null))
+    Promise.all([getInquiries(), getMe()])
+      .then(([inquiries, user]) => {
+        setInquiry(inquiries.find((item) => item.id === id) ?? null);
+        setMe(user);
+      })
       .catch((err) => setError(getErrorMessage(err, '문의를 불러오지 못했습니다.')))
       .finally(() => setIsLoading(false));
   }, [id]);
 
+  const isMine = Boolean(inquiry && me && inquiry.user_id === me.id);
+
   function handleDelete() {
-    openModal('문의를 삭제하시겠습니까?', () => {
-      // TODO: API 연동 후 삭제 요청
-      navigate(ROUTES.INQUIRY);
-      showToast('문의가 삭제되었습니다.');
+    openModal('문의를 삭제하시겠습니까?', async () => {
+      setDeleteError('');
+      try {
+        await deleteInquiry(inquiry.id);
+        navigate(ROUTES.INQUIRY);
+        showToast('문의가 삭제되었습니다.');
+      } catch (err) {
+        setDeleteError(getErrorMessage(err, '문의 삭제에 실패했습니다.'));
+      }
     });
   }
 
@@ -54,13 +67,18 @@ function InquiryDetailPage() {
           <Button variant="secondary" onClick={() => navigate(ROUTES.INQUIRY)}>
             목록으로
           </Button>
-          {inquiry && (
+          {isMine && (
             <Button variant="secondary" onClick={handleDelete}>
               삭제
             </Button>
           )}
         </div>
       </div>
+      {deleteError && (
+        <p role="alert" className="text-right text-sm leading-5 text-red-500">
+          {deleteError}
+        </p>
+      )}
       {renderContent()}
     </div>
   );
