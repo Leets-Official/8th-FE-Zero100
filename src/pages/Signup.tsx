@@ -1,17 +1,23 @@
-
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { api } from '../api/client';
 
 export default function Signup() {
-
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignup = () => {
-    if (!name || !email || !password || !passwordConfirm) {
-      alert('모든 항목을 입력해 주세요.');
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const trimmedName = name.trim();
+
+    if (trimmedName.length < 2 || trimmedName.length > 8) {
+      alert('이름은 2자 이상 8자 이하로 입력해 주세요.');
       return;
     }
 
@@ -20,54 +26,58 @@ export default function Signup() {
       return;
     }
 
+    if (!/(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d])/.test(password)) {
+      alert('비밀번호에 영문, 숫자, 특수문자를 모두 포함해 주세요.');
+      return;
+    }
+
     if (password !== passwordConfirm) {
       alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
-    // API 연동 전 임시 회원가입 처리
-    alert('회원가입 기능은 API 연동 후 사용할 수 있어요.');
-  };
+    setIsLoading(true);
+
+    try {
+      await api.post('/api/auth/signup', {
+        email,
+        password,
+        name: trimmedName,
+        kakaoId: String(Date.now()), // 화면에 입력칸이 없어서 임시 값 사용
+      });
+      alert('회원가입이 완료되었습니다. 로그인해 주세요.');
+      navigate('/login', { replace: true });
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+      alert(message ?? '회원가입에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black px-4 py-10">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg md:p-10">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-black">
-            ZERO100
-          </h1>
-
-          <p className="mt-3 text-sm text-gray-500">
-            ZERO100 Admin 회원가입
-          </p>
-        </div>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-10">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm md:p-10"
+      >
+        <h1 className="mb-8 text-center text-3xl font-bold">회원가입</h1>
 
         <div className="space-y-5">
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
-              이름
-            </label>
-
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="이름을 입력해 주세요."
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-gray-700">
               이메일
             </label>
-
             <input
               type="email"
+              required
+              autoComplete="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일을 입력해 주세요."
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="이메일을 입력하세요"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
             />
           </div>
 
@@ -75,13 +85,14 @@ export default function Signup() {
             <label className="mb-2 block text-sm font-medium text-gray-700">
               비밀번호
             </label>
-
             <input
               type="password"
+              required
+              autoComplete="new-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="8자 이상 입력해 주세요."
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="영문, 숫자, 특수문자 포함 8자 이상"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
             />
           </div>
 
@@ -89,38 +100,46 @@ export default function Signup() {
             <label className="mb-2 block text-sm font-medium text-gray-700">
               비밀번호 확인
             </label>
-
             <input
               type="password"
+              required
+              autoComplete="new-password"
               value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSignup();
-              }}
-              placeholder="비밀번호를 다시 입력해 주세요."
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
+              onChange={(event) => setPasswordConfirm(event.target.value)}
+              placeholder="비밀번호를 한 번 더 입력하세요"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
+              이름
+            </label>
+            <input
+              required
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              placeholder="2자 이상 8자 이하"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
             />
           </div>
 
           <button
-            type="button"
-            onClick={handleSignup}
-            className="w-full rounded-lg bg-black py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800"
+            type="submit"
+            disabled={isLoading}
+            className="w-full rounded-lg bg-black py-3.5 text-sm font-semibold text-white hover:bg-gray-800 disabled:bg-gray-400"
           >
-            회원가입
+            {isLoading ? '가입 중...' : '회원가입'}
           </button>
         </div>
 
         <div className="mt-8 text-center text-sm text-gray-500">
-          이미 회원이신가요?{' '}
-          <Link
-            to="/login"
-            className="font-semibold text-black underline underline-offset-4 hover:text-gray-600"
-          >
+          이미 계정이 있으신가요?{' '}
+          <Link to="/login" className="font-semibold text-black underline">
             로그인
           </Link>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
