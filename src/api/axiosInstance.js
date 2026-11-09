@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { getAccessToken } from '../utils/tokenStorage';
+import { ROUTES } from '../constants/routes';
+import { getAccessToken, removeAccessToken } from '../utils/tokenStorage';
 
 /**
  * 대시보드의 모든 API 요청이 함께 쓰는 axios 인스턴스.
@@ -19,3 +20,16 @@ axiosInstance.interceptors.request.use((config) => {
   if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });
+
+// 토큰을 붙여 보냈는데 401이 오면 토큰이 만료됐거나 잘못된 것이라 지우고 로그인 화면으로 보낸다.
+// (로그인 실패 401은 토큰 없이 보낸 요청이라 여기서 걸러지지 않고 로그인 화면이 직접 처리한다.)
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && error.config?.headers?.Authorization) {
+      removeAccessToken();
+      window.location.replace(ROUTES.LOGIN);
+    }
+    return Promise.reject(error);
+  },
+);
