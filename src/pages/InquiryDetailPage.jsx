@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate, useOutletContext, useParams } from 'react-router';
 
 import Button from '../components/dashboard/Button';
 import Modal from '../components/dashboard/Modal';
 import { ROUTES } from '../constants/routes';
+import { removeAccessToken } from '../utils/authStorage';
 import { formatCreatedAt } from '../utils/formatCreatedAt';
+import { getApiErrorMessage } from '../utils/getApiErrorMessage';
 
 const listLinkClass =
   'inline-flex items-center justify-center rounded-[10px] px-[20px] py-[10px] text-[14px] leading-[20px] font-medium text-[#364153] shadow-[inset_0_0_0_0.93px_#E5E7EB] hover:bg-[#F3F4F6] focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[#364153]';
@@ -12,15 +14,58 @@ const listLinkClass =
 function InquiryDetailPage() {
   const { inquiryId } = useParams();
   const navigate = useNavigate();
-  const { inquiries, deleteInquiry } = useOutletContext();
+  const { user, inquiries, deleteInquiry } = useOutletContext();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [notice, setNotice] = useState('');
+
+  const deletingRef = useRef(false);
 
   const inquiry = inquiries.find((item) => String(item.id) === inquiryId);
 
-  function handleConfirmDelete() {
+  const canDelete = Boolean(inquiry && inquiry.userId === user.id);
+
+  function openDeleteModal() {
+    setNotice('');
+    setIsModalOpen(true);
+  }
+
+  function closeDeleteModal() {
+    if (deletingRef.current) return;
+
     setIsModalOpen(false);
-    deleteInquiry(inquiry.id);
-    navigate(ROUTES.INQUIRIES, { replace: true });
+  }
+
+  async function handleConfirmDelete() {
+    if (!inquiry || !canDelete || deletingRef.current) return;
+
+    deletingRef.current = true;
+    setIsDeleting(true);
+    setNotice('');
+
+    try {
+      await deleteInquiry(inquiry.id);
+
+      setIsModalOpen(false);
+
+      navigate(ROUTES.INQUIRIES, {
+        replace: true,
+      });
+    } catch (error) {
+      setIsModalOpen(false);
+
+      if (error.response?.status === 401) {
+        removeAccessToken();
+        navigate(ROUTES.LOGIN, { replace: true });
+        return;
+      }
+
+      setNotice(getApiErrorMessage(error, '문의 삭제에 실패했습니다. 다시 시도해주세요.'));
+    } finally {
+      deletingRef.current = false;
+      setIsDeleting(false);
+    }
   }
 
   if (!inquiry) {
@@ -59,9 +104,16 @@ function InquiryDetailPage() {
             목록으로
           </Link>
 
-          <Button variant="secondary" size="small" onClick={() => setIsModalOpen(true)}>
-            삭제
-          </Button>
+          {canDelete && (
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={openDeleteModal}
+              disabled={isDeleting}
+            >
+              {isDeleting ? '삭제 중...' : '삭제'}
+            </Button>
+          )}
         </div>
       </div>
 
@@ -103,11 +155,16 @@ function InquiryDetailPage() {
         </div>
       </article>
 
+      <div role="status" aria-atomic="true" className={notice ? '' : 'sr-only'}>
+        {notice && <p className="text-[14px] leading-[20px] text-[#364153]">{notice}</p>}
+      </div>
+
       {isModalOpen && (
         <Modal
           title="문의를 삭제하시겠습니까?"
-          onClose={() => setIsModalOpen(false)}
+          onClose={closeDeleteModal}
           onConfirm={handleConfirmDelete}
+          confirmText={isDeleting ? '삭제 중...' : '확인'}
         />
       )}
     </section>

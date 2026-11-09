@@ -37,3 +37,9 @@ export async function createInquiry({ name, email, title, content }) {
 
   return normalizeInquiry(response.data.data);
 }
+
+export async function deleteInquiryRequest(inquiryId) {
+  const response = await api.delete(`/api/inquiries/${encodeURIComponent(inquiryId)}`);
+
+  return response.data.data;
+}

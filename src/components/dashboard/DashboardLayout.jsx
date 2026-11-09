@@ -7,7 +7,7 @@ import Footer from './Footer';
 import Toast from './Toast';
 import Button from './Button';
 
-import { createInquiry, getInquiries } from '../../api/inquiries';
+import { createInquiry, deleteInquiryRequest, getInquiries } from '../../api/inquiries';
 import { ROUTES } from '../../constants/routes';
 import { removeAccessToken } from '../../utils/authStorage';
 import { getApiErrorMessage } from '../../utils/getApiErrorMessage';
@@ -85,7 +85,9 @@ function DashboardLayout() {
     return newInquiry;
   }
 
-  function deleteInquiry(inquiryId) {
+  async function deleteInquiry(inquiryId) {
+    await deleteInquiryRequest(inquiryId);
+
     setInquiries((prev) => prev.filter((inquiry) => String(inquiry.id) !== String(inquiryId)));
 
     setToast({ message: '문의가 삭제되었습니다.' });
