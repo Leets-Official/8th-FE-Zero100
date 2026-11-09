@@ -1,21 +1,75 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { deleteInquiry, getInquiries } from '../lib/appStorage';
+import axios from 'axios';
+import { api } from '../api/client';
+
+type Inquiry = {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  title: string;
+  content: string;
+  created_at: string;
+};
+
+function getErrorMessage(error: unknown, fallback: string) {
+  if (axios.isAxiosError(error)) {
+    return error.response?.data?.error ?? fallback;
+  }
+  return fallback;
+}
 
 function InquiryDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const [inquiry, setInquiry] = useState<Inquiry | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  const inquiry = getInquiries().find((item) => item.id === id);
+  // 상세 조회 API가 없어서 목록을 받아 id로 찾음
+  useEffect(() => {
+    setIsLoading(true);
 
-  function handleDelete() {
+    api
+      .get('/api/inquiries')
+      .then((res) => {
+        const list: Inquiry[] = res.data.data;
+        setInquiry(list.find((item) => item.id === id) ?? null);
+      })
+      .catch((error) =>
+        alert(getErrorMessage(error, '문의를 불러오지 못했습니다.')),
+      )
+      .finally(() => setIsLoading(false));
+  }, [id]);
+
+  // 삭제 (본인 문의만 가능)
+  async function handleDelete() {
     if (!id) return;
 
-    deleteInquiry(id);
-    setIsDeleteModalOpen(false);
-    alert('문의가 삭제되었습니다.');
-    navigate('/inquiries', { replace: true });
+    setIsDeleting(true);
+
+    try {
+      await api.delete(`/api/inquiries/${id}`);
+      setIsDeleteModalOpen(false);
+      alert('문의가 삭제되었습니다.');
+      navigate('/inquiries', { replace: true });
+    } catch (error) {
+      setIsDeleteModalOpen(false);
+      alert(getErrorMessage(error, '문의 삭제에 실패했습니다.'));
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <section className="flex flex-col items-center justify-center py-20">
+        <p className="text-gray-500">불러오는 중...</p>
+      </section>
+    );
   }
 
   if (!inquiry) {
@@ -58,7 +112,7 @@ function InquiryDetail() {
 
       <article className="overflow-hidden rounded-xl border border-gray-200 bg-white">
         <div className="p-8">
-          <p className="mb-2 text-sm text-gray-500">{inquiry.date}</p>
+          <p className="mb-2 text-sm text-gray-500">{inquiry.created_at}</p>
           <h2 className="text-2xl font-bold">{inquiry.title}</h2>
         </div>
 
@@ -97,6 +151,7 @@ function InquiryDetail() {
               <button
                 type="button"
                 onClick={() => setIsDeleteModalOpen(false)}
+                disabled={isDeleting}
                 className="rounded-xl border border-gray-200 px-6 py-3 text-sm hover:bg-gray-50"
               >
                 취소
@@ -104,9 +159,10 @@ function InquiryDetail() {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="rounded-xl bg-black px-6 py-3 text-sm text-white hover:bg-gray-800"
+                disabled={isDeleting}
+                className="rounded-xl bg-black px-6 py-3 text-sm text-white hover:bg-gray-800 disabled:bg-gray-400"
               >
-                확인
+                {isDeleting ? '삭제 중...' : '확인'}
               </button>
             </div>
           </div>

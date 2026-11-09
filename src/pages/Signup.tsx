@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../lib/appStorage';
+import axios from 'axios';
+import { api } from '../api/client';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -8,8 +9,9 @@ export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     const trimmedName = name.trim();
@@ -34,11 +36,24 @@ export default function Signup() {
       return;
     }
 
+    setIsLoading(true);
+
     try {
-      registerUser({ name: trimmedName, email, password });
-      navigate('/dashboard', { replace: true });
+      await api.post('/api/auth/signup', {
+        email,
+        password,
+        name: trimmedName,
+        kakaoId: String(Date.now()), // 화면에 입력칸이 없어서 임시 값 사용
+      });
+      alert('회원가입이 완료되었습니다. 로그인해 주세요.');
+      navigate('/login', { replace: true });
     } catch (error) {
-      alert(error instanceof Error ? error.message : '회원가입에 실패했습니다.');
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+      alert(message ?? '회원가입에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -83,6 +98,21 @@ export default function Signup() {
 
           <div>
             <label className="mb-2 block text-sm font-medium text-gray-700">
+              비밀번호 확인
+            </label>
+            <input
+              type="password"
+              required
+              autoComplete="new-password"
+              value={passwordConfirm}
+              onChange={(event) => setPasswordConfirm(event.target.value)}
+              placeholder="비밀번호를 한 번 더 입력하세요"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none focus:border-black"
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-sm font-medium text-gray-700">
               이름
             </label>
             <input
@@ -96,9 +126,10 @@ export default function Signup() {
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-black py-3.5 text-sm font-semibold text-white hover:bg-gray-800"
+            disabled={isLoading}
+            className="w-full rounded-lg bg-black py-3.5 text-sm font-semibold text-white hover:bg-gray-800 disabled:bg-gray-400"
           >
-            회원가입
+            {isLoading ? '가입 중...' : '회원가입'}
           </button>
         </div>
 

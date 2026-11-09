@@ -1,5 +1,4 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { logoutUser } from '../lib/appStorage';
 
 const menuItems = [
   { label: '대시보드 홈', path: '/dashboard' },
@@ -11,7 +10,7 @@ function AdminLayout() {
   const navigate = useNavigate();
 
   function handleLogout() {
-    logoutUser();
+    localStorage.removeItem('accessToken');
     navigate('/login', { replace: true });
   }
 

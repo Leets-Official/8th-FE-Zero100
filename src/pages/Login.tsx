@@ -1,20 +1,29 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginUser } from '../lib/appStorage';
+import axios from 'axios';
+import { api } from '../api/client';
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true);
 
     try {
-      loginUser(email, password);
+      const res = await api.post('/api/auth/login', { email, password });
+      localStorage.setItem('accessToken', res.data.data.accessToken);
       navigate('/dashboard', { replace: true });
     } catch (error) {
-      alert(error instanceof Error ? error.message : '로그인에 실패했습니다.');
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+      alert(message ?? '로그인에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -64,9 +73,10 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full rounded-lg bg-black py-3.5 text-sm font-semibold text-white hover:bg-gray-800"
+            disabled={isLoading}
+            className="w-full rounded-lg bg-black py-3.5 text-sm font-semibold text-white hover:bg-gray-800 disabled:bg-gray-400"
           >
-            로그인
+            {isLoading ? '로그인 중...' : '로그인'}
           </button>
         </div>
 

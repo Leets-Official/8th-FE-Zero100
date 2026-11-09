@@ -1,21 +1,55 @@
-import { getCurrentUser, getInquiries } from '../lib/appStorage';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { api } from '../api/client';
+
+type Me = {
+  id: string;
+  email: string;
+  name: string;
+  created_at: string;
+};
+
+type Inquiry = {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  title: string;
+  content: string;
+  created_at: string;
+};
 
 function Dashboard() {
-  const user = getCurrentUser();
-  const inquiries = getInquiries();
+  const [me, setMe] = useState<Me | null>(null);
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const displayName = user?.name ?? '홍길동';
-  const displayEmail = user?.email ?? 'hong@example.com';
-  const displayJoinedAt = user
-    ? new Date(user.joinedAt).toLocaleDateString('ko-KR')
-    : '2024.01.15';
+  // 내 정보와 문의 목록을 동시에 조회
+  useEffect(() => {
+    Promise.all([api.get('/api/auth/me'), api.get('/api/inquiries')])
+      .then(([meRes, inquiryRes]) => {
+        setMe(meRes.data.data);
+        setInquiries(inquiryRes.data.data);
+      })
+      .catch((error) => {
+        const message = axios.isAxiosError(error)
+          ? error.response?.data?.error
+          : undefined;
+        alert(message ?? '대시보드 정보를 불러오지 못했습니다.');
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
-  const totalInquiryCount = user ? inquiries.length : 24;
-  const myInquiryCount = user
-    ? inquiries.filter(
-        (inquiry) => inquiry.email.toLowerCase() === user.email.toLowerCase(),
-      ).length
-    : 8;
+  // 내가 쓴 문의: 작성자 id(user_id)가 내 id와 같은 것
+  const totalInquiryCount = inquiries.length;
+  const myInquiryCount = me
+    ? inquiries.filter((inquiry) => inquiry.user_id === me.id).length
+    : 0;
+
+  const displayValue = (value?: string) => {
+    if (isLoading) return '불러오는 중...';
+    return value ?? '-';
+  };
 
   return (
     <section>
@@ -28,15 +62,15 @@ function Dashboard() {
           <div className="divide-y divide-gray-100">
             <div className="flex justify-between py-4 text-sm">
               <span className="text-gray-600">이름</span>
-              <span className="font-medium">{displayName}</span>
+              <span className="font-medium">{displayValue(me?.name)}</span>
             </div>
             <div className="flex justify-between py-4 text-sm">
               <span className="text-gray-600">이메일</span>
-              <span className="font-medium">{displayEmail}</span>
+              <span className="font-medium">{displayValue(me?.email)}</span>
             </div>
             <div className="flex justify-between py-4 text-sm">
               <span className="text-gray-600">가입일</span>
-              <span className="font-medium">{displayJoinedAt}</span>
+              <span className="font-medium">{displayValue(me?.created_at)}</span>
             </div>
           </div>
         </div>
@@ -47,11 +81,15 @@ function Dashboard() {
           <div className="divide-y divide-gray-100">
             <div className="flex justify-between py-4 text-sm">
               <span className="text-gray-600">전체 문의</span>
-              <span className="font-medium">{totalInquiryCount}건</span>
+              <span className="font-medium">
+                {isLoading ? '-' : `${totalInquiryCount}건`}
+              </span>
             </div>
             <div className="flex justify-between py-4 text-sm">
               <span className="text-gray-600">내가 쓴 문의</span>
-              <span className="font-medium">{myInquiryCount}건</span>
+              <span className="font-medium">
+                {isLoading ? '-' : `${myInquiryCount}건`}
+              </span>
             </div>
           </div>
         </div>

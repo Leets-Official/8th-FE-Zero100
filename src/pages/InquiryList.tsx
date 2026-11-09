@@ -1,9 +1,35 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getInquiries } from '../lib/appStorage';
+import axios from 'axios';
+import { api } from '../api/client';
+
+type Inquiry = {
+  id: string;
+  user_id: string;
+  name: string;
+  email: string;
+  title: string;
+  content: string;
+  created_at: string;
+};
 
 function InquiryList() {
   const navigate = useNavigate();
-  const inquiries = getInquiries();
+  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    api
+      .get('/api/inquiries')
+      .then((res) => setInquiries(res.data.data))
+      .catch((error) => {
+        const message = axios.isAxiosError(error)
+          ? error.response?.data?.error
+          : undefined;
+        alert(message ?? '문의 목록을 불러오지 못했습니다.');
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
 
   return (
     <section>
@@ -30,7 +56,13 @@ function InquiryList() {
           </thead>
 
           <tbody>
-            {inquiries.length > 0 ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={3} className="px-4 py-12 text-center text-gray-500">
+                  불러오는 중...
+                </td>
+              </tr>
+            ) : inquiries.length > 0 ? (
               inquiries.map((inquiry, index) => (
                 <tr
                   key={inquiry.id}
@@ -44,7 +76,7 @@ function InquiryList() {
                     {inquiry.title}
                   </td>
                   <td className="border-b border-gray-100 px-4 py-4 text-gray-600">
-                    {inquiry.date}
+                    {inquiry.created_at}
                   </td>
                 </tr>
               ))

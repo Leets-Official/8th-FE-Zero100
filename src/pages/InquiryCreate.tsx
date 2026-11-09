@@ -1,20 +1,33 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { addInquiry, getCurrentUser } from '../lib/appStorage';
+import axios from 'axios';
+import { api } from '../api/client';
 
 const inputClass =
   'w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-gray-400';
 
 function InquiryCreate() {
   const navigate = useNavigate();
-  const user = getCurrentUser();
 
-  const [name, setName] = useState(user?.name ?? '');
-  const [email, setEmail] = useState(user?.email ?? '');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  // 내 정보로 이름·이메일 미리 채우기 (실패해도 직접 입력 가능)
+  useEffect(() => {
+    api
+      .get('/api/auth/me')
+      .then((res) => {
+        const me = res.data.data;
+        setName((prev) => prev || me.name);
+        setEmail((prev) => prev || me.email);
+      })
+      .catch(() => {});
+  }, []);
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!name.trim() || !email.trim() || !title.trim() || !content.trim()) {
@@ -22,19 +35,25 @@ function InquiryCreate() {
       return;
     }
 
-    addInquiry({
-      name: name.trim(),
-      email: email.trim(),
-      title: title.trim(),
-      content: content.trim(),
-      date: new Intl.DateTimeFormat('ko-KR', {
-        dateStyle: 'long',
-        timeStyle: 'short',
-      }).format(new Date()),
-    });
+    setIsLoading(true);
 
-    alert('문의가 등록되었습니다.');
-    navigate('/inquiries');
+    try {
+      await api.post('/api/inquiries', {
+        title: title.trim(),
+        name: name.trim(),
+        email: email.trim(),
+        content: content.trim(),
+      });
+      alert('문의가 등록되었습니다.');
+      navigate('/inquiries');
+    } catch (error) {
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.error
+        : undefined;
+      alert(message ?? '문의 등록에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -101,9 +120,10 @@ function InquiryCreate() {
 
           <button
             type="submit"
-            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white hover:bg-gray-800"
+            disabled={isLoading}
+            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:bg-gray-400"
           >
-            등록
+            {isLoading ? '등록 중...' : '등록'}
           </button>
         </div>
       </form>
