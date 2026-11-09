@@ -5,6 +5,7 @@ import InquiryTable from '../../components/inquiry/InquiryTable';
 import { ROUTES } from '../../constants/routes';
 import { getInquiries } from '../../api/inquiry';
 import { getErrorMessage } from '../../api/client';
+import StatusMessage from '../../components/dashboard/StatusMessage';
 
 function InquiryListPage() {
   const navigate = useNavigate();
@@ -40,17 +41,6 @@ function InquiryListPage() {
       </div>
       {renderContent()}
     </div>
-  );
-}
-
-function StatusMessage(props) {
-  return (
-    <p
-      role={props.role}
-      className="rounded-[10px] bg-white py-12 text-center text-sm leading-5 text-gray-500 outline -outline-offset-1 outline-gray-200"
-    >
-      {props.children}
-    </p>
   );
 }
 

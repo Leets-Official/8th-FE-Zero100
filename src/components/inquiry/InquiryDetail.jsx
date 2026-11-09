@@ -4,14 +4,14 @@ function InquiryDetail(props) {
   return (
     <article className="overflow-hidden rounded-[10px] bg-white outline -outline-offset-1 outline-gray-200">
       <header className="flex flex-col gap-3 border-b border-gray-200 px-8 py-6">
-        <p className="text-sm leading-5 text-gray-500">{inquiry.createdAt}</p>
+        <p className="text-sm leading-5 text-gray-500">{inquiry.created_at}</p>
         <h2 className="text-2xl leading-8 font-bold text-black">{inquiry.title}</h2>
       </header>
 
       <dl className="grid grid-cols-2 gap-8 border-b border-gray-200 bg-gray-50 px-8 py-5">
         <div className="flex flex-col gap-1.5">
           <dt className="text-xs leading-4 text-gray-500">작성자</dt>
-          <dd className="text-sm leading-5 font-medium text-black">{inquiry.author}</dd>
+          <dd className="text-sm leading-5 font-medium text-black">{inquiry.name}</dd>
         </div>
         <div className="flex flex-col gap-1.5">
           <dt className="text-xs leading-4 text-gray-500">이메일</dt>
