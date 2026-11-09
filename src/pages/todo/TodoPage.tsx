@@ -1,12 +1,12 @@
 import { useState, type SubmitEvent } from 'react';
-import Button, { type ButtonProps } from '../../components/todo/Button.tsx';
-import PageHeader from '../../components/todo/PageHeader.tsx';
-import PageLayout from '../../components/todo/PageLayout.tsx';
-import Statistics from '../../components/todo/Statistics.tsx';
-import TabNav from '../../components/todo/TabNav.tsx';
-import TodoForm from '../../components/todo/TodoForm.tsx';
-import TodoList from '../../components/todo/TodoList.tsx';
-import type { Todo } from '../../types/todo.ts';
+import Button, { type ButtonProps } from '../../features/todo/components/Button.tsx';
+import PageHeader from '../../features/todo/components/PageHeader.tsx';
+import PageLayout from '../../features/todo/components/PageLayout.tsx';
+import Statistics from '../../features/todo/components/Statistics.tsx';
+import TabNav from '../../features/todo/components/TabNav.tsx';
+import TodoForm from '../../features/todo/components/TodoForm.tsx';
+import TodoList from '../../features/todo/components/TodoList.tsx';
+import type { Todo } from '../../features/todo/types.ts';
 
 const FILTER_ALL = 'all';
 const FILTER_ACTIVE = 'active';

@@ -1,8 +1,8 @@
-import InfoCard from '../../components/dashboard/InfoCard.tsx';
-import PageTitle from '../../components/dashboard/PageTitle.tsx';
-import { useAuth } from '../../contexts/dashboard/AuthContext.ts';
-import { useInquiries } from '../../hooks/dashboard/useInquiries.ts';
-import { useMyInfo } from '../../hooks/dashboard/useMyInfo.ts';
+import InfoCard from '../../components/common/InfoCard.tsx';
+import PageTitle from '../../components/common/PageTitle.tsx';
+import { useAuth } from '../../features/auth/context/AuthContext.ts';
+import { useInquiries } from '../../features/inquiries/useInquiries.ts';
+import { useMyInfo } from '../../features/profile/useMyInfo.ts';
 
 // 문의 현황은 서버 문의 목록으로 계산한다. (페이지네이션이 없어 전체 목록 기준)
 // Swagger의 Inquiry에 답변 상태 필드가 없어 답변 대기·완료 통계는 계산하지 않는다.

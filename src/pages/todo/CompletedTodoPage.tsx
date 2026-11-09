@@ -1,7 +1,7 @@
-import PageHeader from '../../components/todo/PageHeader.tsx';
-import PageLayout from '../../components/todo/PageLayout.tsx';
-import TodoList from '../../components/todo/TodoList.tsx';
-import type { Todo } from '../../types/todo.ts';
+import PageHeader from '../../features/todo/components/PageHeader.tsx';
+import PageLayout from '../../features/todo/components/PageLayout.tsx';
+import TodoList from '../../features/todo/components/TodoList.tsx';
+import type { Todo } from '../../features/todo/types.ts';
 
 interface CompletedTodoPageProps {
   todos: Todo[];
