@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
+import RequireAuth from './components/auth/RequireAuth';
 
 import TodoPage from './pages/TodoPage';
 import CompletedPage from './pages/CompletedPage';
@@ -73,16 +74,18 @@ function App() {
         <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
       </Route>
 
-      <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
-        <Route index element={<DashboardPage />} />
+      <Route element={<RequireAuth />}>
+        <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
+          <Route index element={<DashboardPage />} />
 
-        <Route path={ROUTES.INQUIRIES} element={<InquiryListPage />} />
+          <Route path={ROUTES.INQUIRIES} element={<InquiryListPage />} />
 
-        <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
+          <Route path={ROUTES.INQUIRY_CREATE} element={<InquiryCreatePage />} />
 
-        <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
+          <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
 
-        <Route path={ROUTES.MYPAGE} element={<MyPage />} />
+          <Route path={ROUTES.MYPAGE} element={<MyPage />} />
+        </Route>
       </Route>
 
       <Route path={ROUTES.TODO} element={<Layout />}>
