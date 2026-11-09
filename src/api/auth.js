@@ -1,0 +1,11 @@
+import client from './client';
+
+export async function login({ email, password }) {
+  const response = await client.post('/api/auth/login', { email, password });
+  return response.data.data;
+}
+
+export async function signup({ email, password, name }) {
+  const response = await client.post('/api/auth/signup', { email, password, name });
+  return response.data.data;
+}
