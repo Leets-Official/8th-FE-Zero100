@@ -23,10 +23,16 @@ axiosInstance.interceptors.request.use((config) => {
 
 // 토큰을 붙여 보냈는데 401이 오면 토큰이 만료됐거나 잘못된 것이라 지우고 로그인 화면으로 보낸다.
 // (로그인 실패 401은 토큰 없이 보낸 요청이라 여기서 걸러지지 않고 로그인 화면이 직접 처리한다.)
+// 비밀번호 변경처럼 "현재 비밀번호 틀림"도 401로 오는 요청은 skipAuthRedirect로 제외한다.
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && error.config?.headers?.Authorization) {
+    const { config } = error;
+    if (
+      error.response?.status === 401 &&
+      config?.headers?.Authorization &&
+      !config.skipAuthRedirect
+    ) {
       removeAccessToken();
       window.location.replace(ROUTES.LOGIN);
     }
