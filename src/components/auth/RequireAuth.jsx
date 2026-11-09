@@ -75,6 +75,13 @@ function RequireAuth() {
     setAttempt((prev) => prev + 1);
   }
 
+  function updateUser(user) {
+    setAuth((prev) => ({
+      ...prev,
+      user,
+    }));
+  }
+
   if (!accessToken || auth.status === 'unauthenticated') {
     return <Navigate to={ROUTES.LOGIN} replace />;
   }
@@ -101,7 +108,14 @@ function RequireAuth() {
     );
   }
 
-  return <Outlet context={{ user: auth.user }} />;
+  return (
+    <Outlet
+      context={{
+        user: auth.user,
+        updateUser,
+      }}
+    />
+  );
 }
 
 export default RequireAuth;

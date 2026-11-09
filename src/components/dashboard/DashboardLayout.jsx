@@ -15,7 +15,7 @@ import { getApiErrorMessage } from '../../utils/getApiErrorMessage';
 function DashboardLayout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { user } = useOutletContext();
+  const { user, updateUser } = useOutletContext();
 
   const [inquiries, setInquiries] = useState([]);
   const [status, setStatus] = useState('loading');
@@ -122,6 +122,7 @@ function DashboardLayout() {
             <Outlet
               context={{
                 user,
+                updateUser,
                 inquiries,
                 addInquiry,
                 deleteInquiry,
