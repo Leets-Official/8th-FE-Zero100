@@ -7,6 +7,9 @@ declare module 'axios' {
   interface AxiosRequestConfig {
     // true면 저장된 토큰을 Authorization 헤더에 담지 않는다. (로그인·회원가입 등 인증이 필요 없는 요청)
     skipAuth?: boolean;
+    // true면 401을 받아도 인증 만료 처리(unauthorizedHandler)를 하지 않는다.
+    // 비밀번호 변경처럼 401이 입력 오류(현재 비밀번호 불일치)에도 쓰이는 요청에서 사용
+    skipUnauthorizedHandler?: boolean;
   }
 }
 
@@ -105,7 +108,11 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(undefined, (error: unknown) => {
   if (!axios.isAxiosError(error) || axios.isCancel(error)) return Promise.reject(error);
 
-  if (error.response?.status === 401 && error.config?.headers?.Authorization) {
+  if (
+    error.response?.status === 401 &&
+    error.config?.headers?.Authorization &&
+    !error.config.skipUnauthorizedHandler
+  ) {
     unauthorizedHandler?.();
   }
   return Promise.reject(toApiError(error));

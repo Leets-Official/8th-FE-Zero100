@@ -22,6 +22,10 @@ export interface LoginRequest {
 // 로그인·카카오 로그인 응답의 user (created_at 없음)
 export type AuthUser = Pick<User, 'id' | 'email' | 'name'>;
 
+// 앱 전체에서 공유하는 로그인 사용자. 로그인 직후에는 AuthUser이고,
+// 내 정보 조회(GET /api/auth/me)·이름 수정 응답을 받으면 created_at까지 채워진다.
+export type CurrentUser = AuthUser & Partial<Pick<User, 'created_at'>>;
+
 // POST /api/auth/login, GET /api/auth/kakao/redirect 성공 응답
 export interface LoginResponse {
   accessToken: string;
