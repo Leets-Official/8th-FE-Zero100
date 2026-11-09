@@ -16,7 +16,9 @@ const PASSWORD_ERROR = '비밀번호를 입력하세요';
 function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState('');
+  // 회원가입을 마치고 넘어오면 가입한 이메일을 미리 채워 둔다.
+  const signupEmail = location.state?.signupEmail;
+  const [email, setEmail] = useState(signupEmail ?? '');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({ email: '', password: '' });
   // 서버가 돌려준 실패 이유 (예: 이메일 또는 비밀번호가 일치하지 않을 때)
@@ -87,6 +89,11 @@ function LoginPage() {
         </>
       }
     >
+      {signupEmail && (
+        <p role="status" className="text-center text-sm leading-5 text-dash-text-sub">
+          회원가입이 완료되었어요. 로그인해 주세요.
+        </p>
+      )}
       <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
         {/* 디자인에는 라벨이 보이지 않으므로 aria-label로 입력칸 이름을 알려준다. */}
         <TextInput
