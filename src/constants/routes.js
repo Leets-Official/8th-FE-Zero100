@@ -5,6 +5,7 @@ const INQUIRIES = `${DASHBOARD}/inquiries`;
 export const ROUTES = {
   HOME: '/',
   LOGIN: '/login',
+  KAKAO_CALLBACK: '/auth/kakao/callback',
   SIGNUP: '/signup',
   DASHBOARD,
   INQUIRIES,

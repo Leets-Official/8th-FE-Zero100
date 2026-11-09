@@ -117,7 +117,9 @@ function LoginPage() {
   }
 
   function handleKakaoLogin() {
-    setNotice('카카오 로그인은 연동 준비 중입니다.');
+    const baseUrl = import.meta.env.VITE_API_URL;
+
+    window.location.assign(new URL('/api/auth/kakao', baseUrl).href);
   }
 
   return (

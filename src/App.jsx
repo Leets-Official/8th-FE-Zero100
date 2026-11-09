@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
 import RequireAuth from './components/auth/RequireAuth';
 
+import KakaoCallbackPage from './pages/KakaoCallbackPage';
 import TodoPage from './pages/TodoPage';
 import CompletedPage from './pages/CompletedPage';
 import StatsPage from './pages/StatsPage';
@@ -67,6 +68,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallbackPage />} />
       <Route path={ROUTES.HOME} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
 
       <Route element={<AuthLayout />}>

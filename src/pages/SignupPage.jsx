@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import Button from '../components/dashboard/Button';
 import Input from '../components/dashboard/Input';
@@ -59,6 +59,10 @@ function validateField(name, value) {
 }
 
 function SignupPage() {
+  const location = useLocation();
+
+  const kakaoId = typeof location.state?.kakaoId === 'string' ? location.state.kakaoId : undefined;
+
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState({});
   const [notice, setNotice] = useState('');
@@ -117,11 +121,19 @@ function SignupPage() {
     setIsSubmitting(true);
 
     try {
-      await signup(values);
+      await signup({
+        ...values,
+        kakaoId,
+      });
 
       setValues(INITIAL_VALUES);
       setErrors({});
-      setNotice('회원가입이 완료되었습니다. 아래 로그인 링크로 로그인해주세요.');
+
+      setNotice(
+        kakaoId
+          ? '회원가입이 완료되었습니다. 로그인 화면에서 카카오 로그인을 다시 진행해주세요.'
+          : '회원가입이 완료되었습니다. 아래 로그인 링크로 로그인해주세요.',
+      );
     } catch (error) {
       setNotice(getApiErrorMessage(error, '회원가입에 실패했습니다. 다시 시도해주세요.'));
     } finally {
@@ -138,6 +150,12 @@ function SignupPage() {
       >
         회원가입
       </h1>
+
+      {kakaoId && (
+        <p className="text-center text-[12px] leading-[20px] text-[#364153]">
+          카카오 계정과 연결할 회원 정보를 입력해주세요.
+        </p>
+      )}
 
       <form
         noValidate

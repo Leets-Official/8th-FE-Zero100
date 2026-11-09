@@ -1,6 +1,6 @@
 import api from './axios';
 
-export async function signup({ email, password, name }) {
+export async function signup({ email, password, name, kakaoId }) {
   const payload = {
     email: email.trim(),
     password,
@@ -8,6 +8,10 @@ export async function signup({ email, password, name }) {
 
   if (name?.trim()) {
     payload.name = name.trim();
+  }
+
+  if (kakaoId) {
+    payload.kakaoId = kakaoId;
   }
 
   const response = await api.post('/api/auth/signup', payload);
@@ -44,6 +48,14 @@ export async function updatePassword({ currentPassword, newPassword }) {
   const response = await api.patch('/api/auth/me/password', {
     currentPassword,
     newPassword,
+  });
+
+  return response.data.data;
+}
+
+export async function loginWithKakaoCode(code) {
+  const response = await api.get('/api/auth/kakao/redirect', {
+    params: { code },
   });
 
   return response.data.data;
