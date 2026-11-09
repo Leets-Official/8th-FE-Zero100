@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent, type SubmitEvent } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { signup } from '../../api/authApi.ts';
 import { getErrorMessage } from '../../api/axiosInstance.ts';
 import AuthCard from '../../components/dashboard/AuthCard.tsx';
@@ -13,6 +13,8 @@ import {
   validateName,
   validatePassword,
 } from '../../utils/dashboard/validation.ts';
+import { isRecord } from '../../utils/typeGuards.ts';
+import type { KakaoSignupState } from '../../types/auth.ts';
 
 interface SignupFormValues {
   email: string;
@@ -31,12 +33,21 @@ function validateSignupForm({ email, password, name }: SignupFormValues): Signup
   };
 }
 
+// 라우터 state는 새로고침·직접 접근 시 구조를 보장할 수 없어 확인 후 사용
+function getKakaoIdFromState(state: unknown): KakaoSignupState['kakaoId'] | undefined {
+  return isRecord(state) && typeof state.kakaoId === 'string' && state.kakaoId
+    ? state.kakaoId
+    : undefined;
+}
+
 interface SignupPageProps {
   onSignup: () => void;
 }
 
 function SignupPage({ onSignup }: SignupPageProps) {
   const navigate = useNavigate();
+  // 카카오 미가입 유저가 콜백 페이지에서 넘어온 경우에만 값이 있다.
+  const kakaoId = getKakaoIdFromState(useLocation().state);
   const [values, setValues] = useState<SignupFormValues>({ email: '', password: '', name: '' });
   // 첫 제출 전에는 null이고, 제출 후에는 입력할 때마다 다시 검사해 오류 상태를 갱신
   const [errors, setErrors] = useState<SignupFormErrors | null>(null);
@@ -73,6 +84,7 @@ function SignupPage({ onSignup }: SignupPageProps) {
         email: values.email.trim(),
         password: values.password,
         name: values.name.trim(),
+        kakaoId,
       });
       // Swagger의 회원가입 응답에 토큰이 없으므로 로그인 페이지로 이동해 로그인하도록 안내
       onSignup();

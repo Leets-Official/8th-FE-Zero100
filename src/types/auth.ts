@@ -44,3 +44,15 @@ export interface KakaoUnregisteredErrorResponse extends ApiErrorResponse {
   error: 'unregistered';
   kakaoId: string;
 }
+
+// 카카오가 redirect_uri(/auth/kakao/callback)로 붙여 보내는 Query Parameter
+// 동의 성공 시 code, 취소·실패 시 error(예: access_denied)가 온다.
+export interface KakaoCallbackParams {
+  code: string | null;
+  error: string | null;
+}
+
+// 카카오 미가입 유저를 회원가입 페이지로 보낼 때 라우터 state로 전달하는 값
+export interface KakaoSignupState {
+  kakaoId: string;
+}

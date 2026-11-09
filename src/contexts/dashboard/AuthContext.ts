@@ -10,6 +10,8 @@ export interface AuthContextValue {
   // 인증 만료, 새로고침 시 인증 확인 실패 등 로그인 화면에서 안내할 오류. 없으면 빈 문자열
   authError: string;
   login: (credentials: LoginRequest) => Promise<void>;
+  // 카카오 콜백에서 받은 인가코드로 로그인. 실패하면 ApiError를 그대로 던진다.
+  loginWithKakao: (code: string) => Promise<void>;
   logout: () => void;
 }
 

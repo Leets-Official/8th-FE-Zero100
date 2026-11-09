@@ -1,7 +1,8 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import * as authApi from '../../api/authApi.ts';
 import { ApiError, getErrorMessage, setUnauthorizedHandler } from '../../api/axiosInstance.ts';
-import type { AuthUser, LoginRequest } from '../../types/auth.ts';
+import * as kakaoApi from '../../api/kakaoApi.ts';
+import type { AuthUser, LoginRequest, LoginResponse } from '../../types/auth.ts';
 import {
   loadAccessToken,
   removeAccessToken,
@@ -63,12 +64,20 @@ function AuthProvider({ children }: AuthProviderProps) {
     };
   }, [status]);
 
-  const login = async (credentials: LoginRequest) => {
-    const { accessToken, user: loggedInUser } = await authApi.login(credentials);
+  // 일반 로그인과 카카오 로그인은 응답 형식({ accessToken, user })이 같아 같은 방식으로 인증 상태를 저장
+  const applyLogin = ({ accessToken, user: loggedInUser }: LoginResponse) => {
     saveAccessToken(accessToken);
     setUser(loggedInUser);
     setStatus('authenticated');
     setAuthError('');
+  };
+
+  const login = async (credentials: LoginRequest) => {
+    applyLogin(await authApi.login(credentials));
+  };
+
+  const loginWithKakao = async (code: string) => {
+    applyLogin(await kakaoApi.loginWithKakao(code));
   };
 
   // Swagger에 로그아웃 API가 없으므로 저장된 토큰과 인증 상태만 초기화
@@ -85,6 +94,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     isCheckingAuth: status === 'checking',
     authError,
     login,
+    loginWithKakao,
     logout,
   };
 

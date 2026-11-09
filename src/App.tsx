@@ -11,6 +11,7 @@ import DashboardPage from './pages/dashboard/DashboardPage.tsx';
 import InquiryCreatePage from './pages/dashboard/InquiryCreatePage.tsx';
 import InquiryDetailPage from './pages/dashboard/InquiryDetailPage.tsx';
 import InquiryListPage from './pages/dashboard/InquiryListPage.tsx';
+import KakaoCallbackPage from './pages/dashboard/KakaoCallbackPage.tsx';
 import LoginPage from './pages/dashboard/LoginPage.tsx';
 import MyPage from './pages/dashboard/MyPage.tsx';
 import SignupPage from './pages/dashboard/SignupPage.tsx';
@@ -90,6 +91,16 @@ function App() {
         </Route>
         <Route element={<AuthRoute guestOnly />}>
           <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/auth/kakao/callback"
+            element={
+              <KakaoCallbackPage
+                onUnregistered={() =>
+                  showToast('가입된 계정이 없습니다. 회원가입 후 카카오 계정이 연결됩니다.')
+                }
+              />
+            }
+          />
           <Route
             path="/signup"
             element={<SignupPage onSignup={() => showToast('회원가입이 완료되었습니다.')} />}

@@ -1,6 +1,7 @@
-import { useState, type ChangeEvent, type SubmitEvent } from 'react';
+import { useEffect, useState, type ChangeEvent, type SubmitEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { getErrorMessage } from '../../api/axiosInstance.ts';
+import { redirectToKakaoAuth } from '../../api/kakaoApi.ts';
 import kakaoSymbol from '../../assets/kakao-symbol.svg';
 import AuthCard from '../../components/dashboard/AuthCard.tsx';
 import Button from '../../components/dashboard/Button.tsx';
@@ -11,6 +12,9 @@ import { validateEmail } from '../../utils/dashboard/validation.ts';
 
 const KAKAO_BUTTON_CLASS_NAME =
   'w-full h-[48px] gap-[8px] border-[1px] border-solid border-[#fee500] rounded-[8px] bg-[#fee500] font-[family-name:Pretendard,var(--font-family-base)] font-bold text-[16px] leading-[1.45] tracking-[-0.064px] text-[#381e1f]';
+
+const KAKAO_REDIRECT_ERROR_MESSAGE =
+  '카카오 로그인 페이지로 이동하지 못했습니다. 다시 시도해주세요.';
 
 function validatePassword(password: string) {
   return password ? '' : '비밀번호를 입력하세요';
@@ -25,6 +29,9 @@ function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   // 로그인 요청 실패 메시지. 없으면 인증 만료 등 AuthProvider의 안내를 표시
   const [submitError, setSubmitError] = useState('');
+  // 카카오 인증 페이지로 이동 중이면 중복 클릭을 막는다.
+  const [isKakaoRedirecting, setIsKakaoRedirecting] = useState(false);
+  const [kakaoError, setKakaoError] = useState('');
 
   // 제출 후 오류가 표시된 입력 필드만 입력할 때마다 다시 검사해 오류 상태를 갱신
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,9 +46,31 @@ function LoginPage() {
     if (errors.password) setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
   };
 
+  // 카카오 인증 페이지로 이동한 뒤 뒤로 가기로 돌아오면 페이지가 bfcache에서 복원되므로 버튼을 다시 활성화
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) setIsKakaoRedirecting(false);
+    };
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
+  // 서버의 GET /api/auth/kakao가 카카오 인증 페이지로 리다이렉트하므로 브라우저를 이동시킨다.
+  const handleKakaoLogin = () => {
+    if (isKakaoRedirecting || isSubmitting) return;
+    setIsKakaoRedirecting(true);
+    setKakaoError('');
+    try {
+      redirectToKakaoAuth();
+    } catch {
+      setKakaoError(KAKAO_REDIRECT_ERROR_MESSAGE);
+      setIsKakaoRedirecting(false);
+    }
+  };
+
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (isSubmitting) return;
+    if (isSubmitting || isKakaoRedirecting) return;
 
     const nextErrors = { email: validateEmail(email), password: validatePassword(password) };
     setErrors(nextErrors);
@@ -113,8 +142,14 @@ function LoginPage() {
         </span>
       </div>
 
-      {/* 카카오 OAuth 연동 전이므로 UI만 구현 */}
-      <Button type="button" className={KAKAO_BUTTON_CLASS_NAME}>
+      <FormErrorMessage message={kakaoError} />
+      <Button
+        type="button"
+        className={KAKAO_BUTTON_CLASS_NAME}
+        onClick={handleKakaoLogin}
+        disabled={isSubmitting || isKakaoRedirecting}
+        aria-busy={isKakaoRedirecting}
+      >
         <img src={kakaoSymbol} alt="" className="w-[18.505px] h-[17px]" />
         카카오 로그인
       </Button>
