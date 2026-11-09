@@ -19,9 +19,9 @@ function InquiryTable(props) {
           </tr>
         </thead>
         <tbody>
-          {props.inquiries.map((inquiry) => (
+          {props.inquiries.map((inquiry, index) => (
             <tr key={inquiry.id} className="h-[49px] border-b border-gray-100 last:border-b-0">
-              <td className="px-4 text-black">{inquiry.id}</td>
+              <td className="px-4 text-black">{index + 1}</td>
               <td className="px-4">
                 <Link
                   to={getInquiryDetailPath(inquiry.id)}
@@ -30,7 +30,7 @@ function InquiryTable(props) {
                   {inquiry.title}
                 </Link>
               </td>
-              <td className="px-4 text-gray-600">{inquiry.createdAt}</td>
+              <td className="px-4 text-gray-600">{inquiry.created_at}</td>
             </tr>
           ))}
         </tbody>
