@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import Button from '../../components/dashboard/Button';
 import TextField from '../../components/dashboard/TextField';
@@ -17,6 +17,8 @@ const validators = {
 
 function SignupPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const kakaoId = location.state?.kakaoId;
   const [values, setValues] = useState({ email: '', password: '', name: '' });
   const [errors, setErrors] = useState({});
   const [submitError, setSubmitError] = useState('');
@@ -43,7 +45,7 @@ function SignupPage() {
     setIsSubmitting(true);
     setSubmitError('');
     try {
-      await signup(values);
+      await signup({ ...values, kakaoId });
       const { accessToken } = await login(values);
       setToken(accessToken);
       navigate(ROUTES.DASHBOARD, { replace: true });
@@ -62,6 +64,11 @@ function SignupPage() {
   return (
     <AuthLayout title="회원가입" gap="gap-7">
       <form className="flex flex-col gap-4" noValidate onSubmit={handleSubmit}>
+        {kakaoId && (
+          <p className="text-center text-sm leading-5 text-gray-600">
+            카카오 계정과 연결해 가입합니다.
+          </p>
+        )}
         <TextField
           type="email"
           name="email"

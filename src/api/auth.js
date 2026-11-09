@@ -5,8 +5,8 @@ export async function login({ email, password }) {
   return response.data.data;
 }
 
-export async function signup({ email, password, name }) {
-  const response = await client.post('/api/auth/signup', { email, password, name });
+export async function signup({ email, password, name, kakaoId }) {
+  const response = await client.post('/api/auth/signup', { email, password, name, kakaoId });
   return response.data.data;
 }
 
