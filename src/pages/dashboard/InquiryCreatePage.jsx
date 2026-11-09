@@ -1,39 +1,55 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
+import { createInquiry } from '../../api/inquiryApi';
 import Button from '../../components/dashboard/Button/Button';
 import ButtonLink from '../../components/dashboard/ButtonLink/ButtonLink';
 import PageHeading from '../../components/dashboard/PageHeading/PageHeading';
 import TextArea from '../../components/dashboard/TextArea/TextArea';
 import TextInput from '../../components/dashboard/TextInput/TextInput';
 import { getInquiryDetailPath, ROUTES } from '../../constants/routes';
-import { useInquiries } from '../../hooks/useInquiries';
+import { getErrorMessage } from '../../utils/getErrorMessage';
 import { isEmail } from '../../utils/isEmail';
 
 const INITIAL_VALUES = { name: '', email: '', title: '', content: '' };
 
-/** 칸마다 값이 올바르면 빈 문자열, 틀리면 에러 문구를 돌려준다. 모두 앞뒤 공백을 빼고 검사한다. */
+/** 앞뒤 공백을 뺀 길이가 min 이상 max 이하인지 검사하는 함수를 만든다. (label은 '이름', '제목'처럼 받침으로 끝나는 말) */
+const lengthValidator = (label, min, max) => (value) => {
+  const { length } = value.trim();
+  if (length === 0) return `${label}을 입력하세요`;
+  return length >= min && length <= max
+    ? ''
+    : `${label}은 ${min}자 이상 ${max}자 이하로 입력하세요`;
+};
+
+/**
+ * 칸마다 값이 올바르면 빈 문자열, 틀리면 에러 문구를 돌려준다. 모두 앞뒤 공백을 빼고 검사한다.
+ * 길이 조건은 서버(Swagger) 규칙과 같다: 이름 2~20자, 제목 2~50자.
+ */
 const VALIDATORS = {
-  name: (value) => (value.trim() ? '' : '이름을 입력하세요'),
+  name: lengthValidator('이름', 2, 20),
   email: (value) => {
     if (!value.trim()) return '이메일을 입력하세요';
     return isEmail(value.trim()) ? '' : '올바른 이메일 형식을 입력하세요';
   },
-  title: (value) => (value.trim() ? '' : '제목을 입력하세요'),
+  title: lengthValidator('제목', 2, 50),
   content: (value) => (value.trim() ? '' : '내용을 입력하세요'),
 };
 
 function InquiryCreatePage() {
   const navigate = useNavigate();
   const { showToast } = useOutletContext();
-  const { addInquiry } = useInquiries();
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState(INITIAL_VALUES);
+  // 서버가 돌려준 실패 이유
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 네 칸 모두 input의 name으로 어떤 값인지 구분해서 같은 핸들러를 쓴다. (회원가입 페이지와 같은 방식)
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    setSubmitError('');
   };
 
   // 아직 아무것도 입력하지 않은 칸은 벗어나도 에러를 띄우지 않는다.
@@ -42,8 +58,9 @@ function InquiryCreatePage() {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: value ? VALIDATORS[name](value) : '' }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const nextErrors = Object.fromEntries(
       Object.entries(values).map(([name, value]) => [name, VALIDATORS[name](value)]),
@@ -57,14 +74,22 @@ function InquiryCreatePage() {
       return;
     }
 
-    const newInquiry = addInquiry({
-      name: values.name.trim(),
-      email: values.email.trim(),
-      title: values.title.trim(),
-      content: values.content.trim(),
-    });
-    showToast('문의가 등록되었습니다.');
-    navigate(getInquiryDetailPath(newInquiry.id));
+    setIsSubmitting(true);
+    try {
+      const newInquiry = await createInquiry({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        title: values.title.trim(),
+        content: values.content.trim(),
+      });
+      showToast('문의가 등록되었습니다.');
+      navigate(getInquiryDetailPath(newInquiry.id));
+    } catch (error) {
+      setSubmitError(
+        getErrorMessage(error, '문의를 등록하지 못했어요. 잠시 후 다시 시도해 주세요.'),
+      );
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -118,11 +143,18 @@ function InquiryCreatePage() {
           error={errors.content}
         />
 
+        {submitError && (
+          <p role="alert" className="text-right text-sm leading-5 text-dash-error">
+            {submitError}
+          </p>
+        )}
         <div className="mt-2 flex justify-end gap-3">
           <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
             취소
           </ButtonLink>
-          <Button type="submit">등록</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? '등록 중...' : '등록'}
+          </Button>
         </div>
       </form>
     </div>
