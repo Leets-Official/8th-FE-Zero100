@@ -5,10 +5,11 @@ import TextInput from '../components/TextInput';
 import KakaoLoginButton from '../components/KakaoLoginButton';
 import { login } from '../api/auth';
 import { getErrorMessage } from '../api/client';
-import { setToken } from '../api/token';
+import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { loginWithToken } = useAuth();
   const location = useLocation();
   const [email, setEmail] = useState(location.state?.email ?? '');
   const [password, setPassword] = useState('');
@@ -21,7 +22,7 @@ const LoginPage = () => {
     setIsLoading(true);
     try {
       const data = await login({ email, password });
-      setToken(data.accessToken);
+      await loginWithToken(data.accessToken);
       navigate('/', { replace: true });
     } catch (error) {
       setErrorMessage(getErrorMessage(error, '로그인에 실패했습니다'));
