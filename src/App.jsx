@@ -7,7 +7,13 @@ import HomePage from './pages/todo/HomePage';
 import CompletedPage from './pages/todo/CompletedPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
+import InquiryListPage from './pages/inquiry/InquiryListPage';
+import InquiryCreatePage from './pages/inquiry/InquiryCreatePage';
+import InquiryDetailPage from './pages/inquiry/InquiryDetailPage';
+import MyPage from './pages/mypage/MyPage';
 import { ROUTES } from './constants/routes';
+import RequireAuth from './components/auth/RequireAuth';
+import KakaoCallbackPage from './pages/auth/KakaoCallbackPage';
 
 const loadTasks = () => {
   try {
@@ -71,10 +77,17 @@ function App() {
       />
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       <Route path={ROUTES.SIGNUP} element={<SignupPage />} />
-      <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
-        <Route index element={<DashboardHomePage />} />
-        <Route path={ROUTES.DASHBOARD_COMPONENTS} element={<ComponentsPage />} />
-        <Route path="*" element={<p>준비 중인 페이지입니다.</p>} />
+      <Route path={ROUTES.KAKAO_CALLBACK} element={<KakaoCallbackPage />} />
+      <Route element={<RequireAuth />}>
+        <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
+          <Route index element={<DashboardHomePage />} />
+          <Route path={ROUTES.DASHBOARD_COMPONENTS} element={<ComponentsPage />} />
+          <Route path={ROUTES.INQUIRY} element={<InquiryListPage />} />
+          <Route path={ROUTES.INQUIRY_NEW} element={<InquiryCreatePage />} />
+          <Route path={ROUTES.INQUIRY_DETAIL} element={<InquiryDetailPage />} />
+          <Route path={ROUTES.MYPAGE} element={<MyPage />} />
+          <Route path="*" element={<p>준비 중인 페이지입니다.</p>} />
+        </Route>
       </Route>
       <Route path={ROUTES.ROOT} element={<Navigate to={ROUTES.DASHBOARD} replace />} />
     </Routes>
