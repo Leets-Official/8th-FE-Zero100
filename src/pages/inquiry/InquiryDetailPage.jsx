@@ -20,6 +20,7 @@ function InquiryDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteError, setDeleteError] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     Promise.all([getInquiries(), getMe()])
@@ -34,7 +35,10 @@ function InquiryDetailPage() {
   const isMine = Boolean(inquiry && me && inquiry.user_id === me.id);
 
   function handleDelete() {
+    if (isDeleting) return;
+
     openModal('문의를 삭제하시겠습니까?', async () => {
+      setIsDeleting(true);
       setDeleteError('');
       try {
         await deleteInquiry(inquiry.id);
@@ -42,6 +46,7 @@ function InquiryDetailPage() {
         showToast('문의가 삭제되었습니다.');
       } catch (err) {
         setDeleteError(getErrorMessage(err, '문의 삭제에 실패했습니다.'));
+        setIsDeleting(false);
       }
     });
   }
@@ -68,8 +73,8 @@ function InquiryDetailPage() {
             목록으로
           </Button>
           {isMine && (
-            <Button variant="secondary" onClick={handleDelete}>
-              삭제
+            <Button variant="secondary" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? '삭제 중...' : '삭제'}
             </Button>
           )}
         </div>
