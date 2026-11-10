@@ -57,8 +57,15 @@ function AuthProvider({ children }) {
   }, []);
 
   // 이름 수정 등으로 바뀐 내 정보를 화면 전체에 반영합니다.
+  // 요청 도중 로그아웃(또는 다른 계정으로 재로그인)했다면, 늦게 도착한 응답이 로그인 상태를 되살리지 않도록
+  // "응답이 도착한 시점의 최신 user"를 기준으로 같은 사용자일 때만 반영합니다.
   const updateUser = useCallback((nextUser) => {
-    setUser((previous) => ({ ...previous, ...nextUser }));
+    setUser((previous) => {
+      if (!previous) return previous;
+      if (nextUser?.id && nextUser.id !== previous.id) return previous;
+
+      return { ...previous, ...nextUser };
+    });
   }, []);
 
   const value = useMemo(
