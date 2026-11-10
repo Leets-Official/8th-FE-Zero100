@@ -1,5 +1,7 @@
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
+// 카카오 회원번호(kakaoId)는 숫자로만 이루어진 값입니다.
+const KAKAO_ID_REGEX = /^\d+$/;
 
 export const isValidEmail = (value) => EMAIL_REGEX.test(value.trim());
 
@@ -11,3 +13,6 @@ export const isValidName = (value) => {
   const length = value.trim().length;
   return length >= 2 && length <= 8;
 };
+
+// 서버가 잘못된 인가코드에도 kakaoId를 'undefined' 문자열로 내려주는 경우를 걸러냅니다.
+export const isValidKakaoId = (value) => KAKAO_ID_REGEX.test(String(value ?? ''));

@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
-import { getErrorMessage } from '../../api/getErrorMessage';
 import { loginWithKakaoCode } from '../../api/authApi';
+import { getErrorMessage } from '../../api/getErrorMessage';
 import AuthLoading from '../../components/auth/AuthLoading';
 import { ROUTES } from '../../constants/routes';
 import useAuth from '../../hooks/useAuth';
+import { isValidKakaoId } from '../../utils/validators';
 
 import './KakaoCallbackPage.css';
 
@@ -33,9 +34,16 @@ function KakaoCallbackPage() {
       .catch((error) => {
         const { status, data } = error.response ?? {};
 
-        // 미가입 유저: 응답의 kakaoId를 들고 회원가입 화면으로 이동합니다.
         if (status === 401 && data?.error === 'unregistered') {
-          navigate(ROUTES.SIGNUP, { replace: true, state: { kakaoId: data.kakaoId } });
+          // 서버는 유효하지 않거나 만료된 인가코드에도 unregistered를 내려주고 kakaoId를 'undefined'로 보냅니다.
+          // 유효한 kakaoId일 때만 미가입 유저로 보고 회원가입으로 이동합니다.
+          if (isValidKakaoId(data.kakaoId)) {
+            navigate(ROUTES.SIGNUP, { replace: true, state: { kakaoId: data.kakaoId } });
+          } else {
+            setRequestError(
+              '카카오 인증 정보가 유효하지 않거나 만료되었습니다. 로그인 화면에서 다시 시도해주세요.',
+            );
+          }
           return;
         }
 
