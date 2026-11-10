@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate, useOutletContext } from 'react-router';
 
 import Header from './Header';
@@ -23,8 +23,12 @@ function DashboardLayout() {
   const [requestNumber, setRequestNumber] = useState(0);
   const [toast, setToast] = useState(null);
 
+  const inquiriesControllerRef = useRef(null);
+
   useEffect(() => {
     const controller = new AbortController();
+
+    inquiriesControllerRef.current = controller;
 
     async function loadInquiries() {
       try {
@@ -66,18 +70,28 @@ function DashboardLayout() {
   }, [toast]);
 
   function handleRetry() {
+    // 이전 조회 응답이 최신 목록을 덮어쓰지 않도록 즉시 취소한다.
+    inquiriesControllerRef.current?.abort();
+
     setStatus('loading');
     setErrorMessage('');
     setRequestNumber((prev) => prev + 1);
   }
 
   function handleLogout() {
+    inquiriesControllerRef.current?.abort();
     removeAccessToken();
-    navigate(ROUTES.LOGIN, { replace: true });
+
+    navigate(ROUTES.LOGIN, {
+      replace: true,
+    });
   }
 
   async function addInquiry(values) {
     const newInquiry = await createInquiry(values);
+
+    // 등록 전에 시작된 조회를 취소하고 서버 목록을 다시 받아온다.
+    handleRetry();
 
     setInquiries((prev) => [newInquiry, ...prev]);
     setToast({ message: '문의가 등록되었습니다.' });
@@ -87,6 +101,9 @@ function DashboardLayout() {
 
   async function deleteInquiry(inquiryId) {
     await deleteInquiryRequest(inquiryId);
+
+    // 삭제 전 목록으로 되돌아가지 않도록 이전 조회를 취소한다.
+    handleRetry();
 
     setInquiries((prev) => prev.filter((inquiry) => String(inquiry.id) !== String(inquiryId)));
 
