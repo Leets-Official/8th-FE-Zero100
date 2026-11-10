@@ -89,6 +89,8 @@ export function unwrapData<T>(response: AxiosResponse<ApiSuccessResponse<T>>): T
 }
 
 // 토큰을 담아 보낸 요청이 401을 받으면(인증 만료·무효) 호출. AuthProvider가 등록한다.
+// 요청에 담은 토큰이 지금 저장된 토큰과 같을 때만 호출하므로, 로그아웃·다른 계정 로그인 이전에 보낸 요청의
+// 401이 새 세션을 로그아웃시키지 않고, 여러 요청이 동시에 401을 받아도 처음 한 번만 처리된다.
 let unauthorizedHandler: (() => void) | null = null;
 
 export function setUnauthorizedHandler(handler: (() => void) | null) {
@@ -105,13 +107,19 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 // 실패는 ApiError로 바꿔 전달하고, 화면 이동·알림은 각 페이지에서 결정한다.
+function isSentWithCurrentToken(authorization: unknown): boolean {
+  const accessToken = loadAccessToken();
+  return Boolean(accessToken) && authorization === `Bearer ${accessToken}`;
+}
+
 axiosInstance.interceptors.response.use(undefined, (error: unknown) => {
   if (!axios.isAxiosError(error) || axios.isCancel(error)) return Promise.reject(error);
 
   if (
     error.response?.status === 401 &&
-    error.config?.headers?.Authorization &&
-    !error.config.skipUnauthorizedHandler
+    error.config &&
+    !error.config.skipUnauthorizedHandler &&
+    isSentWithCurrentToken(error.config.headers?.Authorization)
   ) {
     unauthorizedHandler?.();
   }

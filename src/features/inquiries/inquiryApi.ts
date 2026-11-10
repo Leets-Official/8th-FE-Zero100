@@ -28,9 +28,10 @@ function isInquiry(value: unknown): value is Inquiry {
 }
 
 // 문의 목록 조회 (최신순). 형식이 맞지 않는 항목은 화면 오류를 막기 위해 제외
-export function fetchInquiries(): Promise<InquiryListResponse> {
+// signal로 요청을 취소할 수 있다.
+export function fetchInquiries(signal?: AbortSignal): Promise<InquiryListResponse> {
   return axiosInstance
-    .get<ApiSuccessResponse<unknown>>('/api/inquiries')
+    .get<ApiSuccessResponse<unknown>>('/api/inquiries', { signal })
     .then(unwrapData)
     .then((data) => {
       if (!Array.isArray(data)) throw new Error(INVALID_LIST_MESSAGE);

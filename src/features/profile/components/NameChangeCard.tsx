@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type SubmitEvent } from 'react';
+import { useRef, useState, type ChangeEvent, type SubmitEvent } from 'react';
 import { getErrorMessage } from '../../../services/axiosInstance.ts';
 import { validateName } from '../../../utils/validation.ts';
 import Button from '../../../components/common/Button.tsx';
@@ -20,6 +20,8 @@ function NameChangeCard({ currentName, onSubmit, onSuccess }: NameChangeCardProp
   // 사용자가 입력 중인 값. null이면 아직 입력하지 않은 상태로 서버 이름(currentName)을 표시
   // 서버 값과 입력 중인 값을 나눠, 내 정보를 다시 조회해도 입력 중인 값을 덮어쓰지 않는다.
   const [draftName, setDraftName] = useState<string | null>(null);
+  // 요청이 끝났을 때 최신 입력값을 확인하기 위한 값 (handleChange에서 draftName과 함께 갱신)
+  const draftNameRef = useRef<string | null>(null);
   // 첫 제출 전에는 null이고, 제출 후에는 입력할 때마다 다시 검사해 오류 상태를 갱신
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +30,7 @@ function NameChangeCard({ currentName, onSubmit, onSuccess }: NameChangeCardProp
   const name = draftName ?? currentName;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    draftNameRef.current = event.target.value;
     setDraftName(event.target.value);
     if (error !== null) setError(validateName(event.target.value));
   };
@@ -46,13 +49,19 @@ function NameChangeCard({ currentName, onSubmit, onSuccess }: NameChangeCardProp
       return;
     }
 
+    // 요청 중에 사용자가 입력을 바꿨는지 확인하기 위해 제출 시점의 입력 상태를 기억
+    const submittedDraft = draftName;
     setIsSubmitting(true);
     setSubmitError('');
     try {
       await onSubmit(name.trim());
       // 성공하면 입력 상태를 비워 갱신된 서버 이름을 표시
-      setDraftName(null);
-      setError(null);
+      // 요청 중에 새로 입력한 값이 있으면 사용자의 최신 입력이므로 지우지 않는다.
+      if (draftNameRef.current === submittedDraft) {
+        draftNameRef.current = null;
+        setDraftName(null);
+        setError(null);
+      }
       onSuccess();
     } catch (submitFailure) {
       // 실패하면 서버 사용자 정보는 그대로 두고 입력값도 유지

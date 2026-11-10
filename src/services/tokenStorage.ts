@@ -18,6 +18,11 @@ export function saveAccessToken(token: string) {
   }
 }
 
+// 다른 탭에서 토큰을 저장·삭제했을 때 발생한 storage 이벤트인지 확인 (key가 null이면 저장소 전체 삭제)
+export function isAccessTokenStorageEvent(event: StorageEvent): boolean {
+  return event.key === null || event.key === STORAGE_KEY;
+}
+
 export function removeAccessToken() {
   try {
     localStorage.removeItem(STORAGE_KEY);

@@ -11,6 +11,7 @@ import TextInput from '../../components/common/TextInput.tsx';
 import type { CreateInquiryRequest } from '../../features/inquiries/types.ts';
 import { validateEmail } from '../../utils/validation.ts';
 import { focusFirstInvalidField } from '../../utils/form.ts';
+import { useIsMounted } from '../../hooks/useIsMounted.ts';
 
 const INQUIRY_LIST_PATH = '/dashboard/inquiries';
 
@@ -47,6 +48,7 @@ interface InquiryCreatePageProps {
 
 function InquiryCreatePage({ onCreated }: InquiryCreatePageProps) {
   const navigate = useNavigate();
+  const isMounted = useIsMounted();
   const [values, setValues] = useState<CreateInquiryRequest>({
     name: '',
     email: '',
@@ -86,9 +88,11 @@ function InquiryCreatePage({ onCreated }: InquiryCreatePageProps) {
         content: values.content.trim(),
       });
       // 등록이 확인된 경우에만 이동한다. 목록 페이지가 서버에서 최신 목록을 다시 조회한다.
+      // 등록 중에 다른 페이지로 이동했다면 등록 완료만 안내하고, 사용자가 이동한 화면은 바꾸지 않는다.
       onCreated();
-      navigate(INQUIRY_LIST_PATH);
+      if (isMounted()) navigate(INQUIRY_LIST_PATH);
     } catch (error) {
+      // 시간 초과처럼 응답을 받지 못한 경우 서버에는 등록됐을 수 있다. 중복 등록 방지는 서버 처리가 필요하다.
       setSubmitError(getErrorMessage(error));
       setIsSubmitting(false);
     }

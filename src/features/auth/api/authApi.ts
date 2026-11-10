@@ -32,9 +32,9 @@ export function login({ email, password }: LoginRequest): Promise<LoginResponse>
     .then(unwrapData);
 }
 
-// 내 정보 조회 (인증 필요)
-export function fetchMe(): Promise<User> {
-  return axiosInstance.get<ApiSuccessResponse<User>>('/api/auth/me').then(unwrapData);
+// 내 정보 조회 (인증 필요). signal로 요청을 취소할 수 있다.
+export function fetchMe(signal?: AbortSignal): Promise<User> {
+  return axiosInstance.get<ApiSuccessResponse<User>>('/api/auth/me', { signal }).then(unwrapData);
 }
 
 // 이름 수정 (인증 필요)

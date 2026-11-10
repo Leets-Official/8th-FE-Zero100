@@ -8,6 +8,7 @@ import InquiryDetailCard from '../../features/inquiries/components/InquiryDetail
 import MessageCard from '../../components/common/MessageCard.tsx';
 import PageTitle from '../../components/common/PageTitle.tsx';
 import { useInquiries } from '../../features/inquiries/useInquiries.ts';
+import { useIsMounted } from '../../hooks/useIsMounted.ts';
 
 const INQUIRY_LIST_PATH = '/dashboard/inquiries';
 
@@ -16,11 +17,15 @@ interface InquiryDetailPageProps {
   onDeleted: () => void;
 }
 
+interface InquiryDetailProps extends InquiryDetailPageProps {
+  id: string | undefined;
+}
+
 // Swagger에 문의 상세 조회 API가 없어 목록 API 응답에서 URL의 id(uuid)와 같은 문의를 찾는다.
 // 목록은 페이지네이션 없이 전체를 반환하므로 새로고침·URL 직접 접근도 같은 방식으로 처리된다.
-function InquiryDetailPage({ onDeleted }: InquiryDetailPageProps) {
-  const { id } = useParams();
+function InquiryDetail({ id, onDeleted }: InquiryDetailProps) {
   const navigate = useNavigate();
+  const isMounted = useIsMounted();
   const { inquiries, isLoading, errorMessage, reload } = useInquiries();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -40,8 +45,9 @@ function InquiryDetailPage({ onDeleted }: InquiryDetailPageProps) {
     setDeleteError('');
     try {
       await deleteInquiry(inquiry.id);
+      // 삭제 중에 다른 페이지로 이동했다면 삭제 완료만 안내하고, 사용자가 이동한 화면은 바꾸지 않는다.
       onDeleted();
-      navigate(INQUIRY_LIST_PATH, { replace: true });
+      if (isMounted()) navigate(INQUIRY_LIST_PATH, { replace: true });
     } catch (error) {
       setDeleteError(getErrorMessage(error));
       setIsDeleting(false);
@@ -84,6 +90,14 @@ function InquiryDetailPage({ onDeleted }: InquiryDetailPageProps) {
       />
     </div>
   );
+}
+
+// 같은 라우트에서 다른 문의로 이동하면(뒤로·앞으로 가기 등) 컴포넌트가 재사용되어
+// 이전 문의의 삭제 모달·삭제 중 상태·오류가 남고, 이전 문의의 요청 결과가 새 화면에 반영될 수 있다.
+// id마다 새로 마운트해 상태를 분리하고, 이전 문의의 진행 중인 조회는 취소한다.
+function InquiryDetailPage({ onDeleted }: InquiryDetailPageProps) {
+  const { id } = useParams();
+  return <InquiryDetail key={id} id={id} onDeleted={onDeleted} />;
 }
 
 export default InquiryDetailPage;

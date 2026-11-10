@@ -8,26 +8,26 @@ type RequestState<T> =
 
 // 컴포넌트가 마운트될 때 request를 실행하고 로딩·오류·다시 시도 상태를 관리한다.
 // request는 effect 의존성이므로 모듈 함수나 useCallback처럼 참조가 고정된 함수를 전달해야 한다.
-export function useRequest<T>(request: () => Promise<T>) {
+// 언마운트되거나 다시 요청하면 이전 요청을 signal로 취소하고, 이미 도착한 응답도 반영하지 않는다.
+export function useRequest<T>(request: (signal: AbortSignal) => Promise<T>) {
   const [state, setState] = useState<RequestState<T>>({ status: 'loading' });
   // 값을 바꾸면 다시 요청한다. (다시 시도)
   const [requestKey, setRequestKey] = useState(0);
 
   useEffect(() => {
-    // 언마운트되었거나 다시 요청을 시작했다면 이전 응답은 반영하지 않는다.
-    let isIgnored = false;
+    const controller = new AbortController();
+    const { signal } = controller;
 
-    request()
+    request(signal)
       .then((data) => {
-        if (!isIgnored) setState({ status: 'success', data });
+        if (!signal.aborted) setState({ status: 'success', data });
       })
       .catch((error: unknown) => {
-        if (!isIgnored) setState({ status: 'error', errorMessage: getErrorMessage(error) });
+        // 취소된 요청의 실패(취소 오류 포함)는 오류 상태로 바꾸지 않는다.
+        if (!signal.aborted) setState({ status: 'error', errorMessage: getErrorMessage(error) });
       });
 
-    return () => {
-      isIgnored = true;
-    };
+    return () => controller.abort();
   }, [request, requestKey]);
 
   const reload = () => {

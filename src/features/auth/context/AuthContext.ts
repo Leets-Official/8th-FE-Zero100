@@ -15,8 +15,10 @@ export interface AuthContextValue {
   loginWithKakao: (code: string) => Promise<void>;
   logout: () => void;
   // 서버에서 내 정보를 다시 조회해 user를 갱신. 실패하면 ApiError를 던진다.
-  refreshUser: () => Promise<void>;
+  // 조회 중 세션이 바뀌었거나 더 최신 조회·수정 결과가 반영됐다면 응답을 버린다. signal로 취소할 수 있다.
+  refreshUser: (signal?: AbortSignal) => Promise<void>;
   // 이름 수정 요청이 성공하면 응답의 사용자 정보로 user를 갱신. 실패하면 user는 그대로 두고 ApiError를 던진다.
+  // 성공 응답은 진행 중이던 조회 응답보다 우선한다.
   updateName: (name: string) => Promise<void>;
 }
 
