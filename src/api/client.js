@@ -14,7 +14,7 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
-const SKIP_LOGOUT_URLS = ['/api/auth/me/password'];
+const SKIP_LOGOUT_URLS = ['/api/auth/login', '/api/auth/kakao/redirect', '/api/auth/me/password'];
 
 client.interceptors.response.use(
   (response) => response,
