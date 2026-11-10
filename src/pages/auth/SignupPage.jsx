@@ -44,11 +44,9 @@ function SignupPage() {
 
     setIsSubmitting(true);
     setSubmitError('');
+
     try {
       await signup({ ...values, kakaoId });
-      const { accessToken } = await login(values);
-      setToken(accessToken);
-      navigate(ROUTES.DASHBOARD, { replace: true });
     } catch (err) {
       const message = getErrorMessage(err, '회원가입에 실패했습니다.');
       if (err.response?.status === 409) {
@@ -56,8 +54,19 @@ function SignupPage() {
       } else {
         setSubmitError(message);
       }
-    } finally {
       setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const { accessToken } = await login(values);
+      setToken(accessToken);
+      navigate(ROUTES.DASHBOARD, { replace: true });
+    } catch {
+      navigate(ROUTES.LOGIN, {
+        replace: true,
+        state: { notice: '회원가입이 완료되었습니다. 로그인해주세요.' },
+      });
     }
   }
 

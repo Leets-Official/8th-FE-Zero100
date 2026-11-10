@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AuthLayout from '../../components/auth/AuthLayout';
 import KakaoIcon from '../../components/auth/KakaoIcon';
 import Button from '../../components/dashboard/Button';
@@ -12,6 +12,8 @@ import { validateEmail } from '../../utils/validators';
 
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const notice = location.state?.notice;
   const [values, setValues] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,6 +69,11 @@ function LoginPage() {
             value={values.password}
             onChange={handleChange}
           />
+          {notice && !error && (
+            <p role="status" className="text-center text-sm leading-5 text-gray-600">
+              {notice}
+            </p>
+          )}
           {error && (
             <p role="alert" className="text-center text-sm leading-5 text-red-500">
               {error}
