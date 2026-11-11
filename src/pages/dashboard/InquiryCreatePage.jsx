@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useOutletContext } from 'react-router';
 import { createInquiry } from '../../api/inquiryApi';
 import Button from '../../components/dashboard/Button/Button';
@@ -38,6 +38,16 @@ const VALIDATORS = {
 function InquiryCreatePage() {
   const navigate = useNavigate();
   const { showToast } = useOutletContext();
+  // 등록 요청 중에 취소 등으로 페이지를 떠났는지 기억한다. 떠난 뒤 늦게 온 응답으로 화면을 옮기지 않기 위해서다.
+  const hasLeftPageRef = useRef(false);
+
+  useEffect(() => {
+    // 개발 모드(StrictMode)는 effect를 정리했다가 다시 실행하므로, 실행될 때마다 false로 되돌린다.
+    hasLeftPageRef.current = false;
+    return () => {
+      hasLeftPageRef.current = true;
+    };
+  }, []);
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState(INITIAL_VALUES);
   // 서버가 돌려준 실패 이유
@@ -82,9 +92,11 @@ function InquiryCreatePage() {
         title: values.title.trim(),
         content: values.content.trim(),
       });
+      // 등록 자체는 됐으므로 알림은 보여주고, 페이지를 떠났다면 상세 화면으로 끌고 가지 않는다.
       showToast('문의가 등록되었습니다.');
-      navigate(getInquiryDetailPath(newInquiry.id));
+      if (!hasLeftPageRef.current) navigate(getInquiryDetailPath(newInquiry.id));
     } catch (error) {
+      if (hasLeftPageRef.current) return;
       setSubmitError(
         getErrorMessage(error, '문의를 등록하지 못했어요. 잠시 후 다시 시도해 주세요.'),
       );
