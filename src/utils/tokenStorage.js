@@ -9,13 +9,19 @@ export const getAccessToken = () => {
   }
 };
 
+/** 토큰을 저장하고 성공 여부를 돌려준다. 저장이 막힌 환경이면 false라서 로그인 화면이 안내를 보여준다. */
 export const saveAccessToken = (accessToken) => {
   try {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+    return true;
   } catch {
-    // 시크릿 모드 등으로 저장이 막혀 있으면 새로고침 후 다시 로그인해야 한다.
+    return false;
   }
 };
+
+/** 토큰을 저장하지 못했을 때 로그인 화면에 보여줄 안내 */
+export const TOKEN_SAVE_ERROR =
+  '브라우저 저장소를 사용할 수 없어 로그인 상태를 유지할 수 없어요. 시크릿 모드나 쿠키·사이트 데이터 차단 설정을 확인해 주세요.';
 
 export const removeAccessToken = () => {
   try {

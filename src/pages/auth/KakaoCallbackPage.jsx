@@ -4,7 +4,7 @@ import { loginWithKakao } from '../../api/authApi';
 import AuthCard from '../../components/auth/AuthCard/AuthCard';
 import { ROUTES } from '../../constants/routes';
 import { getErrorMessage } from '../../utils/getErrorMessage';
-import { saveAccessToken } from '../../utils/tokenStorage';
+import { saveAccessToken, TOKEN_SAVE_ERROR } from '../../utils/tokenStorage';
 
 /**
  * 카카오 로그인을 마치면 카카오가 이 페이지로 ?code=... 를 붙여 돌려보낸다.
@@ -27,7 +27,11 @@ function KakaoCallbackPage() {
 
     loginWithKakao(code)
       .then(({ accessToken }) => {
-        saveAccessToken(accessToken);
+        // 저장에 실패하면 대시보드로 가도 다시 로그인 화면으로 돌아오므로, 이동하지 않고 이유를 알려준다.
+        if (!saveAccessToken(accessToken)) {
+          setErrorMessage(TOKEN_SAVE_ERROR);
+          return;
+        }
         navigate(ROUTES.DASHBOARD, { replace: true });
       })
       .catch((error) => {

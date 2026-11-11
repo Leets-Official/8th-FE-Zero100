@@ -8,7 +8,7 @@ import TextInput from '../../components/dashboard/TextInput/TextInput';
 import { ROUTES } from '../../constants/routes';
 import { getErrorMessage } from '../../utils/getErrorMessage';
 import { isEmail } from '../../utils/isEmail';
-import { getAccessToken, saveAccessToken } from '../../utils/tokenStorage';
+import { getAccessToken, saveAccessToken, TOKEN_SAVE_ERROR } from '../../utils/tokenStorage';
 
 const EMAIL_ERROR = '올바른 이메일 형식을 입력하세요';
 const PASSWORD_ERROR = '비밀번호를 입력하세요';
@@ -62,7 +62,12 @@ function LoginPage() {
     try {
       // 검사한 값과 같은 trimmedEmail을 보낸다.
       const { accessToken } = await login({ email: trimmedEmail, password });
-      saveAccessToken(accessToken);
+      // 저장에 실패하면 대시보드로 가도 다시 로그인 화면으로 돌아오므로, 이동하지 않고 이유를 알려준다.
+      if (!saveAccessToken(accessToken)) {
+        setSubmitError(TOKEN_SAVE_ERROR);
+        setIsSubmitting(false);
+        return;
+      }
       // 로그인이 필요해서 넘어온 경우에는 원래 가려던 페이지로 돌려보낸다.
       navigate(location.state?.from ?? ROUTES.DASHBOARD, { replace: true });
     } catch (error) {
