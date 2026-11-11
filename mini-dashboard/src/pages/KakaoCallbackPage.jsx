@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router';
 import { exchangeKakaoCode } from '../api/auth.js';
 import { getApiError } from '../api/client.js';
 import { useDashboard } from '../hooks/useDashboard.js';
+import { isValidKakaoId } from '../utils/validation.js';
 
 function KakaoCallbackPage() {
   const [code] = useState(() => new URLSearchParams(window.location.search).get('code'));
@@ -21,8 +22,13 @@ function KakaoCallbackPage() {
       })
       .catch((err) => {
         if (!active) return;
-        if (err.response?.data?.error === 'unregistered' && err.response.data.kakaoId) {
-          navigate('/signup', { replace: true, state: { kakaoId: err.response.data.kakaoId } });
+        if (err.response?.status === 401 && err.response?.data?.error === 'unregistered') {
+          const kakaoId = err.response.data.kakaoId;
+          if (isValidKakaoId(kakaoId)) {
+            navigate('/signup', { replace: true, state: { kakaoId: kakaoId.trim() } });
+          } else {
+            setError('카카오 계정 정보를 확인하지 못했습니다. 다시 로그인해 주세요.');
+          }
         } else setError(getApiError(err));
       });
     return () => {
