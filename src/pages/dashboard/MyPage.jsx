@@ -69,6 +69,8 @@ function MyPage() {
       return;
     }
 
+    // 입력을 고치지 않고 다시 제출해도 이전 실패 문구가 남지 않도록 요청 전에 지운다.
+    setNameError('');
     setIsNameSubmitting(true);
     try {
       await updateMyName(name.trim());
@@ -101,6 +103,8 @@ function MyPage() {
       return;
     }
 
+    // 입력을 고치지 않고 다시 제출해도 이전 실패 문구가 남지 않도록 요청 전에 지운다.
+    setPasswordSubmitError('');
     setIsPasswordSubmitting(true);
     try {
       await updateMyPassword({
