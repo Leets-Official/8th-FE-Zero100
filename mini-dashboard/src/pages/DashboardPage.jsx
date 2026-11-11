@@ -15,7 +15,7 @@ function DashboardPage() {
           items={[
             { label: '이름', value: profile.name },
             { label: '이메일', value: profile.email },
-            { label: '가입일', value: profile.joinedAt.replaceAll('-', '.') },
+            { label: '가입일', value: profile.joinedAt || '정보 없음' },
           ]}
         />
         <InfoCard

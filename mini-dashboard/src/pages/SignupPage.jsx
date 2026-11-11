@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
 import AuthLayout from '../components/auth/AuthLayout.jsx';
 import Button from '../components/common/Button.jsx';
 import TextInput from '../components/common/TextInput.jsx';
 import { useDashboard } from '../hooks/useDashboard.js';
-
-function isValidEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
+import { signup } from '../api/auth.js';
+import { getApiError } from '../api/client.js';
+import { isValidEmail, isValidPassword } from '../utils/validation.js';
 
 function SignupPage() {
   const { showToast } = useDashboard();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const [serverError, setServerError] = useState('');
+  const [pending, setPending] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -21,20 +24,37 @@ function SignupPage() {
   const emailError =
     emailTouched && !isValidEmail(email) ? '올바른 이메일 형식으로 입력해 주세요.' : '';
   const passwordError =
-    passwordTouched && password.length < 8 ? '비밀번호를 8자 이상 입력해 주세요.' : '';
+    passwordTouched && !isValidPassword(password)
+      ? '8자 이상, 영문·숫자·특수문자를 포함해 주세요.'
+      : '';
   const confirmationError =
     confirmationTouched && (!passwordConfirmation || password !== passwordConfirmation)
       ? '비밀번호가 일치하도록 입력해 주세요.'
       : '';
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     setEmailTouched(true);
     setPasswordTouched(true);
     setConfirmationTouched(true);
 
-    if (!isValidEmail(email) || password.length < 8 || password !== passwordConfirmation) return;
-    showToast('회원가입 API는 화면 구현 후 연결할 예정입니다.');
+    if (!isValidEmail(email) || !isValidPassword(password) || password !== passwordConfirmation)
+      return;
+    setServerError('');
+    setPending(true);
+    try {
+      await signup({
+        email: email.trim(),
+        password,
+        ...(state?.kakaoId ? { kakaoId: state.kakaoId } : {}),
+      });
+      showToast('회원가입이 완료되었습니다. 로그인해 주세요.');
+      navigate('/login', { replace: true });
+    } catch (error) {
+      setServerError(getApiError(error));
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
@@ -74,7 +94,7 @@ function SignupPage() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           onBlur={() => setPasswordTouched(true)}
-          helperText={passwordError ? undefined : '8자 이상 입력해 주세요.'}
+          helperText={passwordError ? undefined : '8자 이상, 영문·숫자·특수문자를 포함해 주세요.'}
           error={passwordError}
           minLength={8}
           variant="auth"
@@ -95,7 +115,12 @@ function SignupPage() {
           variant="auth"
           required
         />
-        <Button type="submit" className="w-full rounded-[10px]">
+        {serverError && (
+          <p role="alert" className="text-sm text-red-700">
+            {serverError}
+          </p>
+        )}
+        <Button type="submit" isLoading={pending} className="w-full rounded-[10px]">
           회원가입
         </Button>
       </form>
