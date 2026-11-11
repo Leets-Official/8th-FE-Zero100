@@ -4,8 +4,7 @@ import { getApiError } from '../api/client.js';
 import Button from '../components/common/Button.jsx';
 import TextInput from '../components/common/TextInput.jsx';
 import PageHeading from '../components/layout/PageHeading.jsx';
-
-const passwordPattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,}$/;
+import { isValidPassword } from '../utils/validation.js';
 
 function ProfilePage() {
   const { data, updateProfile, changePassword } = useDashboard();
@@ -36,7 +35,7 @@ function ProfilePage() {
   }
   async function handlePasswordSubmit(event) {
     event.preventDefault();
-    if (!passwordPattern.test(newPassword)) {
+    if (!isValidPassword(newPassword)) {
       setPasswordError('새 비밀번호는 8자 이상, 영문·숫자·특수문자를 포함해야 합니다.');
       return;
     }

@@ -6,10 +6,7 @@ import TextInput from '../components/common/TextInput.jsx';
 import { useDashboard } from '../hooks/useDashboard.js';
 import { signup } from '../api/auth.js';
 import { getApiError } from '../api/client.js';
-
-function isValidEmail(value) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
+import { isValidEmail, isValidPassword } from '../utils/validation.js';
 
 function SignupPage() {
   const { showToast } = useDashboard();
@@ -27,7 +24,7 @@ function SignupPage() {
   const emailError =
     emailTouched && !isValidEmail(email) ? '올바른 이메일 형식으로 입력해 주세요.' : '';
   const passwordError =
-    passwordTouched && !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,}$/.test(password)
+    passwordTouched && !isValidPassword(password)
       ? '8자 이상, 영문·숫자·특수문자를 포함해 주세요.'
       : '';
   const confirmationError =
@@ -41,11 +38,7 @@ function SignupPage() {
     setPasswordTouched(true);
     setConfirmationTouched(true);
 
-    if (
-      !isValidEmail(email) ||
-      !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,}$/.test(password) ||
-      password !== passwordConfirmation
-    )
+    if (!isValidEmail(email) || !isValidPassword(password) || password !== passwordConfirmation)
       return;
     setServerError('');
     setPending(true);
