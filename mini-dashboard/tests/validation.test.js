@@ -14,9 +14,22 @@ test('회원가입과 비밀번호 변경에 같은 비밀번호 조건을 적�
 });
 
 test('카카오 ID의 빈 값과 잘못된 서버 응답을 거부한다', () => {
-  for (const value of [undefined, null, '', '  ', 'undefined', ' NULL ', 'NaN', {}])
+  for (const value of [
+    undefined,
+    null,
+    '',
+    '  ',
+    'undefined',
+    ' NULL ',
+    'NaN',
+    'abc',
+    '0',
+    '9223372036854775808',
+    {},
+  ])
     assert.equal(isValidKakaoId(value), false);
   assert.equal(isValidKakaoId('4813745811'), true);
+  assert.equal(isValidKakaoId('9223372036854775807'), true);
 });
 
 test('문의 입력의 이름, 이메일, 제목과 내용을 따로 검사한다', () => {

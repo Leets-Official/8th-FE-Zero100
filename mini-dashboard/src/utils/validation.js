@@ -9,11 +9,9 @@ export function isValidEmail(value) {
 }
 
 export function isValidKakaoId(value) {
-  return (
-    typeof value === 'string' &&
-    value.trim() !== '' &&
-    !['undefined', 'null', 'nan'].includes(value.trim().toLowerCase())
-  );
+  if (typeof value !== 'string') return false;
+  const id = value.trim();
+  return /^[1-9]\d{0,18}$/.test(id) && BigInt(id) <= 9223372036854775807n;
 }
 
 export function validateInquiryField(name, value) {
