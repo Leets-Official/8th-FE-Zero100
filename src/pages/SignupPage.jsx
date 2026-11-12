@@ -1,9 +1,17 @@
-import { useState } from 'react';
-import { Link } from 'react-router';
+import { useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router';
 
 import Button from '../components/dashboard/Button';
 import Input from '../components/dashboard/Input';
+import { signup } from '../api/auth';
 import { ROUTES } from '../constants/routes';
+import { getApiErrorMessage } from '../utils/getApiErrorMessage';
+
+const INITIAL_VALUES = {
+  email: '',
+  password: '',
+  name: '',
+};
 
 function validateField(name, value) {
   switch (name) {
@@ -35,16 +43,15 @@ function validateField(name, value) {
 
       return '';
 
-    case 'name':
-      if (!value.trim()) {
-        return '이름을 입력해주세요.';
-      }
+    case 'name': {
+      const trimmedName = value.trim();
 
-      if (value.trim().length < 2 || value.trim().length > 8) {
+      if (trimmedName && (trimmedName.length < 2 || trimmedName.length > 8)) {
         return '이름은 2자 이상 8자 이하로 입력해주세요.';
       }
 
       return '';
+    }
 
     default:
       return '';
@@ -52,14 +59,16 @@ function validateField(name, value) {
 }
 
 function SignupPage() {
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-    name: '',
-  });
+  const location = useLocation();
 
+  const kakaoId = typeof location.state?.kakaoId === 'string' ? location.state.kakaoId : undefined;
+
+  const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState({});
   const [notice, setNotice] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submittingRef = useRef(false);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -86,8 +95,10 @@ function SignupPage() {
     }));
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    if (submittingRef.current) return;
 
     const nextErrors = {
       email: validateField('email', values.email),
@@ -96,6 +107,7 @@ function SignupPage() {
     };
 
     setErrors(nextErrors);
+    setNotice('');
 
     const firstInvalidField = Object.keys(nextErrors).find((name) => nextErrors[name]);
 
@@ -105,7 +117,29 @@ function SignupPage() {
       return;
     }
 
-    setNotice('회원가입 기능은 API 연동 후 이용할 수 있습니다.');
+    submittingRef.current = true;
+    setIsSubmitting(true);
+
+    try {
+      await signup({
+        ...values,
+        kakaoId,
+      });
+
+      setValues(INITIAL_VALUES);
+      setErrors({});
+
+      setNotice(
+        kakaoId
+          ? '회원가입이 완료되었습니다. 로그인 화면에서 카카오 로그인을 다시 진행해주세요.'
+          : '회원가입이 완료되었습니다. 아래 로그인 링크로 로그인해주세요.',
+      );
+    } catch (error) {
+      setNotice(getApiErrorMessage(error, '회원가입에 실패했습니다. 다시 시도해주세요.'));
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -117,7 +151,18 @@ function SignupPage() {
         회원가입
       </h1>
 
-      <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-[15.99px]">
+      {kakaoId && (
+        <p className="text-center text-[12px] leading-[20px] text-[#364153]">
+          카카오 계정과 연결할 회원 정보를 입력해주세요.
+        </p>
+      )}
+
+      <form
+        noValidate
+        onSubmit={handleSubmit}
+        aria-busy={isSubmitting}
+        className="flex flex-col gap-[15.99px]"
+      >
         <Input
           label="이메일"
           hideLabel
@@ -129,6 +174,7 @@ function SignupPage() {
           error={errors.email}
           onChange={handleChange}
           onBlur={handleBlur}
+          disabled={isSubmitting}
           required
         />
 
@@ -144,25 +190,26 @@ function SignupPage() {
           error={errors.password}
           onChange={handleChange}
           onBlur={handleBlur}
+          disabled={isSubmitting}
           required
         />
 
         <Input
-          label="이름"
+          label="이름 (선택)"
           hideLabel
           name="name"
           autoComplete="name"
-          placeholder="이름을 입력하세요"
-          helperText="2자 이상 8자 이하"
+          placeholder="이름을 입력하세요 (선택)"
+          helperText="입력 시 2자 이상 8자 이하"
           value={values.name}
           error={errors.name}
           onChange={handleChange}
           onBlur={handleBlur}
-          required
+          disabled={isSubmitting}
         />
 
-        <Button type="submit" className="w-full">
-          회원가입
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? '가입 중...' : '회원가입'}
         </Button>
       </form>
 
@@ -178,7 +225,7 @@ function SignupPage() {
 
       <div role="status" aria-atomic="true" className={notice ? '' : 'sr-only'}>
         {notice && (
-          <p className="text-center text-[12px] leading-[20px] text-[#6a7282]">{notice}</p>
+          <p className="text-center text-[12px] leading-[20px] text-[#364153]">{notice}</p>
         )}
       </div>
     </section>

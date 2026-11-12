@@ -1,50 +1,66 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useNavigate, useOutletContext } from 'react-router';
+
 import Button from '../components/dashboard/Button';
 import Input from '../components/dashboard/Input';
+import { updateName, updatePassword } from '../api/auth';
+import { ROUTES } from '../constants/routes';
+import { removeAccessToken } from '../utils/authStorage';
+import { getApiErrorMessage } from '../utils/getApiErrorMessage';
 
-function validatePasswordField(name, values) {
-  const value = values[name];
+const INITIAL_PASSWORDS = {
+  currentPassword: '',
+  newPassword: '',
+  passwordConfirmation: '',
+};
 
-  if (!value) {
-    return '비밀번호를 입력해주세요.';
+function validatePasswords(values) {
+  const errors = {};
+  const { currentPassword, newPassword, passwordConfirmation } = values;
+
+  if (!currentPassword) {
+    errors.currentPassword = '현재 비밀번호를 입력해주세요.';
   }
 
-  if (name === 'newPassword') {
-    if (
-      value.length < 8 ||
-      !/[A-Za-z]/.test(value) ||
-      !/[0-9]/.test(value) ||
-      !/[^A-Za-z0-9\s]/.test(value) ||
-      /\s/.test(value)
-    ) {
-      return '공백 없이 8자 이상, 영문/숫자/특수문자를 포함해주세요.';
-    }
-
-    if (value === values.currentPassword) {
-      return '현재 비밀번호와 다른 비밀번호를 입력해주세요.';
-    }
+  if (!newPassword) {
+    errors.newPassword = '새 비밀번호를 입력해주세요.';
+  } else if (
+    newPassword.length < 8 ||
+    !/[A-Za-z]/.test(newPassword) ||
+    !/[0-9]/.test(newPassword) ||
+    !/[^A-Za-z0-9\s]/.test(newPassword) ||
+    /\s/.test(newPassword)
+  ) {
+    errors.newPassword = '공백 없이 8자 이상, 영문/숫자/특수문자를 포함해주세요.';
+  } else if (newPassword === currentPassword) {
+    errors.newPassword = '현재 비밀번호와 다른 비밀번호를 입력해주세요.';
   }
 
-  if (name === 'passwordConfirmation' && value !== values.newPassword) {
-    return '새 비밀번호가 일치하지 않습니다.';
+  if (!passwordConfirmation) {
+    errors.passwordConfirmation = '새 비밀번호를 다시 입력해주세요.';
+  } else if (passwordConfirmation !== newPassword) {
+    errors.passwordConfirmation = '새 비밀번호가 일치하지 않습니다.';
   }
 
-  return '';
+  return errors;
 }
 
 function MyPage() {
-  const [name, setName] = useState('');
+  const navigate = useNavigate();
+  const { user, updateUser } = useOutletContext();
+
+  const [name, setName] = useState(user.name ?? '');
   const [nameError, setNameError] = useState('');
   const [nameNotice, setNameNotice] = useState('');
+  const [isNameSubmitting, setIsNameSubmitting] = useState(false);
 
-  const [passwords, setPasswords] = useState({
-    currentPassword: '',
-    newPassword: '',
-    passwordConfirmation: '',
-  });
-
+  const [passwords, setPasswords] = useState(INITIAL_PASSWORDS);
   const [passwordErrors, setPasswordErrors] = useState({});
   const [passwordNotice, setPasswordNotice] = useState('');
+  const [isPasswordSubmitting, setIsPasswordSubmitting] = useState(false);
+
+  const nameSubmittingRef = useRef(false);
+  const passwordSubmittingRef = useRef(false);
 
   function handleNameChange(event) {
     setName(event.target.value);
@@ -52,8 +68,10 @@ function MyPage() {
     setNameNotice('');
   }
 
-  function handleNameSubmit(event) {
+  async function handleNameSubmit(event) {
     event.preventDefault();
+
+    if (nameSubmittingRef.current) return;
 
     const trimmedName = name.trim();
 
@@ -64,9 +82,34 @@ function MyPage() {
       return;
     }
 
-    setName(trimmedName);
-    setNameError('');
-    setNameNotice('이름 변경 기능은 API 연동 후 이용할 수 있습니다.');
+    if (trimmedName === user.name) {
+      setNameNotice('현재 이름과 같습니다.');
+      return;
+    }
+
+    nameSubmittingRef.current = true;
+    setIsNameSubmitting(true);
+    setNameNotice('');
+
+    try {
+      const updatedUser = await updateName(trimmedName);
+
+      updateUser(updatedUser);
+      setName(updatedUser.name ?? '');
+      setNameError('');
+      setNameNotice('이름이 변경되었습니다.');
+    } catch (error) {
+      if (error.response?.status === 401) {
+        removeAccessToken();
+        navigate(ROUTES.LOGIN, { replace: true });
+        return;
+      }
+
+      setNameNotice(getApiErrorMessage(error, '이름 변경에 실패했습니다.'));
+    } finally {
+      nameSubmittingRef.current = false;
+      setIsNameSubmitting(false);
+    }
   }
 
   function handlePasswordChange(event) {
@@ -77,23 +120,21 @@ function MyPage() {
       [fieldName]: value,
     }));
 
-    // 다른 비밀번호를 수정하면 기존 비교 결과도 달라질 수 있어 초기화한다.
     setPasswordErrors({});
     setPasswordNotice('');
   }
 
-  function handlePasswordSubmit(event) {
+  async function handlePasswordSubmit(event) {
     event.preventDefault();
 
-    const nextErrors = {
-      currentPassword: validatePasswordField('currentPassword', passwords),
-      newPassword: validatePasswordField('newPassword', passwords),
-      passwordConfirmation: validatePasswordField('passwordConfirmation', passwords),
-    };
+    if (passwordSubmittingRef.current) return;
+
+    const nextErrors = validatePasswords(passwords);
 
     setPasswordErrors(nextErrors);
+    setPasswordNotice('');
 
-    const firstInvalidField = Object.keys(nextErrors).find((fieldName) => nextErrors[fieldName]);
+    const firstInvalidField = Object.keys(nextErrors)[0];
 
     if (firstInvalidField) {
       setPasswordNotice('입력 내용을 확인해주세요.');
@@ -101,7 +142,26 @@ function MyPage() {
       return;
     }
 
-    setPasswordNotice('비밀번호 변경 기능은 API 연동 후 이용할 수 있습니다.');
+    passwordSubmittingRef.current = true;
+    setIsPasswordSubmitting(true);
+
+    try {
+      await updatePassword({
+        currentPassword: passwords.currentPassword,
+        newPassword: passwords.newPassword,
+      });
+
+      setPasswords(INITIAL_PASSWORDS);
+      setPasswordErrors({});
+      setPasswordNotice('비밀번호가 변경되었습니다.');
+    } catch (error) {
+      // 이 API는 현재 비밀번호 불일치에도 401을 사용한다.
+      // 따라서 401이라는 이유만으로 로그아웃시키지 않는다.
+      setPasswordNotice(getApiErrorMessage(error, '비밀번호 변경에 실패했습니다.'));
+    } finally {
+      passwordSubmittingRef.current = false;
+      setIsPasswordSubmitting(false);
+    }
   }
 
   return (
@@ -117,6 +177,7 @@ function MyPage() {
         noValidate
         onSubmit={handleNameSubmit}
         aria-labelledby="name-change-title"
+        aria-busy={isNameSubmitting}
         className="flex flex-col gap-[16px] rounded-[10px] border border-[#E5E7EB] bg-[#FFFFFF] p-[24px]"
       >
         <h3 id="name-change-title" className="text-[18px] leading-[28px] font-bold text-[#000000]">
@@ -132,12 +193,13 @@ function MyPage() {
           value={name}
           error={nameError}
           onChange={handleNameChange}
+          disabled={isNameSubmitting}
           required
         />
 
         <div className="flex justify-end">
-          <Button type="submit" size="small">
-            변경
+          <Button type="submit" size="small" disabled={isNameSubmitting}>
+            {isNameSubmitting ? '변경 중...' : '변경'}
           </Button>
         </div>
 
@@ -150,6 +212,7 @@ function MyPage() {
         noValidate
         onSubmit={handlePasswordSubmit}
         aria-labelledby="password-change-title"
+        aria-busy={isPasswordSubmitting}
         className="flex flex-col gap-[16px] rounded-[10px] border border-[#E5E7EB] bg-[#FFFFFF] p-[24px]"
       >
         <h3
@@ -168,6 +231,7 @@ function MyPage() {
           value={passwords.currentPassword}
           error={passwordErrors.currentPassword}
           onChange={handlePasswordChange}
+          disabled={isPasswordSubmitting}
           required
         />
 
@@ -180,6 +244,7 @@ function MyPage() {
           value={passwords.newPassword}
           error={passwordErrors.newPassword}
           onChange={handlePasswordChange}
+          disabled={isPasswordSubmitting}
           required
         />
 
@@ -192,12 +257,13 @@ function MyPage() {
           value={passwords.passwordConfirmation}
           error={passwordErrors.passwordConfirmation}
           onChange={handlePasswordChange}
+          disabled={isPasswordSubmitting}
           required
         />
 
         <div className="flex justify-end">
-          <Button type="submit" size="small">
-            변경
+          <Button type="submit" size="small" disabled={isPasswordSubmitting}>
+            {isPasswordSubmitting ? '변경 중...' : '변경'}
           </Button>
         </div>
 
