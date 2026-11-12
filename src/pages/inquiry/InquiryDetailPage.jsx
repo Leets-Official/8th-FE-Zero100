@@ -38,6 +38,10 @@ function InquiryDetailPage() {
   };
 
   const handleCloseDeleteModal = () => {
+    // 삭제 요청이 진행 중일 때 모달을 닫으면 사용자는 취소됐다고 오해하지만 요청은 계속 처리됩니다.
+    // 취소 버튼, Esc, 배경 클릭이 모두 이 함수를 거치므로 한곳에서 막습니다.
+    if (isDeleting) return;
+
     setIsDeleteModalOpen(false);
   };
 
