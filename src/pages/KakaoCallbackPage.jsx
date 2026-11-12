@@ -46,19 +46,21 @@ function KakaoCallbackPage() {
 
         const responseData = error.response?.data;
 
-        if (
-          error.response?.status === 401 &&
-          responseData?.error === 'unregistered' &&
-          typeof responseData.kakaoId === 'string' &&
-          responseData.kakaoId
-        ) {
+        if (error.response?.status === 401 && responseData?.error === 'unregistered') {
+          const kakaoId =
+            typeof responseData.kakaoId === 'string' ? responseData.kakaoId.trim() : '';
+
+          if (!kakaoId || kakaoId === 'undefined') {
+            setMessage(
+              '카카오 인증 정보를 확인하지 못했습니다. 로그인 화면에서 다시 시도해주세요.',
+            );
+            return;
+          }
+
           navigate(ROUTES.SIGNUP, {
             replace: true,
-            state: {
-              kakaoId: responseData.kakaoId,
-            },
+            state: { kakaoId },
           });
-
           return;
         }
 
