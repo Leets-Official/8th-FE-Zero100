@@ -307,18 +307,18 @@
   justify-content: center;
   align-items: center;
   padding: 24px;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .common-modal {
   display: flex;
-  width: min(100%, 440px);
+  width: min(100%, 384.58px);
   max-height: 100%;
   box-sizing: border-box;
   padding: 32.929px;
   flex-direction: column;
   align-items: stretch;
-  gap: 31.995px;
+  gap: 28px;
   overflow-y: auto;
 
   border: 0.935px solid var(--common-border);

@@ -1,0 +1,39 @@
+/* 마이페이지 카드 (Figma: padding 20, gap 11.989, border #E5E7EB, radius 10) */
+.settings-card {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 11.989px;
+
+  border: 0.935px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.settings-card__title {
+  margin: 0;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+/* 라벨과 입력창 사이 간격 5.987px */
+.settings-card .common-field {
+  gap: 5.987px;
+}
+
+/* 변경 버튼 줄: 오른쪽 정렬 */
+.settings-card__actions {
+  display: flex;
+  padding-top: 3.987px;
+  justify-content: flex-end;
+  align-items: flex-start;
+  align-self: stretch;
+}

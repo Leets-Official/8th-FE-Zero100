@@ -1,26 +1,33 @@
 import { useId, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import { signup } from '../../api/authApi';
+import { getErrorMessage } from '../../api/getErrorMessage';
 import AuthLayout from '../../components/auth/AuthLayout';
 import Button from '../../components/common/Button';
 import TextInput from '../../components/common/TextInput';
 import { ROUTES } from '../../constants/routes';
+import { isValidEmail, isValidName, isValidPassword } from '../../utils/validators';
 
 import './SignupPage.css';
 
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
-
 const validate = ({ email, password, name }) => ({
-  email: EMAIL_REGEX.test(email) ? '' : '올바른 이메일 형식을 입력하세요',
-  password: PASSWORD_REGEX.test(password) ? '' : '8자 이상, 영문/숫자/특수문자를 포함해주세요',
-  name: name.length >= 2 && name.length <= 8 ? '' : '2자 이상 8자 이하로 입력하세요',
+  email: isValidEmail(email) ? '' : '올바른 이메일 형식을 입력하세요',
+  password: isValidPassword(password) ? '' : '8자 이상, 영문/숫자/특수문자를 포함해주세요',
+  name: isValidName(name) ? '' : '2자 이상 8자 이하로 입력하세요',
 });
 
 function SignupPage() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  // 카카오 로그인에서 미가입 유저로 판정되어 넘어온 경우 kakaoId를 함께 보냄
+  const kakaoId = location.state?.kakaoId;
+
   const [values, setValues] = useState({ email: '', password: '', name: '' });
   // Figma 화면과 동일하게 이메일 에러가 처음부터 보이도록 email만 true로 시작
   const [touched, setTouched] = useState({ email: true, password: false, name: false });
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const emailId = useId();
   const emailErrorId = `${emailId}-error`;
@@ -31,20 +38,40 @@ function SignupPage() {
 
   const handleChange = (field) => (event) => {
     setValues((previous) => ({ ...previous, [field]: event.target.value }));
+    setSubmitError('');
   };
 
   const handleBlur = (field) => () => {
     setTouched((previous) => ({ ...previous, [field]: true }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
+
     setTouched({ email: true, password: true, name: true });
 
     const hasError = Object.values(errors).some(Boolean);
     if (hasError) return;
 
-    // TODO: UI 구현 완료 후 회원가입 API 연동
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      await signup({
+        email: values.email.trim(),
+        password: values.password,
+        name: values.name.trim(),
+        kakaoId,
+      });
+      navigate(ROUTES.LOGIN, {
+        replace: true,
+        state: { toast: '회원가입이 완료되었습니다. 로그인해주세요.' },
+      });
+    } catch (error) {
+      setSubmitError(getErrorMessage(error, '회원가입에 실패했습니다.'));
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,7 +116,7 @@ function SignupPage() {
           type="text"
           name="name"
           aria-label="이름"
-          placeholder="비밀번호를 입력하세요"
+          placeholder="이름을 입력하세요"
           autoComplete="name"
           value={values.name}
           onChange={handleChange('name')}
@@ -97,7 +124,16 @@ function SignupPage() {
           error={getError('name')}
           helperText="2자 이상 8자 이하"
         />
-        <Button type="submit">회원가입</Button>
+
+        {submitError && (
+          <span className="common-field__error" role="alert">
+            {submitError}
+          </span>
+        )}
+
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? '가입 중...' : '회원가입'}
+        </Button>
       </form>
 
       <p className="signup-login">

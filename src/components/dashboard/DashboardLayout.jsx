@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '../../constants/routes';
+import useAuth from '../../hooks/useAuth';
 import Footer from '../common/Footer';
 import Header from '../common/Header';
 import Sidebar from '../common/Sidebar';
@@ -11,15 +12,16 @@ const SIDEBAR_ITEMS = [
   { label: '대시보드 홈', to: ROUTES.DASHBOARD },
   { label: '문의', to: ROUTES.INQUIRY },
   { label: 'Todolist', to: ROUTES.TODO },
-  { label: '마이페이지' },
+  { label: '마이페이지', to: ROUTES.MYPAGE },
 ];
 
 const DashboardLayout = ({ children }) => {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    // TODO: 로그인 API 연동 후 토큰 삭제 처리 추가
-    navigate(ROUTES.LOGIN);
+    logout();
+    navigate(ROUTES.LOGIN, { replace: true });
   };
 
   return (
