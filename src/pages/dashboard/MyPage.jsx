@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import { useOutletContext } from 'react-router';
+import { updateMyName, updateMyPassword } from '../../api/authApi';
 import Button from '../../components/dashboard/Button/Button';
 import PageHeading from '../../components/dashboard/PageHeading/PageHeading';
 import TextInput from '../../components/dashboard/TextInput/TextInput';
+import { getErrorMessage } from '../../utils/getErrorMessage';
 import { isValidName } from '../../utils/isValidName';
 import { isValidPassword } from '../../utils/isValidPassword';
 
 const INITIAL_PASSWORDS = { currentPassword: '', newPassword: '', newPasswordConfirm: '' };
 
 /** 마이페이지의 카드 하나 (이름 변경 / 비밀번호 변경). 카드마다 따로 제출하는 폼이다. */
-function SettingsCard({ title, titleId, onSubmit, children }) {
+function SettingsCard({ title, titleId, onSubmit, isSubmitting, submitError, children }) {
   return (
     <form
       aria-labelledby={titleId}
@@ -21,8 +23,15 @@ function SettingsCard({ title, titleId, onSubmit, children }) {
         {title}
       </h2>
       {children}
+      {submitError && (
+        <p role="alert" className="text-right text-sm leading-5 text-dash-error">
+          {submitError}
+        </p>
+      )}
       <div className="flex justify-end pt-1">
-        <Button type="submit">변경</Button>
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? '변경 중...' : '변경'}
+        </Button>
       </div>
     </form>
   );
@@ -44,30 +53,46 @@ function MyPage() {
   const { showToast } = useOutletContext();
   const [name, setName] = useState('');
   const [nameError, setNameError] = useState('');
+  const [isNameSubmitting, setIsNameSubmitting] = useState(false);
   const [passwords, setPasswords] = useState(INITIAL_PASSWORDS);
   const [passwordErrors, setPasswordErrors] = useState(INITIAL_PASSWORDS);
+  // 현재 비밀번호 틀림처럼 어느 칸 문제인지 알 수 없는 서버 실패 이유
+  const [passwordSubmitError, setPasswordSubmitError] = useState('');
+  const [isPasswordSubmitting, setIsPasswordSubmitting] = useState(false);
 
-  const handleNameSubmit = (event) => {
+  const handleNameSubmit = async (event) => {
     event.preventDefault();
+    if (isNameSubmitting) return;
 
     if (!isValidName(name)) {
       setNameError('이름은 2자 이상 8자 이하로 입력하세요');
       return;
     }
 
-    // 이름 변경 API는 UI 구현 후에 연결한다. 지금은 성공 알림만 보여주고 입력칸을 비운다.
-    showToast('이름이 변경되었습니다.');
-    setName('');
+    // 입력을 고치지 않고 다시 제출해도 이전 실패 문구가 남지 않도록 요청 전에 지운다.
+    setNameError('');
+    setIsNameSubmitting(true);
+    try {
+      await updateMyName(name.trim());
+      showToast('이름이 변경되었습니다.');
+      setName('');
+    } catch (error) {
+      setNameError(getErrorMessage(error, '이름을 변경하지 못했어요.'));
+    } finally {
+      setIsNameSubmitting(false);
+    }
   };
 
   const handlePasswordChange = (event) => {
     const { name: fieldName, value } = event.target;
     setPasswords((prevPasswords) => ({ ...prevPasswords, [fieldName]: value }));
     setPasswordErrors((prevErrors) => ({ ...prevErrors, [fieldName]: '' }));
+    setPasswordSubmitError('');
   };
 
-  const handlePasswordSubmit = (event) => {
+  const handlePasswordSubmit = async (event) => {
     event.preventDefault();
+    if (isPasswordSubmitting) return;
 
     const nextErrors = getPasswordErrors(passwords);
     setPasswordErrors(nextErrors);
@@ -78,16 +103,34 @@ function MyPage() {
       return;
     }
 
-    // 비밀번호 변경 API도 UI 구현 후에 연결한다. 비밀번호는 화면에 남겨두지 않도록 바로 비운다.
-    showToast('비밀번호가 변경되었습니다.');
-    setPasswords(INITIAL_PASSWORDS);
+    // 입력을 고치지 않고 다시 제출해도 이전 실패 문구가 남지 않도록 요청 전에 지운다.
+    setPasswordSubmitError('');
+    setIsPasswordSubmitting(true);
+    try {
+      await updateMyPassword({
+        currentPassword: passwords.currentPassword,
+        newPassword: passwords.newPassword,
+      });
+      showToast('비밀번호가 변경되었습니다.');
+      // 비밀번호는 화면에 남겨두지 않도록 바로 비운다.
+      setPasswords(INITIAL_PASSWORDS);
+    } catch (error) {
+      setPasswordSubmitError(getErrorMessage(error, '비밀번호를 변경하지 못했어요.'));
+    } finally {
+      setIsPasswordSubmitting(false);
+    }
   };
 
   return (
     <div className="mx-auto flex w-full max-w-[672px] flex-col gap-6">
       <PageHeading title="마이페이지" />
 
-      <SettingsCard title="이름 변경" titleId="change-name-title" onSubmit={handleNameSubmit}>
+      <SettingsCard
+        title="이름 변경"
+        titleId="change-name-title"
+        onSubmit={handleNameSubmit}
+        isSubmitting={isNameSubmitting}
+      >
         <TextInput
           name="name"
           aria-label="새 이름"
@@ -106,6 +149,8 @@ function MyPage() {
         title="비밀번호 변경"
         titleId="change-password-title"
         onSubmit={handlePasswordSubmit}
+        isSubmitting={isPasswordSubmitting}
+        submitError={passwordSubmitError}
       >
         <TextInput
           type="password"

@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { signup } from '../../api/authApi';
 import AuthCard from '../../components/auth/AuthCard/AuthCard';
 import Button from '../../components/dashboard/Button/Button';
 import TextInput from '../../components/dashboard/TextInput/TextInput';
 import { ROUTES } from '../../constants/routes';
+import { getErrorMessage } from '../../utils/getErrorMessage';
 import { isEmail } from '../../utils/isEmail';
 import { isValidName } from '../../utils/isValidName';
 import { isValidPassword } from '../../utils/isValidPassword';
@@ -23,8 +25,13 @@ const VALIDATORS = {
 
 function SignupPage() {
   const navigate = useNavigate();
+  // 카카오 로그인에서 가입하지 않은 계정으로 넘어오면 kakaoId가 있다. 가입할 때 함께 보내 계정을 연결한다.
+  const kakaoId = useLocation().state?.kakaoId;
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState(INITIAL_VALUES);
+  // 서버가 돌려준 실패 이유 (예: 이미 가입된 이메일)
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 세 칸 모두 input의 name으로 어떤 값인지 구분해서 같은 핸들러를 쓴다.
   // 입력 중에는 해당 칸의 에러를 지우고, 입력창에서 벗어나거나 회원가입을 누를 때 검사한다.
@@ -32,6 +39,7 @@ function SignupPage() {
     const { name, value } = event.target;
     setValues((prevValues) => ({ ...prevValues, [name]: value }));
     setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    setSubmitError('');
   };
 
   // 아직 아무것도 입력하지 않은 칸은 벗어나도 에러를 띄우지 않는다.
@@ -40,8 +48,9 @@ function SignupPage() {
     setErrors((prevErrors) => ({ ...prevErrors, [name]: value ? VALIDATORS[name](value) : '' }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const nextErrors = {
       email: VALIDATORS.email(values.email),
@@ -51,9 +60,17 @@ function SignupPage() {
     setErrors(nextErrors);
     if (Object.values(nextErrors).some(Boolean)) return;
 
-    // 회원가입 API는 UI 구현 후에 연결한다. 지금은 입력 형식만 맞으면 로그인 화면으로 이동한다.
-    // API를 연결할 때 이메일과 이름은 검사한 값과 같게 trim()한 값을 보낸다.
-    navigate(ROUTES.LOGIN);
+    // 이메일과 이름은 검사한 값과 같게 trim()한 값을 보낸다.
+    const email = values.email.trim();
+    setIsSubmitting(true);
+    try {
+      await signup({ email, password: values.password, name: values.name.trim(), kakaoId });
+      // 가입한 이메일을 로그인 화면에 미리 채우고, 가입이 끝났다는 안내를 보여준다.
+      navigate(ROUTES.LOGIN, { state: { signupEmail: email } });
+    } catch (error) {
+      setSubmitError(getErrorMessage(error, '회원가입하지 못했어요. 잠시 후 다시 시도해 주세요.'));
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -71,6 +88,11 @@ function SignupPage() {
         </>
       }
     >
+      {kakaoId && (
+        <p role="status" className="text-center text-sm leading-5 text-dash-text-sub">
+          카카오 계정으로 처음 로그인했어요. 회원가입을 마치면 카카오 계정이 연결돼요.
+        </p>
+      )}
       <form className="mb-4 flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
         {/* 디자인에는 라벨이 보이지 않으므로 aria-label로 입력칸 이름을 알려준다. */}
         <TextInput
@@ -107,8 +129,13 @@ function SignupPage() {
           onBlur={handleBlur}
           error={errors.name}
         />
-        <Button type="submit" className="w-full">
-          회원가입
+        {submitError && (
+          <p role="alert" className="text-center text-sm leading-5 text-dash-error">
+            {submitError}
+          </p>
+        )}
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? '가입 중...' : '회원가입'}
         </Button>
       </form>
     </AuthCard>

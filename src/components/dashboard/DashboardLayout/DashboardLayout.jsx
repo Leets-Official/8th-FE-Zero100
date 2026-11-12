@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { ROUTES } from '../../../constants/routes';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Sidebar from '../Sidebar/Sidebar';
 import Toast from '../Toast/Toast';
+import { removeAccessToken } from '../../../utils/tokenStorage';
 
 const SIDEBAR_ITEMS = [
   { to: ROUTES.DASHBOARD, label: '대시보드 홈', end: true },
@@ -19,16 +20,20 @@ const SIDEBAR_ITEMS = [
  * 토스트는 레이아웃에 하나만 두고, 하위 페이지는 Outlet context의 showToast로 띄운다.
  */
 function DashboardLayout() {
+  const navigate = useNavigate();
   const [toast, setToast] = useState(null);
 
   const showToast = (message) => setToast({ id: Date.now(), message });
 
+  // 서버에는 로그아웃 API가 없어서, 저장해 둔 토큰을 지우고 로그인 화면으로 보낸다.
+  const logout = () => {
+    removeAccessToken();
+    navigate(ROUTES.LOGIN, { replace: true });
+  };
+
   return (
     <div className="flex min-h-dvh flex-col bg-dash-bg">
-      <Header
-        actionLabel="로그아웃"
-        onAction={() => showToast('로그아웃 기능은 다음 주차에 연결할 예정이에요.')}
-      />
+      <Header actionLabel="로그아웃" onAction={logout} />
       <div className="flex flex-1 flex-col md:flex-row">
         <Sidebar items={SIDEBAR_ITEMS} />
         <main className="min-w-0 flex-1 p-6 md:p-8">

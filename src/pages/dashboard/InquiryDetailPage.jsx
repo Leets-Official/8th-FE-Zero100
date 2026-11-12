@@ -1,35 +1,55 @@
 import { useState } from 'react';
 import { useNavigate, useOutletContext, useParams } from 'react-router';
+import { getMe } from '../../api/authApi';
+import { deleteInquiry, getInquiries } from '../../api/inquiryApi';
 import Button from '../../components/dashboard/Button/Button';
 import ButtonLink from '../../components/dashboard/ButtonLink/ButtonLink';
 import Modal from '../../components/dashboard/Modal/Modal';
 import PageHeading from '../../components/dashboard/PageHeading/PageHeading';
+import RequestStatus from '../../components/dashboard/RequestStatus/RequestStatus';
 import { ROUTES } from '../../constants/routes';
-import { useInquiries } from '../../hooks/useInquiries';
-import { formatDateTime } from '../../utils/formatDateTime';
+import { useAsyncData } from '../../hooks/useAsyncData';
+import { getErrorMessage } from '../../utils/getErrorMessage';
+
+// 문의 한 개를 조회하는 API가 없어서 목록에서 찾는다. 내 문의인지 알기 위해 내 정보도 같이 불러온다.
+const loadInquiriesWithMe = async () => {
+  const [inquiries, me] = await Promise.all([getInquiries(), getMe()]);
+  return { inquiries, me };
+};
 
 function InquiryDetailPage() {
-  const navigate = useNavigate();
   const { inquiryId } = useParams();
-  const { showToast } = useOutletContext();
-  const { inquiries, deleteInquiry } = useInquiries();
-  // 모달을 연 버튼을 기억해 두었다가, 취소하면 그 버튼으로 포커스를 돌려준다.
-  const [modalTrigger, setModalTrigger] = useState(null);
+  const { status, data, error, retry } = useAsyncData(
+    loadInquiriesWithMe,
+    '문의를 불러오지 못했어요.',
+  );
 
-  // 주소의 id는 문자열이라 문자열끼리 비교한다.
-  const inquiry = inquiries.find(({ id }) => String(id) === inquiryId);
+  const listLink = (
+    <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
+      목록으로
+    </ButtonLink>
+  );
+
+  if (status !== 'success') {
+    return (
+      <div className="mx-auto flex w-full max-w-[894px] flex-col gap-6">
+        <PageHeading title="문의 상세" actions={listLink} />
+        <RequestStatus
+          status={status}
+          error={error}
+          loadingMessage="문의를 불러오고 있어요."
+          onRetry={retry}
+        />
+      </div>
+    );
+  }
+
+  const inquiry = data.inquiries.find(({ id }) => id === inquiryId);
 
   if (!inquiry) {
     return (
       <div className="mx-auto flex w-full max-w-[894px] flex-col gap-6">
-        <PageHeading
-          title="문의 상세"
-          actions={
-            <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
-              목록으로
-            </ButtonLink>
-          }
-        />
+        <PageHeading title="문의 상세" actions={listLink} />
         <p className="rounded-[10px] border border-dash-line bg-white py-12 text-center text-sm text-dash-muted">
           문의를 찾을 수 없어요. 이미 삭제되었을 수 있어요.
         </p>
@@ -37,16 +57,35 @@ function InquiryDetailPage() {
     );
   }
 
+  return (
+    <InquiryDetail inquiry={inquiry} isMine={inquiry.user_id === data.me.id} listLink={listLink} />
+  );
+}
+
+function InquiryDetail({ inquiry, isMine, listLink }) {
+  const navigate = useNavigate();
+  const { showToast } = useOutletContext();
+  // 모달을 연 버튼을 기억해 두었다가, 취소하면 그 버튼으로 포커스를 돌려준다.
+  const [modalTrigger, setModalTrigger] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const closeModal = () => {
     modalTrigger?.focus();
     setModalTrigger(null);
   };
 
   // 삭제하면 이 페이지가 사라지므로 목록으로 이동하고, 토스트는 레이아웃에 있어서 목록에서도 보인다.
-  const confirmDelete = () => {
-    deleteInquiry(inquiry.id);
-    showToast('문의가 삭제되었습니다.');
-    navigate(ROUTES.DASHBOARD_INQUIRIES);
+  const confirmDelete = async () => {
+    setModalTrigger(null);
+    setIsDeleting(true);
+    try {
+      await deleteInquiry(inquiry.id);
+      showToast('문의가 삭제되었습니다.');
+      navigate(ROUTES.DASHBOARD_INQUIRIES);
+    } catch (error) {
+      showToast(getErrorMessage(error, '문의를 삭제하지 못했어요.'));
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -55,25 +94,25 @@ function InquiryDetailPage() {
         title="문의 상세"
         actions={
           <>
-            <ButtonLink variant="secondary" to={ROUTES.DASHBOARD_INQUIRIES}>
-              목록으로
-            </ButtonLink>
-            <Button
-              variant="secondary"
-              onClick={() => setModalTrigger(document.activeElement)}
-              aria-label={`"${inquiry.title}" 삭제하기`}
-            >
-              삭제
-            </Button>
+            {listLink}
+            {/* 삭제는 본인이 쓴 문의만 가능해서 내 문의일 때만 버튼을 보여준다. */}
+            {isMine && (
+              <Button
+                variant="secondary"
+                onClick={() => setModalTrigger(document.activeElement)}
+                disabled={isDeleting}
+                aria-label={`"${inquiry.title}" 삭제하기`}
+              >
+                {isDeleting ? '삭제 중...' : '삭제'}
+              </Button>
+            )}
           </>
         }
       />
 
       <article className="overflow-hidden rounded-[10px] border border-dash-line bg-white">
         <header className="flex flex-col gap-3 border-b border-dash-line px-8 py-6">
-          <time dateTime={inquiry.createdAt} className="text-sm leading-5 text-dash-muted">
-            {formatDateTime(inquiry.createdAt)}
-          </time>
+          <p className="text-sm leading-5 text-dash-muted">{inquiry.created_at}</p>
           <h2 className="text-2xl leading-8 font-bold break-all text-dash-black">
             {inquiry.title}
           </h2>

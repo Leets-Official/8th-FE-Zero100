@@ -1,6 +1,5 @@
 import { Link } from 'react-router';
 import { getInquiryDetailPath } from '../../../constants/routes';
-import { formatDateTime } from '../../../utils/formatDateTime';
 
 // Figma 기준: 머리글 줄 높이 44px, 내용 줄 높이 48px
 const HEAD_CELL_CLASS = 'px-4 py-3 text-sm leading-5 font-bold';
@@ -48,7 +47,8 @@ function InquiryTable({ inquiries }) {
                 </Link>
               </td>
               <td className={`${CELL_CLASS} text-dash-text-sub`}>
-                <time dateTime={inquiry.createdAt}>{formatDateTime(inquiry.createdAt)}</time>
+                {/* 서버가 "2026년 3월 25일 17:11" 형태로 보내 주므로 그대로 보여준다. */}
+                {inquiry.created_at}
               </td>
             </tr>
           ))}
