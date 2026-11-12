@@ -12,8 +12,13 @@ export const signup = async ({ email, password, name, kakaoId }) => {
 };
 
 // 로그인 → { accessToken, user }
+// 401은 이메일/비밀번호 불일치라서 공통 로그아웃 처리에서 제외합니다.
 export const login = async ({ email, password }) => {
-  const response = await axiosInstance.post('/api/auth/login', { email, password });
+  const response = await axiosInstance.post(
+    '/api/auth/login',
+    { email, password },
+    { skipAuthRedirect: true },
+  );
   return response.data.data;
 };
 
@@ -30,11 +35,13 @@ export const updateName = async (name) => {
 };
 
 // 비밀번호 변경 → { message }
+// 401은 현재 비밀번호 불일치라서 공통 로그아웃 처리에서 제외합니다.
 export const updatePassword = async ({ currentPassword, newPassword }) => {
-  const response = await axiosInstance.patch('/api/auth/me/password', {
-    currentPassword,
-    newPassword,
-  });
+  const response = await axiosInstance.patch(
+    '/api/auth/me/password',
+    { currentPassword, newPassword },
+    { skipAuthRedirect: true },
+  );
   return response.data.data;
 };
 
@@ -45,8 +52,11 @@ export const getKakaoLoginUrl = () => {
 };
 
 // 카카오 인가코드로 로그인 처리 → { accessToken, user }
-// 미가입 유저는 401 + { error: 'unregistered', kakaoId }로 응답합니다.
+// 미가입 유저는 401 + { error: 'unregistered', kakaoId }로 응답하므로 공통 로그아웃 처리에서 제외합니다.
 export const loginWithKakaoCode = async (code) => {
-  const response = await axiosInstance.get('/api/auth/kakao/redirect', { params: { code } });
+  const response = await axiosInstance.get('/api/auth/kakao/redirect', {
+    params: { code },
+    skipAuthRedirect: true,
+  });
   return response.data.data;
 };

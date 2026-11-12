@@ -5,16 +5,6 @@ import { getAccessToken, removeAccessToken } from './tokenStorage';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-// 401을 공통 처리(로그아웃)하지 않는 요청입니다. 각 화면에서 401의 의미를 직접 처리합니다.
-// - 로그인: 이메일/비밀번호 불일치
-// - 비밀번호 변경: 현재 비밀번호 불일치
-// - 카카오 redirect: 미가입 유저
-const UNAUTHORIZED_EXCLUDED_URLS = [
-  '/api/auth/login',
-  '/api/auth/me/password',
-  '/api/auth/kakao/redirect',
-];
-
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 10000,
@@ -36,14 +26,18 @@ axiosInstance.interceptors.request.use(
 );
 
 // 응답 인터셉터: 성공 응답은 그대로 전달하고, 인증이 만료된 401은 토큰을 지우고 로그인 화면으로 보냄
+// 401의 의미가 다른 요청(로그인, 비밀번호 변경, 카카오 redirect)은 요청 옵션 skipAuthRedirect: true로 제외합니다.
+// 각 화면에서 401의 의미를 직접 처리합니다.
+// - 로그인: 이메일/비밀번호 불일치
+// - 비밀번호 변경: 현재 비밀번호 불일치
+// - 카카오 redirect: 미가입 유저
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
-    const requestUrl = error.config?.url ?? '';
-    const isExcluded = UNAUTHORIZED_EXCLUDED_URLS.some((url) => requestUrl.startsWith(url));
+    const skipAuthRedirect = error.config?.skipAuthRedirect === true;
 
-    if (status === 401 && !isExcluded) {
+    if (status === 401 && !skipAuthRedirect) {
       removeAccessToken();
 
       if (window.location.pathname !== ROUTES.LOGIN) {
