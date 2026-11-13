@@ -1,10 +1,20 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api/client';
 
+type SignupLocationState = {
+  kakaoId?: unknown;
+};
+
 export default function Signup() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const state = location.state as SignupLocationState | null;
+  const kakaoId =
+    typeof state?.kakaoId === 'string' ? state.kakaoId : undefined;
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,18 +49,22 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
-      await api.post('/api/auth/signup', {
+      const payload = {
         email,
         password,
         name: trimmedName,
-        kakaoId: String(Date.now()), // 화면에 입력칸이 없어서 임시 값 사용
-      });
+        ...(kakaoId ? { kakaoId } : {}),
+      };
+
+      await api.post('/api/auth/signup', payload);
+
       alert('회원가입이 완료되었습니다. 로그인해 주세요.');
       navigate('/login', { replace: true });
     } catch (error) {
       const message = axios.isAxiosError(error)
         ? error.response?.data?.error
         : undefined;
+
       alert(message ?? '회원가입에 실패했습니다.');
     } finally {
       setIsLoading(false);
@@ -63,7 +77,13 @@ export default function Signup() {
         onSubmit={handleSubmit}
         className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm md:p-10"
       >
-        <h1 className="mb-8 text-center text-3xl font-bold">회원가입</h1>
+        <h1 className="mb-4 text-center text-3xl font-bold">회원가입</h1>
+
+        {kakaoId && (
+          <p className="mb-6 text-center text-sm text-gray-600">
+            카카오 계정과 연동할 정보를 입력해 주세요.
+          </p>
+        )}
 
         <div className="space-y-5">
           <div>

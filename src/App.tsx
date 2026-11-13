@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Inquiries from './pages/InquiryList';
 import InquiryCreate from './pages/InquiryCreate';
 import InquiryDetail from './pages/InquiryDetail';
+import KakaoCallback from './pages/KakaoCallback';
 import Login from './pages/Login';
 import MyPage from './pages/MyPage';
 import Signup from './pages/Signup';
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/auth/kakao/callback" element={<KakaoCallback />} />
 
       <Route element={<AdminLayout />}>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

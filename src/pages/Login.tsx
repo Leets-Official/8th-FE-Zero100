@@ -8,6 +8,10 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  function handleKakaoLogin() {
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '');
+    window.location.assign(`${baseUrl}/api/auth/kakao`);
+}
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -21,6 +25,7 @@ export default function Login() {
       const message = axios.isAxiosError(error)
         ? error.response?.data?.error
         : undefined;
+
       alert(message ?? '로그인에 실패했습니다.');
     } finally {
       setIsLoading(false);
@@ -78,6 +83,13 @@ export default function Login() {
           >
             {isLoading ? '로그인 중...' : '로그인'}
           </button>
+          <button
+            type="button"
+            onClick={handleKakaoLogin}
+            className="w-full rounded-lg bg-[#FEE500] py-3.5 text-sm font-semibold text-black hover:bg-[#f5dc00]"
+          >
+            카카오로 로그인
+        </button>
         </div>
 
         <div className="mt-8 text-center text-sm text-gray-500">
