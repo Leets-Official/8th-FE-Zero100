@@ -1,0 +1,38 @@
+import { useState } from 'react';
+import type { Todo } from '../types.ts';
+import TodoItem from './TodoItem.tsx';
+
+interface TodoListProps {
+  title: string;
+  todos: Todo[];
+  onToggleTodo: (id: string) => void;
+  onEditTodo: (id: string, title: string) => void;
+}
+
+function TodoList({ title, todos, onToggleTodo, onEditTodo }: TodoListProps) {
+  // 수정 중인 todo id. 수정 중이 아니면 null
+  const [editingId, setEditingId] = useState<string | null>(null);
+
+  return (
+    <div className="flex flex-col self-stretch gap-[8px]">
+      <h2 className="flex flex-col w-[520px] h-[27px] m-0 font-[family-name:var(--font-family-base)] font-bold text-[17.6px] leading-[26.4px] tracking-[0px] text-[color:var(--color-text-secondary)]">
+        {title}
+      </h2>
+      <ul className="flex flex-col gap-[8px] w-max m-0 p-0 list-none">
+        {todos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            isEditing={todo.id === editingId}
+            onStartEdit={() => setEditingId(todo.id)}
+            onEndEdit={() => setEditingId(null)}
+            onToggle={onToggleTodo}
+            onEdit={onEditTodo}
+          />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default TodoList;
