@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/todolist" replace />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route
           path="/todolist"
           element={
