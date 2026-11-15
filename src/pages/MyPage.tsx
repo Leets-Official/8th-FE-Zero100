@@ -1,36 +1,82 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { api } from '../api/client';
 
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+type User = {
+  id: string;
+  email: string;
+  name: string;
+  created_at: string;
+};
 
-export default function MyPage() {
-  const [name, setName] = useState('사용자');
-  const [newName, setNewName] = useState('');
+const inputClass =
+  'w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm outline-none focus:border-gray-400';
+
+function getErrorMessage(error: unknown, fallback: string) {
+  if (axios.isAxiosError(error)) {
+    return error.response?.data?.error ?? fallback;
+  }
+  return fallback;
+}
+
+function MyPage() {
+  const [user, setUser] = useState<User | null>(null);
+
+  const [name, setName] = useState('');
+  const [isNameLoading, setIsNameLoading] = useState(false);
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isPasswordLoading, setIsPasswordLoading] = useState(false);
 
-  // 이름 변경
-  const handleNameChange = () => {
-    if (!newName.trim()) {
+  // 페이지가 열릴 때 내 정보 조회
+  useEffect(() => {
+    api
+      .get('/api/auth/me')
+      .then((res) => setUser(res.data.data))
+      .catch((error) =>
+        alert(getErrorMessage(error, '내 정보를 불러오지 못했습니다.')),
+      );
+  }, []);
+
+  // 이름 수정
+  async function handleNameChange() {
+    const trimmedName = name.trim();
+
+    if (!trimmedName) {
       alert('변경할 이름을 입력해 주세요.');
       return;
     }
 
-    setName(newName.trim());
-    setNewName('');
-    alert('이름 변경이 완료되었습니다.');
-  };
+    if (trimmedName.length < 2 || trimmedName.length > 8) {
+      alert('이름은 2자 이상 8자 이하로 입력해 주세요.');
+      return;
+    }
 
-  // 비밀번호 변경
-  const handlePasswordChange = () => {
+    setIsNameLoading(true);
+
+    try {
+      const res = await api.patch('/api/auth/me', { name: trimmedName });
+      setUser(res.data.data);
+      setName('');
+      alert('이름이 변경되었습니다.');
+    } catch (error) {
+      alert(getErrorMessage(error, '이름 변경에 실패했습니다.'));
+    } finally {
+      setIsNameLoading(false);
+    }
+  }
+
+  // 비밀번호 수정
+  async function handlePasswordChange() {
     if (!currentPassword || !newPassword || !confirmPassword) {
       alert('모든 비밀번호 항목을 입력해 주세요.');
       return;
     }
 
     if (newPassword.length < 8) {
-      alert('새 비밀번호는 8자 이상 입력해 주세요.');
+      alert('새 비밀번호는 8자 이상이어야 합니다.');
       return;
     }
 
@@ -39,159 +85,117 @@ export default function MyPage() {
       return;
     }
 
-    alert('비밀번호 변경 기능은 API 연동 후 사용할 수 있습니다.');
+    setIsPasswordLoading(true);
 
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-  };
+    try {
+      await api.patch('/api/auth/me/password', {
+        currentPassword,
+        newPassword,
+      });
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      alert('비밀번호가 변경되었습니다.');
+    } catch (error) {
+      alert(getErrorMessage(error, '비밀번호 변경에 실패했습니다.'));
+    } finally {
+      setIsPasswordLoading(false);
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-black px-5 py-10 md:px-10">
-      <div className="mx-auto max-w-3xl">
+    <section className="mx-auto max-w-[672px]">
+      <h1 className="mb-6 text-2xl font-bold">마이페이지</h1>
 
-        {/* 페이지 제목 */}
-        <header className="mb-10">
-          <h1 className="text-3xl font-bold text-white">
-            마이페이지
-          </h1>
+      <div className="mb-7 rounded-xl border border-gray-200 bg-white p-5">
+        <h2 className="mb-4 text-lg font-bold">내 정보</h2>
+        <p className="mb-2 text-sm text-gray-600">
+          이름: <strong>{user?.name ?? '-'}</strong>
+        </p>
+        <p className="mb-2 text-sm text-gray-600">
+          이메일: <strong>{user?.email ?? '-'}</strong>
+        </p>
+        <p className="text-sm text-gray-600">
+          가입일: <strong>{user?.created_at ?? '-'}</strong>
+        </p>
+      </div>
 
-          <p className="mt-3 text-sm text-gray-400">
-            내 정보를 확인하고 수정할 수 있습니다.
-          </p>
-        </header>
+      <div className="mb-7 rounded-xl border border-gray-200 bg-white p-5">
+        <h2 className="mb-4 text-lg font-bold">이름 변경</h2>
 
-        {/* 현재 사용자 정보 */}
-        <div className="mb-6 rounded-xl bg-white p-6 shadow-sm md:p-8">
-          <h2 className="mb-2 text-xl font-bold text-gray-900">
-            내 정보
-          </h2>
+        <input
+          className={inputClass}
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+          placeholder="2자 이상 8자 이하로 입력하세요"
+        />
 
-          <p className="text-sm text-gray-500">
-            현재 이름: {name}
-          </p>
-        </div>
-
-        {/* 이름 변경 카드 */}
-        <section className="mb-6 rounded-xl bg-white p-6 shadow-sm md:p-8">
-          <h2 className="mb-6 text-xl font-bold text-gray-900">
-            이름 변경
-          </h2>
-
-          <div>
-            <label
-              htmlFor="newName"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              새 이름
-            </label>
-
-            <input
-              id="newName"
-              type="text"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              placeholder="변경할 이름을 입력해 주세요."
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
-            />
-          </div>
-
+        <div className="mt-3 flex justify-end">
           <button
             type="button"
             onClick={handleNameChange}
-            className="mt-5 w-full rounded-lg bg-black py-3 text-sm font-semibold text-white transition hover:bg-gray-800 sm:w-auto sm:px-8"
+            disabled={isNameLoading}
+            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:bg-gray-400"
           >
-            이름 변경
+            {isNameLoading ? '변경 중...' : '변경'}
           </button>
-        </section>
+        </div>
+      </div>
 
-        {/* 비밀번호 변경 카드 */}
-        <section className="rounded-xl bg-white p-6 shadow-sm md:p-8">
-          <h2 className="mb-6 text-xl font-bold text-gray-900">
-            비밀번호 변경
-          </h2>
+      <div className="rounded-xl border border-gray-200 bg-white p-5">
+        <h2 className="mb-4 text-lg font-bold">비밀번호 변경</h2>
 
-          <div className="space-y-5">
+        <div className="mb-3">
+          <label className="mb-2 block text-sm font-medium">현재 비밀번호</label>
+          <input
+            type="password"
+            autoComplete="current-password"
+            className={inputClass}
+            value={currentPassword}
+            onChange={(event) => setCurrentPassword(event.target.value)}
+            placeholder="현재 비밀번호"
+          />
+        </div>
 
-            {/* 현재 비밀번호 */}
-            <div>
-              <label
-                htmlFor="currentPassword"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                현재 비밀번호
-              </label>
+        <div className="mb-3">
+          <label className="mb-2 block text-sm font-medium">새 비밀번호</label>
+          <input
+            type="password"
+            autoComplete="new-password"
+            className={inputClass}
+            value={newPassword}
+            onChange={(event) => setNewPassword(event.target.value)}
+            placeholder="새 비밀번호"
+          />
+        </div>
 
-              <input
-                id="currentPassword"
-                type="password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="현재 비밀번호를 입력해 주세요."
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
-              />
-            </div>
+        <div>
+          <label className="mb-2 block text-sm font-medium">
+            새 비밀번호 확인
+          </label>
+          <input
+            type="password"
+            autoComplete="new-password"
+            className={inputClass}
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            placeholder="새 비밀번호 확인"
+          />
+        </div>
 
-            {/* 새 비밀번호 */}
-            <div>
-              <label
-                htmlFor="newPassword"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                새 비밀번호
-              </label>
-
-              <input
-                id="newPassword"
-                type="password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="새 비밀번호를 입력해 주세요."
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
-              />
-            </div>
-
-            {/* 새 비밀번호 확인 */}
-            <div>
-              <label
-                htmlFor="confirmPassword"
-                className="mb-2 block text-sm font-semibold text-gray-700"
-              >
-                새 비밀번호 확인
-              </label>
-
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="새 비밀번호를 다시 입력해 주세요."
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm outline-none transition focus:border-black"
-              />
-            </div>
-
-          </div>
-
+        <div className="mt-3 flex justify-end">
           <button
             type="button"
             onClick={handlePasswordChange}
-            className="mt-6 w-full rounded-lg bg-black py-3 text-sm font-semibold text-white transition hover:bg-gray-800 sm:w-auto sm:px-8"
+            disabled={isPasswordLoading}
+            className="rounded-xl bg-black px-6 py-3 text-sm font-medium text-white hover:bg-gray-800 disabled:bg-gray-400"
           >
-            비밀번호 변경
+            {isPasswordLoading ? '변경 중...' : '변경'}
           </button>
-        </section>
-
-        {/* 대시보드 이동 */}
-        <div className="mt-8 text-center">
-          <Link
-            to="/dashboard"
-            className="text-sm text-gray-400 transition hover:text-white"
-          >
-            ← 대시보드로 돌아가기
-          </Link>
         </div>
-
       </div>
-    </div>
+    </section>
   );
 }
+
+export default MyPage;
