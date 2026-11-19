@@ -1,0 +1,47 @@
+.inquiry-page {
+  display: flex;
+  flex-direction: column;
+  gap: 23.992px;
+}
+
+.inquiry-page__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.inquiry-page__title {
+  margin: 0;
+
+  color: #000;
+  font-family: var(--common-font);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 32px;
+}
+
+/* 로딩 / 에러 / 빈 목록 안내 */
+.inquiry-page__message {
+  margin: 0;
+
+  color: #4a5565;
+  font-family: var(--common-font);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.inquiry-page__message--error {
+  color: #fb2c36;
+}
+
+/* 삭제 완료 Toast: 화면 오른쪽 아래 고정 */
+.inquiry-page__toast {
+  position: fixed;
+  right: 24px;
+  bottom: 48.5px;
+  z-index: 1100;
+}
