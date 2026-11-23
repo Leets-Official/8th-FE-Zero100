@@ -20,7 +20,7 @@ npm run format:check
 npm run build
 ```
 
-개발 서버는 `http://localhost:5173`을 사용합니다. 서버에 등록된 카카오 콜백이 이 주소로 고정되어 있어 다른 포트를 사용하면 카카오 로그인이 동작하지 않습니다. API 주소를 바꾸려면 `.env.example`을 참고해 `VITE_API_BASE_URL`을 설정합니다. 설정하지 않으면 과제 API 주소를 사용합니다.
+개발 서버는 `http://localhost:5173`을 사용합니다. 카카오 로그인은 현재 접속 주소의 `/auth/kakao/callback`을 콜백으로 사용하며, 해당 주소가 카카오 앱에 등록되어 있어야 합니다. API 주소를 바꾸려면 `.env.example`을 참고해 `VITE_API_BASE_URL`을 설정합니다. 설정하지 않으면 과제 API 주소를 사용합니다.
 
 ## 프로젝트 설정
 
@@ -109,4 +109,10 @@ src/
 - 서버는 이메일 변경 API를 제공하지 않아 이메일은 읽기 전용입니다. 회원가입·비밀번호 변경은 영문·숫자·특수문자를 포함한 8자 이상 비밀번호를 사용합니다.
 - 카카오 미가입자는 콜백에서 회원가입 화면으로 이동하며 이메일과 비밀번호를 추가로 입력합니다. 실제 카카오 앱의 콜백 주소는 서버 설정에 따릅니다.
 
-배포 서버에는 각 경로로 직접 접속해도 `index.html`을 반환하는 SPA fallback 설정이 필요합니다.
+## Vercel 배포 설정
+
+- GitHub 개인 fork: `seongsunam/8th-FE-Zero100`
+- Root Directory: `mini-dashboard`, Framework Preset: Vite
+- Production 환경 변수 `VITE_API_BASE_URL`: `https://leetszero100-fe.kro.kr` (공개 API 주소)
+- `vercel.json`에서 SPA 경로를 `index.html`로 연결하여 새로고침과 직접 접속을 지원합니다.
+- 카카오 로그인에 현재 접속 주소의 콜백을 전달합니다. 배포 환경에서 사용하려면 카카오 개발자 콘솔에 `https://zero100.maskiai.site/auth/kakao/callback`이 등록되어 있어야 합니다.

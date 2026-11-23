@@ -5,6 +5,7 @@ import Button from '../components/common/Button.jsx';
 import TextInput from '../components/common/TextInput.jsx';
 import { useDashboard } from '../hooks/useDashboard.js';
 import { API_BASE_URL, getApiError } from '../api/client.js';
+import { kakaoRedirectUri } from '../api/auth.js';
 
 function LoginPage() {
   const { login } = useDashboard();
@@ -29,11 +30,9 @@ function LoginPage() {
   }
 
   function handleKakaoLogin() {
-    if (window.location.origin !== 'http://localhost:5173') {
-      setError('카카오 로그인은 현재 http://localhost:5173에서 사용할 수 있습니다.');
-      return;
-    }
-    window.location.assign(`${API_BASE_URL}/api/auth/kakao`);
+    const url = new URL(`${API_BASE_URL}/api/auth/kakao`);
+    url.searchParams.set('redirect_uri', kakaoRedirectUri(window.location.origin));
+    window.location.assign(url.href);
   }
 
   return (
