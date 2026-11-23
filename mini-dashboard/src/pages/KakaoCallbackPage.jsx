@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
-import { exchangeKakaoCode } from '../api/auth.js';
+import { exchangeKakaoCode, kakaoRedirectUri } from '../api/auth.js';
 import { getApiError } from '../api/client.js';
 import { useDashboard } from '../hooks/useDashboard.js';
 import { isValidKakaoId } from '../utils/validation.js';
@@ -14,7 +14,7 @@ function KakaoCallbackPage() {
     if (!code) return;
     let active = true;
     window.history.replaceState(null, '', window.location.pathname);
-    exchangeKakaoCode(code)
+    exchangeKakaoCode(code, kakaoRedirectUri(window.location.origin))
       .then(({ data }) => {
         if (!active) return;
         acceptToken(data?.data?.accessToken);
